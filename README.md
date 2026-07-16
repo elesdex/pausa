@@ -1,14 +1,14 @@
-# Pausa
+# HELP
 
-> Scams use urgency. Pausa gives people calm and one safer next step.
+> Scams use urgency. HELP gives people calm and one safer next step.
 
-Pausa is a free, open-source, mobile-first web app for moments of digital uncertainty. A person can share a suspicious message as text, voice, photo, or screenshot. Pausa uses GPT-5.6 vision and structured outputs to identify risk signals, explain them without jargon or shame, and recommend a safer way to verify.
+HELP is a free, open-source, mobile-first web app for moments of digital uncertainty. A person can share a suspicious message as text, voice, photo, or screenshot. HELP uses GPT-5.6 vision and structured outputs to identify risk signals, explain them without jargon or shame, and recommend a safer way to verify.
 
 The first module focuses on scam and phishing messages. The broader vision is a trusted, accessible help button for moments when someone does not know what is happening or what to do next.
 
 ## Why this is different
 
-Pausa is not just a scam verdict. It starts before analysis by interrupting urgency, supports people who do not know how to take screenshots, explains the manipulation pattern, and always routes toward an independently verified channel. It does not monitor private messages in the background.
+HELP is not just a scam verdict. It starts before analysis by interrupting urgency, supports people who do not know how to take screenshots, explains the manipulation pattern, and always routes toward an independently verified channel. It does not monitor private messages in the background.
 
 ## Current MVP
 
@@ -62,7 +62,7 @@ Never upload real passwords, PINs, full card numbers, identity documents, or pri
 
 A clearly labeled synthetic Spanish bank-message screenshot is included at `public/demo/bank-alert-es.png` for vision testing and video recording.
 
-Pausa does not keep submissions in its own database. Under standard API settings, OpenAI may retain customer content in abuse-monitoring logs for up to 30 days. See the in-product privacy page and [OpenAI data controls](https://developers.openai.com/api/docs/guides/your-data).
+HELP does not keep submissions in its own database. Under standard API settings, OpenAI may retain customer content in abuse-monitoring logs for up to 30 days. See the in-product privacy page and [OpenAI data controls](https://developers.openai.com/api/docs/guides/your-data).
 
 The repository includes 12 synthetic safety cases covering scams, benign messages, ambiguity, and prompt injection. With a live local server and API key configured, run:
 
@@ -100,18 +100,18 @@ Key product decisions and daily progress are recorded in `docs/BUILD_LOG.md`. Th
 
 ## Build origin and third-party software
 
-Work on Pausa began on July 16, 2026 during OpenAI Build Week. The product concept, interaction, visual language, bilingual copy, GPT-5.6 safety prompt, evaluation cases, privacy disclosure, tests, and submission materials were created during the event with Codex.
+Work on HELP began on July 16, 2026 during OpenAI Build Week. The product concept, interaction, visual language, bilingual copy, GPT-5.6 safety prompt, evaluation cases, privacy disclosure, tests, and submission materials were created during the event with Codex.
 
-The project began from the OpenAI Sites Next.js/vinext starter and retains its deployment toolchain. It uses open-source packages including Next.js, React, vinext, Vite, and the Cloudflare Vite plugin under their respective licenses. No existing scam-detector product or dataset was copied into Pausa.
+The project began from the OpenAI Sites Next.js/vinext starter and retains its deployment toolchain. It uses open-source packages including Next.js, React, vinext, Vite, and the Cloudflare Vite plugin under their respective licenses. No existing scam-detector product or dataset was copied into HELP.
 
 ## Safety boundary
 
-Pausa provides guidance, not a guarantee. It does not replace emergency services, banks, law enforcement, medical professionals, or trusted people. It never instructs a person to contact a phone number or link supplied by suspicious content. See `docs/SAFETY.md`.
+HELP provides guidance, not a guarantee. It does not replace emergency services, banks, law enforcement, medical professionals, or trusted people. It never instructs a person to contact a phone number or link supplied by suspicious content. See `docs/SAFETY.md`.
 
 ## Open source
 
 Licensed under Apache License 2.0. Contributions that improve accessibility, language coverage, scam education, evaluation data, and safe routing are welcome.
 
-Public repository: [github.com/elesdex/pausa](https://github.com/elesdex/pausa)
+Public repository target: [github.com/elesdex/help](https://github.com/elesdex/help)
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the safety and privacy rules that apply to community contributions.

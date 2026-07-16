@@ -49,7 +49,7 @@ Status meanings:
 | Deliverable | Status | Evidence | Remaining action |
 |---|---|---|---|
 | Day-by-day plan | Proven | `docs/ROADMAP.md` | Keep current |
-| Public repository | Partial | `https://github.com/elesdex/pausa` exists | Authenticate and push all local commits |
+| Public repository | Partial | A shell repository exists under the former provisional name | Rename it to `https://github.com/elesdex/help`, authenticate, and push all local commits |
 | License | Proven locally | Apache 2.0 `LICENSE` | Verify visible on GitHub |
 | README and setup | Proven locally | `README.md` | Verify install from clean clone |
 | Starter and third-party disclosure | Proven locally | README build-origin section | Verify visible on GitHub |

@@ -21,7 +21,8 @@
 
 ## Repository
 
-- [x] Public GitHub repository created: `https://github.com/elesdex/pausa`.
+- [x] Initial public GitHub repository created under the provisional name.
+- [ ] Rename it to `https://github.com/elesdex/help`.
 - [x] Apache 2.0 license included locally.
 - [x] README includes setup, sample/test path, Codex role, and GPT-5.6 integration.
 - [x] Starter origin and third-party software disclosed.

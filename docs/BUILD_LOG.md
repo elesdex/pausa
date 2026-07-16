@@ -51,3 +51,4 @@ Complete the local build, connect a real API key, and verify one text example an
 - Created a clearly labeled, fully synthetic bank-message screenshot in SVG and PNG formats for the live vision test and video, avoiding the use of any real person's message or financial data.
 - Added a requirement-by-requirement readiness audit and corrected the submission checklist so simulated integration evidence is never mistaken for a live GPT-5.6 evaluation or public delivery.
 - Documented the Sites starter origin, retained deployment toolchain, third-party packages, and the fact that no existing scam-detector product or dataset was copied.
+- Replaced the provisional product name “Pausa” with the selected final name **HELP** across the interface, PWA metadata, prompts, documentation, tests, Devpost draft, and video script. “Primero, pausa” remains the product's first safety instruction, not its brand name.

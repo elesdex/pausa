@@ -52,9 +52,9 @@ const copy = {
       "Si un mensaje te asustó o te está presionando, no respondas todavía. Lo revisamos contigo, con calma.",
     start: "Revisar algo sospechoso",
     demo: "Probar con un ejemplo",
-    install: "Poner Pausa en mi pantalla",
+    install: "Poner HELP en mi pantalla",
     privacy: "Nada se analiza hasta que tú lo compartes.",
-    notEmergency: "Pausa no sustituye a los servicios de emergencia.",
+    notEmergency: "HELP no sustituye a los servicios de emergencia.",
     intakeTitle: "¿Qué tienes a la mano?",
     intakeHelp: "Elige la opción más fácil. No necesitas saber hacer una captura.",
     screenshotHelp: "No sé hacer una captura",
@@ -65,10 +65,10 @@ const copy = {
     android: "Android",
     otherDevice: "Otro dispositivo",
     closeGuide: "Cerrar guía",
-    installTitle: "Ten Pausa siempre a la mano",
+    installTitle: "Ten HELP siempre a la mano",
     installIntro: "Guárdala como un icono en tu pantalla de inicio. No necesitas una tienda de aplicaciones.",
     installDetected: "Pasos para este dispositivo",
-    installDone: "Cuando termines, abre Pausa desde el nuevo icono.",
+    installDone: "Cuando termines, abre HELP desde el nuevo icono.",
     camera: "Tomar una foto",
     cameraHelp: "Apunta la cámara al mensaje en otra pantalla.",
     upload: "Elegir foto o captura",
@@ -92,10 +92,10 @@ const copy = {
     stopSpeak: "Detener voz",
     share: "Compartir con alguien de confianza",
     shared: "Orientación lista para compartir.",
-    shareTitle: "Orientación de Pausa",
+    shareTitle: "Orientación de HELP",
     newCheck: "Revisar otro mensaje",
     disclaimer:
-      "Pausa identifica señales de riesgo, pero puede equivocarse. Verifica siempre por un canal oficial que tú ya conozcas.",
+      "HELP identifica señales de riesgo, pero puede equivocarse. Verifica siempre por un canal oficial que tú ya conozcas.",
     error: "No pudimos revisar esto todavía. Intenta con texto o una imagen más pequeña.",
     liveUnavailable: "El análisis en vivo aún no está conectado. Puedes probar el ejemplo guiado.",
     imageTooLarge: "La imagen es demasiado grande. Elige una captura o foto de menos de 5 MB.",
@@ -115,9 +115,9 @@ const copy = {
       "If a message scared or pressured you, do not respond yet. We will review it with you, calmly.",
     start: "Check something suspicious",
     demo: "Try a guided example",
-    install: "Put Pausa on my home screen",
+    install: "Put HELP on my home screen",
     privacy: "Nothing is analyzed until you choose to share it.",
-    notEmergency: "Pausa does not replace emergency services.",
+    notEmergency: "HELP does not replace emergency services.",
     intakeTitle: "What do you have available?",
     intakeHelp: "Choose the easiest option. You do not need to know how to take a screenshot.",
     screenshotHelp: "I do not know how to take a screenshot",
@@ -128,10 +128,10 @@ const copy = {
     android: "Android",
     otherDevice: "Another device",
     closeGuide: "Close guide",
-    installTitle: "Keep Pausa within reach",
+    installTitle: "Keep HELP within reach",
     installIntro: "Save it as an icon on your home screen. You do not need an app store.",
     installDetected: "Steps for this device",
-    installDone: "When you finish, open Pausa from the new icon.",
+    installDone: "When you finish, open HELP from the new icon.",
     camera: "Take a photo",
     cameraHelp: "Point your camera at the message on another screen.",
     upload: "Choose a photo or screenshot",
@@ -155,10 +155,10 @@ const copy = {
     stopSpeak: "Stop voice",
     share: "Share with someone you trust",
     shared: "Guidance is ready to share.",
-    shareTitle: "Pausa guidance",
+    shareTitle: "HELP guidance",
     newCheck: "Check another message",
     disclaimer:
-      "Pausa identifies risk signals, but it can be wrong. Always verify through an official channel you already know.",
+      "HELP identifies risk signals, but it can be wrong. Always verify through an official channel you already know.",
     error: "We could not review this yet. Try text or a smaller image.",
     liveUnavailable: "Live analysis is not connected yet. You can try the guided example.",
     imageTooLarge: "The image is too large. Choose a screenshot or photo under 5 MB.",
@@ -202,7 +202,7 @@ async function prepareImage(file: File) {
   context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
   bitmap.close();
   const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.84));
-  return blob ? new File([blob], "pausa-message.jpg", { type: "image/jpeg" }) : file;
+  return blob ? new File([blob], "help-message.jpg", { type: "image/jpeg" }) : file;
 }
 
 export default function Home() {
@@ -262,16 +262,16 @@ export default function Home() {
   const screenshotSteps = useMemo(() => {
     const steps = {
       es: {
-        iphoneFace: ["Abre el mensaje que quieres revisar.", "Presiona al mismo tiempo el botón lateral y el botón de subir volumen.", "Suelta ambos botones. La captura quedará en Fotos.", "Regresa a Pausa y toca “Elegir foto o captura”."],
-        iphoneHome: ["Abre el mensaje que quieres revisar.", "Presiona al mismo tiempo el botón lateral o superior y el botón frontal.", "Suelta ambos botones. La captura quedará en Fotos.", "Regresa a Pausa y toca “Elegir foto o captura”."],
-        android: ["Abre el mensaje que quieres revisar.", "Presiona al mismo tiempo el botón de encendido y el de bajar volumen.", "Suelta ambos botones. La captura quedará en Fotos o Galería.", "Regresa a Pausa y toca “Elegir foto o captura”."],
-        other: ["Abre el mensaje que quieres revisar.", "Busca en el menú del dispositivo la opción “Captura de pantalla”.", "Si no la encuentras, usa “Tomar una foto” en Pausa y fotografía el mensaje desde otra pantalla."],
+        iphoneFace: ["Abre el mensaje que quieres revisar.", "Presiona al mismo tiempo el botón lateral y el botón de subir volumen.", "Suelta ambos botones. La captura quedará en Fotos.", "Regresa a HELP y toca “Elegir foto o captura”."],
+        iphoneHome: ["Abre el mensaje que quieres revisar.", "Presiona al mismo tiempo el botón lateral o superior y el botón frontal.", "Suelta ambos botones. La captura quedará en Fotos.", "Regresa a HELP y toca “Elegir foto o captura”."],
+        android: ["Abre el mensaje que quieres revisar.", "Presiona al mismo tiempo el botón de encendido y el de bajar volumen.", "Suelta ambos botones. La captura quedará en Fotos o Galería.", "Regresa a HELP y toca “Elegir foto o captura”."],
+        other: ["Abre el mensaje que quieres revisar.", "Busca en el menú del dispositivo la opción “Captura de pantalla”.", "Si no la encuentras, usa “Tomar una foto” en HELP y fotografía el mensaje desde otra pantalla."],
       },
       en: {
-        iphoneFace: ["Open the message you want to check.", "Press the side button and volume-up button at the same time.", "Release both buttons. The screenshot will be saved in Photos.", "Return to Pausa and tap “Choose a photo or screenshot.”"],
-        iphoneHome: ["Open the message you want to check.", "Press the side or top button and the front Home button at the same time.", "Release both buttons. The screenshot will be saved in Photos.", "Return to Pausa and tap “Choose a photo or screenshot.”"],
-        android: ["Open the message you want to check.", "Press the power and volume-down buttons at the same time.", "Release both buttons. The screenshot will be saved in Photos or Gallery.", "Return to Pausa and tap “Choose a photo or screenshot.”"],
-        other: ["Open the message you want to check.", "Look for “Screenshot” in your device menu.", "If you cannot find it, use “Take a photo” in Pausa and photograph the message on another screen."],
+        iphoneFace: ["Open the message you want to check.", "Press the side button and volume-up button at the same time.", "Release both buttons. The screenshot will be saved in Photos.", "Return to HELP and tap “Choose a photo or screenshot.”"],
+        iphoneHome: ["Open the message you want to check.", "Press the side or top button and the front Home button at the same time.", "Release both buttons. The screenshot will be saved in Photos.", "Return to HELP and tap “Choose a photo or screenshot.”"],
+        android: ["Open the message you want to check.", "Press the power and volume-down buttons at the same time.", "Release both buttons. The screenshot will be saved in Photos or Gallery.", "Return to HELP and tap “Choose a photo or screenshot.”"],
+        other: ["Open the message you want to check.", "Look for “Screenshot” in your device menu.", "If you cannot find it, use “Take a photo” in HELP and photograph the message on another screen."],
       },
     };
     return steps[locale][deviceGuide];
@@ -280,16 +280,16 @@ export default function Home() {
   const installSteps = useMemo(() => {
     const steps = {
       es: {
-        iphoneFace: ["Abre Pausa en Safari.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
-        iphoneHome: ["Abre Pausa en Safari.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
-        android: ["Abre Pausa en Chrome.", "Toca el menú de tres puntos.", "Elige “Instalar aplicación” o “Agregar a pantalla principal”.", "Confirma la instalación."],
-        other: ["Abre el menú de tu navegador.", "Busca “Instalar aplicación” o “Agregar a pantalla de inicio”.", "Si no aparece, guarda Pausa como favorito."],
+        iphoneFace: ["Abre HELP en Safari.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
+        iphoneHome: ["Abre HELP en Safari.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
+        android: ["Abre HELP en Chrome.", "Toca el menú de tres puntos.", "Elige “Instalar aplicación” o “Agregar a pantalla principal”.", "Confirma la instalación."],
+        other: ["Abre el menú de tu navegador.", "Busca “Instalar aplicación” o “Agregar a pantalla de inicio”.", "Si no aparece, guarda HELP como favorito."],
       },
       en: {
-        iphoneFace: ["Open Pausa in Safari.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
-        iphoneHome: ["Open Pausa in Safari.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
-        android: ["Open Pausa in Chrome.", "Tap the three-dot menu.", "Choose “Install app” or “Add to Home screen.”", "Confirm the installation."],
-        other: ["Open your browser menu.", "Look for “Install app” or “Add to Home screen.”", "If it is unavailable, save Pausa as a bookmark."],
+        iphoneFace: ["Open HELP in Safari.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
+        iphoneHome: ["Open HELP in Safari.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
+        android: ["Open HELP in Chrome.", "Tap the three-dot menu.", "Choose “Install app” or “Add to Home screen.”", "Confirm the installation."],
+        other: ["Open your browser menu.", "Look for “Install app” or “Add to Home screen.”", "If it is unavailable, save HELP as a bookmark."],
       },
     };
     return steps[locale][deviceGuide];
@@ -447,9 +447,9 @@ export default function Home() {
   return (
     <main className="app-shell">
       <header className="topbar">
-        <button className="brand" onClick={() => setScreen("home")} aria-label="Pausa home">
+        <button className="brand" onClick={() => setScreen("home")} aria-label="HELP home">
           <span className="brand-mark" aria-hidden="true">Ⅱ</span>
-          <span>Pausa</span>
+          <span>HELP</span>
         </button>
         <button className="language-button" onClick={() => setLocale(locale === "es" ? "en" : "es")}>
           {t.language}
@@ -465,7 +465,7 @@ export default function Home() {
           <button className="primary-button" onClick={() => setScreen("intake")}>{t.start}</button>
           <button className="text-button" onClick={() => runAnalysis(true)}>{t.demo}</button>
           <button className="install-link" onClick={() => setScreen("install")}>{t.install}</button>
-          <div className="three-steps" aria-label={locale === "es" ? "Cómo funciona Pausa" : "How Pausa works"}>
+          <div className="three-steps" aria-label={locale === "es" ? "Cómo funciona HELP" : "How HELP works"}>
             <span>{t.stepOne}</span><span>{t.stepTwo}</span><span>{t.stepThree}</span>
           </div>
           <p className="privacy-note"><span aria-hidden="true">●</span> {t.privacy}</p>
@@ -475,7 +475,7 @@ export default function Home() {
       {screen === "intake" && (
         <section className="intake-screen screen-enter">
           <button className="back-button" onClick={() => setScreen("home")}>← {t.back}</button>
-          <p className="eyebrow">Pausa</p>
+          <p className="eyebrow">HELP</p>
           <h1>{t.intakeTitle}</h1>
           <p className="lead compact">{t.intakeHelp}</p>
 
@@ -551,7 +551,7 @@ export default function Home() {
       {screen === "install" && (
         <section className="install-screen screen-enter">
           <button className="back-button" onClick={() => setScreen("home")}>← {t.back}</button>
-          <p className="eyebrow">Pausa</p>
+          <p className="eyebrow">HELP</p>
           <h1>{t.installTitle}</h1>
           <p className="lead compact">{t.installIntro}</p>
           <div className="install-icon" aria-hidden="true"><span>Ⅱ</span></div>
@@ -610,7 +610,7 @@ export default function Home() {
         <p>{t.notEmergency}</p>
         <nav aria-label={locale === "es" ? "Información del proyecto" : "Project information"}>
           <a href="/privacy">{locale === "es" ? "Privacidad" : "Privacy"}</a>
-          <a href="https://github.com/elesdex/pausa" target="_blank" rel="noreferrer">
+          <a href="https://github.com/elesdex/help" target="_blank" rel="noreferrer">
             {locale === "es" ? "Código abierto" : "Open source"}
           </a>
         </nav>

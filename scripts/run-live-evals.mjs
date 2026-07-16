@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 
-const baseUrl = process.env.PAUSA_BASE_URL || "http://localhost:3000";
+const baseUrl = process.env.HELP_BASE_URL || "http://localhost:3000";
 const cases = JSON.parse(
   await readFile(new URL("../tests/scam-evals.json", import.meta.url), "utf8"),
 );

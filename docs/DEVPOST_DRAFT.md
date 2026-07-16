@@ -2,7 +2,7 @@
 
 ## Project name
 
-Pausa
+HELP
 
 ## Category
 
@@ -10,17 +10,17 @@ Apps for Your Life
 
 ## One-line pitch
 
-Scams use urgency. Pausa gives people calm, clarity, and one safer next step.
+Scams use urgency. HELP gives people calm, clarity, and one safer next step.
 
 ## Short description
 
-Pausa is a free, open-source, voice-first web app that helps people respond safely to suspicious digital messages. Share a screenshot, photo, pasted message, or voice description. Pausa uses GPT-5.6 to identify possible warning signals, explain them in plain language without claiming certainty, and guide the person toward an independently verified next step.
+HELP is a free, open-source, voice-first web app that helps people respond safely to suspicious digital messages. Share a screenshot, photo, pasted message, or voice description. HELP uses GPT-5.6 to identify possible warning signals, explain them in plain language without claiming certainty, and guide the person toward an independently verified next step.
 
 ## Inspiration
 
 This project began with a familiar fear: someone we love receives a message that looks official, feels urgent, and is designed to make them act before they think. The original audience was older relatives who may not feel confident with screenshots, links, or app permissions. We quickly realized that vulnerability under pressure is universal.
 
-Most scam checkers begin after a person has already captured and submitted a message. Pausa starts one step earlier. It interrupts urgency, offers several accessible ways to share what happened, and explains not only what looks suspicious but how to verify safely.
+Most scam checkers begin after a person has already captured and submitted a message. HELP starts one step earlier. It interrupts urgency, offers several accessible ways to share what happened, and explains not only what looks suspicious but how to verify safely.
 
 ## What it does
 
@@ -37,7 +37,7 @@ Most scam checkers begin after a person has already captured and submitted a mes
 
 ## How we built it
 
-Pausa is a mobile-first Next.js application built and iterated with Codex. The server uses the OpenAI Responses API with GPT-5.6, image input, medium reasoning effort, and a strict JSON schema. The schema limits responses to a risk level, short explanation, observed signals, safe next steps, one reusable lesson, and an emergency flag.
+HELP is a mobile-first Next.js application built and iterated with Codex. The server uses the OpenAI Responses API with GPT-5.6, image input, medium reasoning effort, and a strict JSON schema. The schema limits responses to a risk level, short explanation, observed signals, safe next steps, one reusable lesson, and an emergency flag.
 
 The client uses standard browser capabilities for camera/file input, speech recognition when available, and speech synthesis for read-aloud results. It stores no submissions, requires no account, includes no analytics, and does not monitor messages in the background.
 
@@ -65,9 +65,9 @@ GPT-5.6 is the live reasoning and vision layer. It receives the user-provided te
 
 The largest product challenge was resisting the temptation to build a universal emergency assistant in five days. We kept that broader vision, but limited the working module to scam and phishing uncertainty.
 
-The largest safety challenge was balancing usefulness with fallibility. Pausa cannot certify that a message is safe or fraudulent. Its job is to slow the moment down, surface evidence, and route verification away from the suspicious message.
+The largest safety challenge was balancing usefulness with fallibility. HELP cannot certify that a message is safe or fraudulent. Its job is to slow the moment down, surface evidence, and route verification away from the suspicious message.
 
-The largest accessibility challenge was supporting people who may not know how to take a screenshot. Pausa therefore accepts a camera photo, file, text, or voice description and keeps every interaction large and direct.
+The largest accessibility challenge was supporting people who may not know how to take a screenshot. HELP therefore accepts a camera photo, file, text, or voice description and keeps every interaction large and direct.
 
 ## Accomplishments
 
@@ -92,6 +92,6 @@ The next version will add device-specific screenshot guidance, trusted-contact e
 ## Links to add before submission
 
 - Working public app: `TBD`
-- Public repository: `https://github.com/elesdex/pausa`
+- Public repository: `https://github.com/elesdex/help`
 - Public YouTube video: `TBD`
 - Primary Codex `/feedback` Session ID: `TBD`

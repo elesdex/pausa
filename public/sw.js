@@ -1,4 +1,4 @@
-const CACHE_NAME = "pausa-shell-v1";
+const CACHE_NAME = "help-shell-v1";
 const APP_SHELL = ["/", "/manifest.webmanifest", "/favicon.svg", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (event) => {

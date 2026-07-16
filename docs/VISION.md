@@ -2,7 +2,7 @@
 
 ## One sentence
 
-Pausa is a calm, accessible help button for moments of digital uncertainty, starting with suspicious messages and scam prevention.
+HELP is a calm, accessible help button for moments of digital uncertainty, starting with suspicious messages and scam prevention.
 
 ## Problem
 
@@ -12,7 +12,7 @@ People with less confidence using technology are especially underserved, but the
 
 ## Promise
 
-Pausa helps a person stop, share what they see in the easiest available way, understand the warning signals, and take one safer next step.
+HELP helps a person stop, share what they see in the easiest available way, understand the warning signals, and take one safer next step.
 
 ## Primary audience
 
@@ -21,17 +21,17 @@ For the MVP: adults who receive suspicious SMS, WhatsApp, email, website, or pho
 ## Core experience
 
 1. A suspicious message creates fear or urgency.
-2. The person opens Pausa from their phone home screen.
-3. Pausa immediately asks them not to respond or click yet.
+2. The person opens HELP from their phone home screen.
+3. HELP immediately asks them not to respond or click yet.
 4. The person pastes text, dictates, takes a photo, or uploads a screenshot.
 5. GPT-5.6 identifies signals and uncertainty.
-6. Pausa explains the risk in plain language.
-7. Pausa recommends an independently verifiable next step.
+6. HELP explains the risk in plain language.
+7. HELP recommends an independently verifiable next step.
 8. The person can listen to the guidance aloud and learn one reusable pattern.
 
 ## MVP boundary
 
-Pausa does not:
+HELP does not:
 
 - monitor WhatsApp, SMS, email, calls, or the screen in the background;
 - promise that content is definitely safe or fraudulent;
