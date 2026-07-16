@@ -18,7 +18,7 @@ Pausa is not just a scam verdict. It starts before analysis by interrupting urge
 - GPT-5.6 image understanding and structured risk guidance.
 - Calm read-aloud results using the device voice.
 - A built-in guided demo that works without an API key.
-- PWA manifest so it can be added to a phone home screen.
+- Installable PWA manifest, branded icons, and service worker so it can be added to a phone home screen.
 - No account, analytics, or permanent storage.
 
 ## Run locally
@@ -48,6 +48,12 @@ Then open `http://localhost:3000`.
 5. Use “Listen out loud” to hear the result.
 
 Never upload real passwords, PINs, full card numbers, identity documents, or private financial records. Use synthetic or redacted examples for judging.
+
+The repository includes 12 synthetic safety cases covering scams, benign messages, ambiguity, and prompt injection. With a live local server and API key configured, run:
+
+```bash
+npm run eval:live
+```
 
 ## GPT-5.6 integration
 
@@ -82,3 +88,5 @@ Pausa provides guidance, not a guarantee. It does not replace emergency services
 ## Open source
 
 Licensed under Apache License 2.0. Contributions that improve accessibility, language coverage, scam education, evaluation data, and safe routing are welcome.
+
+Public repository: [github.com/elesdex/pausa](https://github.com/elesdex/pausa)

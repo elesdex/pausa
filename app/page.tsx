@@ -80,6 +80,8 @@ const copy = {
     disclaimer:
       "Pausa identifica señales de riesgo, pero puede equivocarse. Verifica siempre por un canal oficial que tú ya conozcas.",
     error: "No pudimos revisar esto todavía. Intenta con texto o una imagen más pequeña.",
+    liveUnavailable: "El análisis en vivo aún no está conectado. Puedes probar el ejemplo guiado.",
+    imageTooLarge: "La imagen es demasiado grande. Elige una captura o foto de menos de 5 MB.",
     textRequired: "Comparte una imagen, escribe el mensaje o cuéntamelo con voz.",
     demoBadge: "Modo de demostración",
     stepOne: "1. No respondas",
@@ -123,6 +125,8 @@ const copy = {
     disclaimer:
       "Pausa identifies risk signals, but it can be wrong. Always verify through an official channel you already know.",
     error: "We could not review this yet. Try text or a smaller image.",
+    liveUnavailable: "Live analysis is not connected yet. You can try the guided example.",
+    imageTooLarge: "The image is too large. Choose a screenshot or photo under 5 MB.",
     textRequired: "Share an image, type the message, or tell me with your voice.",
     demoBadge: "Demonstration mode",
     stepOne: "1. Do not respond",
@@ -159,6 +163,14 @@ export default function Home() {
     };
     return labels[locale][analysis.risk];
   }, [analysis, locale]);
+
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(() => {
+        // Installation support is progressive; the core safety flow still works.
+      });
+    }
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -232,7 +244,20 @@ export default function Home() {
       if (imageFile) form.append("image", imageFile);
 
       const response = await fetch("/api/analyze", { method: "POST", body: form });
-      if (!response.ok) throw new Error("Analysis failed");
+      if (!response.ok) {
+        const failure = (await response.json().catch(() => null)) as { code?: string } | null;
+        if (failure?.code === "live_analysis_unavailable") {
+          setError(t.liveUnavailable);
+          setScreen("intake");
+          return;
+        }
+        if (failure?.code === "image_too_large") {
+          setError(t.imageTooLarge);
+          setScreen("intake");
+          return;
+        }
+        throw new Error("Analysis failed");
+      }
       const result = (await response.json()) as Analysis;
       setAnalysis(result);
       setScreen("result");

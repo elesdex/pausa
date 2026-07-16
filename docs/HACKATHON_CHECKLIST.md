@@ -19,11 +19,11 @@
 
 ## Repository
 
-- [ ] Public GitHub repository created.
-- [ ] Apache 2.0 license included.
+- [x] Public GitHub repository created: `https://github.com/elesdex/pausa`.
+- [x] Apache 2.0 license included locally.
 - [x] README includes setup, sample/test path, Codex role, and GPT-5.6 integration.
 - [x] Pre-existing and third-party work disclosed where relevant.
-- [ ] Final commit history and build log reviewed.
+- [ ] Local source pushed to the public repository and final history reviewed.
 
 ## Video
 

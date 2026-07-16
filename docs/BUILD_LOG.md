@@ -28,3 +28,14 @@ The idea emerged from a long voice conversation about building a universal, altr
 ### Next checkpoint
 
 Complete the local build, connect a real API key, and verify one text example and one screenshot example through GPT-5.6.
+
+### First working product
+
+- Built the bilingual, mobile-first experience with text, camera, screenshot, browser dictation, and read-aloud output.
+- Implemented the GPT-5.6 Responses API path with image input and a strict structured-output schema.
+- Added a clearly labeled deterministic demonstration path for judges when no API key is configured.
+- Published the first private Sites version for product review.
+- Created the public `elesdex/pausa` GitHub repository.
+- Added full PWA installation support: branded 192px and 512px icons, a service worker, and mobile installation metadata.
+- Rebuilt successfully, passed lint, passed the rendered-product tests, and verified the service worker, manifest, and guided-analysis endpoint from the running app.
+- Confirmed that the live GPT-5.6 path still needs a separately configured OpenAI API key before it can be verified.

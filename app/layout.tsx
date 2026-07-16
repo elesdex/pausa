@@ -5,7 +5,14 @@ export const metadata: Metadata = {
   title: "Pausa — ayuda ante mensajes sospechosos",
   description: "Una guía calmada y accesible para reconocer señales de fraude y elegir un siguiente paso seguro.",
   manifest: "/manifest.webmanifest",
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/icon-192.png",
+  },
   appleWebApp: { capable: true, statusBarStyle: "default", title: "Pausa" },
 };
 
