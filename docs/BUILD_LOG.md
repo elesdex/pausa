@@ -56,3 +56,4 @@ Complete the local build, connect a real API key, and verify one text example an
 - User confirmed joining OpenAI Build Week on Devpost and submitting the Codex credit request on July 16.
 - Installed and authorized the official GitHub CLI as `elesdex`, merged the public repository's initial marker commit without overwriting it, and pushed the complete local history to `https://github.com/elesdex/pausa`.
 - Added a local macOS key configurator that silently writes `OPENAI_API_KEY` to the Git-ignored `.env.local` file with private permissions.
+- Confirmed that `OPENAI_API_KEY` is present in `.env.local`, excluded from Git, and stored with owner-only permissions. The first live evaluation reached OpenAI successfully but returned `insufficient_quota` for all cases, so API billing or credit must be enabled before model behavior can be evaluated.

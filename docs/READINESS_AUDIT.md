@@ -63,8 +63,8 @@ Status meanings:
 
 ## Critical path
 
-1. **User secret setup:** configure `OPENAI_API_KEY` through a secure local or hosting environment; never paste it into chat.
-2. **Codex:** run text, image, and 12-case live evaluations; fix failures.
+1. **User billing setup:** add API credit or billing to the OpenAI project; the securely configured key is recognized, but live calls currently return `insufficient_quota`.
+2. **Codex:** rerun text, image, and 12-case live evaluations; fix failures.
 3. **Codex + user device:** complete the physical QA matrix.
 4. **Codex:** deploy the current commit publicly and verify every public route.
 5. **User + Codex:** record the prepared script, upload to YouTube, add `/feedback` Session ID, submit Devpost, and reopen the entry to verify it.
