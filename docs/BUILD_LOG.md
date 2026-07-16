@@ -51,8 +51,7 @@ Complete the local build, connect a real API key, and verify one text example an
 - Created a clearly labeled, fully synthetic bank-message screenshot in SVG and PNG formats for the live vision test and video, avoiding the use of any real person's message or financial data.
 - Added a requirement-by-requirement readiness audit and corrected the submission checklist so simulated integration evidence is never mistaken for a live GPT-5.6 evaluation or public delivery.
 - Documented the Sites starter origin, retained deployment toolchain, third-party packages, and the fact that no existing scam-detector product or dataset was copied.
-- Replaced the provisional product name “Pausa” with the selected final name **HELP** across the interface, PWA metadata, prompts, documentation, tests, Devpost draft, and video script. “Primero, pausa” remains the product's first safety instruction, not its brand name.
-- Reconsidered the naming decision and confirmed **Pausa** as the final project name. Restored Pausa across the product, repository targets, PWA metadata, prompts, tests, and submission materials.
+- Briefly evaluated an alternative product name, then confirmed **Pausa** as the final name across the interface, PWA metadata, prompts, documentation, tests, repository targets, Devpost draft, and video script.
 - User confirmed joining OpenAI Build Week on Devpost and submitting the Codex credit request on July 16.
 - Installed and authorized the official GitHub CLI as `elesdex`, merged the public repository's initial marker commit without overwriting it, and pushed the complete local history to `https://github.com/elesdex/pausa`.
 - Added a local macOS key configurator that silently writes `OPENAI_API_KEY` to the Git-ignored `.env.local` file with private permissions.
