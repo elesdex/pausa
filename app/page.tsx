@@ -90,6 +90,9 @@ const copy = {
     learning: "Para la próxima",
     speak: "Escuchar en voz alta",
     stopSpeak: "Detener voz",
+    share: "Compartir con alguien de confianza",
+    shared: "Orientación lista para compartir.",
+    shareTitle: "Orientación de Pausa",
     newCheck: "Revisar otro mensaje",
     disclaimer:
       "Pausa identifica señales de riesgo, pero puede equivocarse. Verifica siempre por un canal oficial que tú ya conozcas.",
@@ -148,6 +151,9 @@ const copy = {
     learning: "For next time",
     speak: "Listen out loud",
     stopSpeak: "Stop voice",
+    share: "Share with someone you trust",
+    shared: "Guidance is ready to share.",
+    shareTitle: "Pausa guidance",
     newCheck: "Check another message",
     disclaimer:
       "Pausa identifies risk signals, but it can be wrong. Always verify through an official channel you already know.",
@@ -184,6 +190,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [shareStatus, setShareStatus] = useState("");
   const [deviceGuide, setDeviceGuide] = useState<DeviceGuide>(detectDevice);
   const [showScreenshotGuide, setShowScreenshotGuide] = useState(false);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -268,6 +275,7 @@ export default function Home() {
     setImagePreview(null);
     setAnalysis(null);
     setError("");
+    setShareStatus("");
     setScreen("intake");
   }
 
@@ -367,6 +375,24 @@ export default function Home() {
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(speech);
     setIsSpeaking(true);
+  }
+
+  async function shareGuidance() {
+    if (!analysis) return;
+    const shareText = `${analysis.title}\n\n${analysis.summary}\n\n${t.next}:\n${analysis.nextSteps
+      .map((step, index) => `${index + 1}. ${step}`)
+      .join("\n")}\n\n${t.disclaimer}`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: t.shareTitle, text: shareText });
+      } else {
+        await navigator.clipboard.writeText(shareText);
+      }
+      setShareStatus(t.shared);
+    } catch {
+      // The native share sheet can be dismissed without changing the analysis.
+    }
   }
 
   return (
@@ -523,6 +549,8 @@ export default function Home() {
           </article>
 
           <button className="secondary-button" onClick={speakResult}>{isSpeaking ? t.stopSpeak : t.speak}</button>
+          <button className="secondary-button" onClick={shareGuidance}>{t.share}</button>
+          {shareStatus && <p className="share-status" role="status">{shareStatus}</p>}
           <button className="primary-button" onClick={reset}>{t.newCheck}</button>
           <p className="disclaimer">{t.disclaimer}</p>
         </section>

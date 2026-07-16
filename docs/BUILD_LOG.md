@@ -42,3 +42,4 @@ Complete the local build, connect a real API key, and verify one text example an
 - Added device-aware screenshot guidance for iPhone models with and without a Home button, Android, and other devices.
 - Added a bilingual installation walkthrough so a family member can place Pausa on an iPhone or Android home screen without an app store.
 - Removed the viewport zoom restriction, localized the document language, expanded visible focus treatment, and retained reduced-motion support.
+- Added an optional trusted-person share action that includes only Pausa's guidance and safe steps, never the original private message or screenshot.

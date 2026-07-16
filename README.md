@@ -18,6 +18,7 @@ Pausa is not just a scam verdict. It starts before analysis by interrupting urge
 - Device-aware screenshot instructions for iPhone and Android.
 - GPT-5.6 image understanding and structured risk guidance.
 - Calm read-aloud results using the device voice.
+- Privacy-conscious sharing of the guidance, without attaching the original message or screenshot.
 - A built-in guided demo that works without an API key.
 - Installable PWA manifest, branded icons, and service worker so it can be added to a phone home screen.
 - Built-in iPhone and Android home-screen installation instructions.
