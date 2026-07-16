@@ -606,7 +606,15 @@ export default function Home() {
         </section>
       )}
 
-      <footer>{t.notEmergency}</footer>
+      <footer>
+        <p>{t.notEmergency}</p>
+        <nav aria-label={locale === "es" ? "Información del proyecto" : "Project information"}>
+          <a href="/privacy">{locale === "es" ? "Privacidad" : "Privacy"}</a>
+          <a href="https://github.com/elesdex/pausa" target="_blank" rel="noreferrer">
+            {locale === "es" ? "Código abierto" : "Open source"}
+          </a>
+        </nav>
+      </footer>
     </main>
   );
 }

@@ -24,6 +24,7 @@ Pausa is not just a scam verdict. It starts before analysis by interrupting urge
 - Installable PWA manifest, branded icons, and service worker so it can be added to a phone home screen.
 - Built-in iPhone and Android home-screen installation instructions.
 - No account, analytics, or permanent storage.
+- Public bilingual privacy disclosure, including OpenAI API retention boundaries.
 
 ## Run locally
 
@@ -52,6 +53,8 @@ Then open `http://localhost:3000`.
 5. Use “Listen out loud” to hear the result.
 
 Never upload real passwords, PINs, full card numbers, identity documents, or private financial records. Use synthetic or redacted examples for judging.
+
+Pausa does not keep submissions in its own database. Under standard API settings, OpenAI may retain customer content in abuse-monitoring logs for up to 30 days. See the in-product privacy page and [OpenAI data controls](https://developers.openai.com/api/docs/guides/your-data).
 
 The repository includes 12 synthetic safety cases covering scams, benign messages, ambiguity, and prompt injection. With a live local server and API key configured, run:
 

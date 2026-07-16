@@ -45,3 +45,4 @@ Complete the local build, connect a real API key, and verify one text example an
 - Added an optional trusted-person share action that includes only Pausa's guidance and safe steps, never the original private message or screenshot.
 - Added automatic preparation for oversized camera images and a 25-second request timeout so common mobile-network failures produce an honest recovery state instead of a stuck screen.
 - Added an integration-contract test that captures the outbound Responses API request and verifies the `gpt-5.6` model, strict JSON schema, prompt-injection boundary, and parsed non-demo response without spending a live API call.
+- Added a bilingual public privacy page covering voluntary submission, image previews, browser dictation, native sharing, the lack of an app database, and OpenAI's standard abuse-monitoring retention of up to 30 days.

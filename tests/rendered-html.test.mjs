@@ -40,6 +40,18 @@ test("includes mobile installation metadata", async () => {
   assert.match(html, /apple-mobile-web-app-title/);
 });
 
+test("publishes a bilingual and accurate privacy disclosure", async () => {
+  const response = await render("/privacy");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Privacidad/);
+  assert.match(html, /Privacy/);
+  assert.match(html, /30 días/);
+  assert.match(html, /30 days/);
+  assert.match(html, /no tiene base de datos propia/);
+  assert.match(html, /developers\.openai\.com\/api\/docs\/guides\/your-data/);
+});
+
 test("guided demo is explicit and deterministic", async () => {
   const worker = await getWorker();
   const form = new FormData();
