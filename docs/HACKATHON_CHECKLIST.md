@@ -25,7 +25,7 @@
 - [x] Apache 2.0 license included locally.
 - [x] README includes setup, sample/test path, Codex role, and GPT-5.6 integration.
 - [x] Starter origin and third-party software disclosed.
-- [ ] Local source pushed to the public repository and final history reviewed.
+- [x] Local source pushed to the public repository and final history reviewed.
 
 ## Video
 

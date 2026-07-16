@@ -49,7 +49,7 @@ Status meanings:
 | Deliverable | Status | Evidence | Remaining action |
 |---|---|---|---|
 | Day-by-day plan | Proven | `docs/ROADMAP.md` | Keep current |
-| Public repository | Partial | A shell repository exists at `https://github.com/elesdex/pausa` | Authenticate and push all local commits |
+| Public repository | Proven | Full local history pushed to `https://github.com/elesdex/pausa` on July 16 | Keep synchronized through submission |
 | License | Proven locally | Apache 2.0 `LICENSE` | Verify visible on GitHub |
 | README and setup | Proven locally | `README.md` | Verify install from clean clone |
 | Starter and third-party disclosure | Proven locally | README build-origin section | Verify visible on GitHub |
@@ -63,11 +63,10 @@ Status meanings:
 
 ## Critical path
 
-1. **User authorization:** authenticate GitHub so Codex can push the existing local history.
-2. **User secret setup:** configure `OPENAI_API_KEY` through a secure local or hosting environment; never paste it into chat.
-3. **Codex:** run text, image, and 12-case live evaluations; fix failures.
-4. **Codex + user device:** complete the physical QA matrix.
-5. **Codex:** deploy the current commit publicly and verify every public route.
-6. **User + Codex:** record the prepared script, upload to YouTube, add `/feedback` Session ID, submit Devpost, and reopen the entry to verify it.
+1. **User secret setup:** configure `OPENAI_API_KEY` through a secure local or hosting environment; never paste it into chat.
+2. **Codex:** run text, image, and 12-case live evaluations; fix failures.
+3. **Codex + user device:** complete the physical QA matrix.
+4. **Codex:** deploy the current commit publicly and verify every public route.
+5. **User + Codex:** record the prepared script, upload to YouTube, add `/feedback` Session ID, submit Devpost, and reopen the entry to verify it.
 
 The project is not submission-ready until every **Missing** item is resolved and every **Partial** judge-facing artifact is verified in its public form.

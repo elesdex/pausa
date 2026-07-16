@@ -54,3 +54,5 @@ Complete the local build, connect a real API key, and verify one text example an
 - Replaced the provisional product name “Pausa” with the selected final name **HELP** across the interface, PWA metadata, prompts, documentation, tests, Devpost draft, and video script. “Primero, pausa” remains the product's first safety instruction, not its brand name.
 - Reconsidered the naming decision and confirmed **Pausa** as the final project name. Restored Pausa across the product, repository targets, PWA metadata, prompts, tests, and submission materials.
 - User confirmed joining OpenAI Build Week on Devpost and submitting the Codex credit request on July 16.
+- Installed and authorized the official GitHub CLI as `elesdex`, merged the public repository's initial marker commit without overwriting it, and pushed the complete local history to `https://github.com/elesdex/pausa`.
+- Added a local macOS key configurator that silently writes `OPENAI_API_KEY` to the Git-ignored `.env.local` file with private permissions.
