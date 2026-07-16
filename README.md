@@ -31,9 +31,9 @@ Pausa is not just a scam verdict. It starts before analysis by interrupting urge
 Requirements: Node.js 22.13 or newer.
 
 ```bash
-npm install
+pnpm install
 cp .env.example .env.local
-npm run dev
+pnpm dev
 ```
 
 Add an OpenAI API key to `.env.local` to enable live analysis:
@@ -43,6 +43,12 @@ OPENAI_API_KEY=your_key_here
 ```
 
 Then open `http://localhost:3000`.
+
+Run the verified build and automated suite with:
+
+```bash
+pnpm test
+```
 
 ## Test the product
 
@@ -59,7 +65,7 @@ Pausa does not keep submissions in its own database. Under standard API settings
 The repository includes 12 synthetic safety cases covering scams, benign messages, ambiguity, and prompt injection. With a live local server and API key configured, run:
 
 ```bash
-npm run eval:live
+pnpm eval:live
 ```
 
 The automated test suite also verifies the outbound GPT-5.6 request contract with a simulated Responses API response. This does not replace the required live-key evaluation before submission.
