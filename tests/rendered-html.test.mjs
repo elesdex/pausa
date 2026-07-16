@@ -25,8 +25,9 @@ test("server-renders the Pausa product shell", async () => {
   const html = await response.text();
   assert.match(html, /<title>Pausa/);
   assert.match(html, /Primero, pausa/);
-  assert.match(html, /Revisar algo sospechoso/);
-  assert.match(html, /Poner Pausa en mi pantalla/);
+  assert.match(html, /Cuéntamelo con voz/);
+  assert.match(html, /Compartir foto o texto/);
+  assert.match(html, /¿Hay peligro inmediato\?/);
   assert.match(html, /Nothing is analyzed|Nada se analiza/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/);
 });
@@ -154,6 +155,67 @@ test("live path requests GPT-5.6 with strict structured output", async () => {
     assert.equal(imageResponse.status, 200);
     assert.equal(capturedRequest.reasoning.effort, "low");
     assert.ok(capturedRequest.input[0].content.some((item) => item.type === "input_image"));
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalKey === undefined) delete process.env.OPENAI_API_KEY;
+    else process.env.OPENAI_API_KEY = originalKey;
+  }
+});
+
+test("voice routes use OpenAI transcription and AI-generated speech models", async () => {
+  const originalFetch = globalThis.fetch;
+  const originalKey = process.env.OPENAI_API_KEY;
+  const captured = {};
+
+  process.env.OPENAI_API_KEY = "test-key-not-a-secret";
+  globalThis.fetch = async (input, init) => {
+    const url = String(input);
+    if (url === "https://api.openai.com/v1/audio/transcriptions") {
+      const form = init?.body;
+      captured.transcriptionModel = form.get("model");
+      captured.transcriptionPrompt = form.get("prompt");
+      return Response.json({ text: "Me llegó un mensaje que pide llamar inmediatamente." });
+    }
+    if (url === "https://api.openai.com/v1/audio/speech") {
+      captured.speech = JSON.parse(String(init?.body));
+      return new Response(new Uint8Array([73, 68, 51, 4]), {
+        status: 200,
+        headers: { "content-type": "audio/mpeg" },
+      });
+    }
+    return originalFetch(input, init);
+  };
+
+  try {
+    const worker = await getWorker();
+    const audioForm = new FormData();
+    audioForm.set("locale", "es");
+    audioForm.set("audio", new File(["synthetic audio"], "voice.webm", { type: "audio/webm" }));
+    const transcriptResponse = await worker.fetch(
+      new Request("http://localhost/api/transcribe", { method: "POST", body: audioForm }),
+      { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+      { waitUntil() {}, passThroughOnException() {} },
+    );
+    assert.equal(transcriptResponse.status, 200);
+    assert.equal((await transcriptResponse.json()).model, "gpt-4o-transcribe");
+    assert.equal(captured.transcriptionModel, "gpt-4o-transcribe");
+    assert.match(captured.transcriptionPrompt, /español/);
+
+    const speechResponse = await worker.fetch(
+      new Request("http://localhost/api/speak", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ locale: "es", text: "No llames a ese número." }),
+      }),
+      { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+      { waitUntil() {}, passThroughOnException() {} },
+    );
+    assert.equal(speechResponse.status, 200);
+    assert.equal(speechResponse.headers.get("content-type"), "audio/mpeg");
+    assert.equal(speechResponse.headers.get("x-pausa-voice"), "ai-generated");
+    assert.equal(captured.speech.model, "gpt-4o-mini-tts");
+    assert.equal(captured.speech.voice, "marin");
+    assert.match(captured.speech.instructions, /serena/);
   } finally {
     globalThis.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.OPENAI_API_KEY;

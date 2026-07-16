@@ -6,6 +6,7 @@ type Locale = "es" | "en";
 type Screen = "home" | "intake" | "analyzing" | "result" | "install";
 type Risk = "low" | "medium" | "high" | "uncertain";
 type DeviceGuide = "iphoneFace" | "iphoneHome" | "android" | "other";
+type DeviceFamily = "iphone" | "android" | "other";
 
 type Analysis = {
   risk: Risk;
@@ -19,42 +20,40 @@ type Analysis = {
   demoMode?: boolean;
 };
 
-type SpeechRecognitionEventLike = {
-  results: ArrayLike<{ 0: { transcript: string } }>;
+type InstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 };
-
-type SpeechRecognitionLike = {
-  lang: string;
-  interimResults: boolean;
-  continuous: boolean;
-  start: () => void;
-  stop: () => void;
-  onresult: ((event: SpeechRecognitionEventLike) => void) | null;
-  onend: (() => void) | null;
-  onerror: (() => void) | null;
-};
-
-type SpeechRecognitionConstructor = new () => SpeechRecognitionLike;
 
 declare global {
   interface Window {
-    SpeechRecognition?: SpeechRecognitionConstructor;
-    webkitSpeechRecognition?: SpeechRecognitionConstructor;
+    standalone?: boolean;
   }
 }
 
 const copy = {
   es: {
-    language: "English",
+    language: "Idioma",
     eyebrow: "Ayuda para momentos de incertidumbre digital",
     headline: "Primero, pausa.",
     subhead:
       "Si un mensaje te asustó o te está presionando, no respondas todavía. Lo revisamos contigo, con calma.",
-    start: "Revisar algo sospechoso",
+    start: "Compartir foto o texto",
+    voiceStart: "Cuéntamelo con voz",
+    voiceHint: "Habla con calma. Al terminar, lo revisamos de inmediato.",
+    voiceStop: "Terminar y revisar",
+    voicePreparing: "Preparando tu audio…",
+    voiceTranscribing: "Entendiendo lo que dijiste…",
+    voiceUnavailable: "No pudimos usar el micrófono. Revisa el permiso del navegador o comparte texto.",
     demo: "Probar con un ejemplo",
-    install: "Poner Pausa en mi pantalla",
+    install: "Guardar Pausa en mi celular",
+    installLater: "Ahora no",
+    installAction: "Instalar Pausa",
     privacy: "Nada se analiza hasta que tú lo compartes.",
     notEmergency: "Pausa no sustituye a los servicios de emergencia.",
+    emergencyTitle: "¿Hay peligro inmediato?",
+    emergencyBody: "No esperes una respuesta de Pausa. En México y Estados Unidos puedes llamar al 911.",
+    emergencyCall: "Llamar al 911",
     intakeTitle: "¿Qué tienes a la mano?",
     intakeHelp: "Elige la opción más fácil. No necesitas saber hacer una captura.",
     screenshotHelp: "No sé hacer una captura",
@@ -90,6 +89,7 @@ const copy = {
     learning: "Para la próxima",
     speak: "Escuchar en voz alta",
     stopSpeak: "Detener voz",
+    aiVoice: "Voz generada por IA",
     share: "Compartir con alguien de confianza",
     shared: "Orientación lista para compartir.",
     shareTitle: "Orientación de Pausa",
@@ -108,16 +108,27 @@ const copy = {
     stepThree: "3. Sigue un paso seguro",
   },
   en: {
-    language: "Español",
+    language: "Language",
     eyebrow: "Help for moments of digital uncertainty",
     headline: "First, pause.",
     subhead:
       "If a message scared or pressured you, do not respond yet. We will review it with you, calmly.",
-    start: "Check something suspicious",
+    start: "Share a photo or text",
+    voiceStart: "Tell me by voice",
+    voiceHint: "Speak at your own pace. When you finish, we will check it right away.",
+    voiceStop: "Finish and check",
+    voicePreparing: "Preparing your audio…",
+    voiceTranscribing: "Understanding what you said…",
+    voiceUnavailable: "We could not use the microphone. Check browser permission or share text instead.",
     demo: "Try a guided example",
-    install: "Put Pausa on my home screen",
+    install: "Keep Pausa on my phone",
+    installLater: "Not now",
+    installAction: "Install Pausa",
     privacy: "Nothing is analyzed until you choose to share it.",
     notEmergency: "Pausa does not replace emergency services.",
+    emergencyTitle: "Is anyone in immediate danger?",
+    emergencyBody: "Do not wait for Pausa. In the United States and Mexico, you can call 911.",
+    emergencyCall: "Call 911",
     intakeTitle: "What do you have available?",
     intakeHelp: "Choose the easiest option. You do not need to know how to take a screenshot.",
     screenshotHelp: "I do not know how to take a screenshot",
@@ -153,6 +164,7 @@ const copy = {
     learning: "For next time",
     speak: "Listen out loud",
     stopSpeak: "Stop voice",
+    aiVoice: "AI-generated voice",
     share: "Share with someone you trust",
     shared: "Guidance is ready to share.",
     shareTitle: "Pausa guidance",
@@ -184,6 +196,30 @@ function detectDevice(): DeviceGuide {
   return "other";
 }
 
+function deviceFamilyFromGuide(device: DeviceGuide): DeviceFamily {
+  if (device === "iphoneFace" || device === "iphoneHome") return "iphone";
+  return device;
+}
+
+function getInitialLocale(): Locale {
+  if (typeof navigator === "undefined") return "es";
+  const saved = window.localStorage.getItem("pausa-locale");
+  if (saved === "es" || saved === "en") return saved;
+  return navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
+}
+
+function shouldShowInstallCard() {
+  if (typeof window === "undefined") return false;
+  const standalone = window.matchMedia("(display-mode: standalone)").matches || window.standalone === true;
+  const installed = window.localStorage.getItem("pausa-installed") === "true";
+  const dismissed = window.localStorage.getItem("pausa-install-dismissed") === "true";
+  return !standalone && !installed && !dismissed;
+}
+
+function PauseMark({ className = "" }: { className?: string }) {
+  return <span className={`pause-mark ${className}`} aria-hidden="true"><span /></span>;
+}
+
 async function prepareImage(file: File) {
   if (file.size <= 4_500_000 || typeof createImageBitmap === "undefined") return file;
 
@@ -213,13 +249,19 @@ export default function Home() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [error, setError] = useState("");
-  const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [shareStatus, setShareStatus] = useState("");
   const [isPreparingImage, setIsPreparingImage] = useState(false);
   const [deviceGuide, setDeviceGuide] = useState<DeviceGuide>(detectDevice);
   const [showScreenshotGuide, setShowScreenshotGuide] = useState(false);
-  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const [voiceStatus, setVoiceStatus] = useState<"idle" | "recording" | "transcribing">("idle");
+  const [installPrompt, setInstallPrompt] = useState<InstallPromptEvent | null>(null);
+  const [showInstallCard, setShowInstallCard] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const microphoneStreamRef = useRef<MediaStream | null>(null);
+  const spokenAudioRef = useRef<HTMLAudioElement | null>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const cameraRef = useRef<HTMLInputElement | null>(null);
   const uploadRef = useRef<HTMLInputElement | null>(null);
   const t = copy[locale];
@@ -238,19 +280,51 @@ export default function Home() {
   }, [locale]);
 
   useEffect(() => {
+    const localeTimer = window.setTimeout(() => setLocale(getInitialLocale()), 0);
+    const installVisibilityTimer = window.setTimeout(() => setShowInstallCard(shouldShowInstallCard()), 0);
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch(() => {
         // Installation support is progressive; the core safety flow still works.
       });
     }
+
+    const captureInstallPrompt = (event: Event) => {
+      event.preventDefault();
+      setInstallPrompt(event as InstallPromptEvent);
+      setShowInstallCard(true);
+    };
+    const markInstalled = () => {
+      window.localStorage.setItem("pausa-installed", "true");
+      setShowInstallCard(false);
+      setInstallPrompt(null);
+    };
+    window.addEventListener("beforeinstallprompt", captureInstallPrompt);
+    window.addEventListener("appinstalled", markInstalled);
+    return () => {
+      window.clearTimeout(localeTimer);
+      window.clearTimeout(installVisibilityTimer);
+      window.removeEventListener("beforeinstallprompt", captureInstallPrompt);
+      window.removeEventListener("appinstalled", markInstalled);
+    };
   }, []);
 
   useEffect(() => {
     return () => {
       if (imagePreview) URL.revokeObjectURL(imagePreview);
-      window.speechSynthesis?.cancel();
     };
   }, [imagePreview]);
+
+  useEffect(() => {
+    return () => {
+      spokenAudioRef.current?.pause();
+      microphoneStreamRef.current?.getTracks().forEach((track) => track.stop());
+    };
+  }, []);
+
+  function changeLocale(nextLocale: Locale) {
+    setLocale(nextLocale);
+    window.localStorage.setItem("pausa-locale", nextLocale);
+  }
 
   const deviceLabels = {
     iphoneFace: t.iphoneFace,
@@ -258,6 +332,12 @@ export default function Home() {
     android: t.android,
     other: t.otherDevice,
   };
+  const deviceFamilyLabels: Record<DeviceFamily, string> = {
+    iphone: "iPhone",
+    android: "Android",
+    other: t.otherDevice,
+  };
+  const deviceFamily = deviceFamilyFromGuide(deviceGuide);
 
   const screenshotSteps = useMemo(() => {
     const steps = {
@@ -332,38 +412,68 @@ export default function Home() {
     }
   }
 
-  function toggleVoice() {
-    if (isListening && recognitionRef.current) {
-      recognitionRef.current.stop();
+  async function startVoiceCapture() {
+    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
+      setError(t.voiceUnavailable);
+      setScreen("intake");
       return;
     }
 
-    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!Recognition) {
-      setError(locale === "es" ? "Tu navegador no ofrece dictado aquí. Puedes escribir el mensaje." : "Voice input is not available in this browser. You can type the message.");
-      return;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      microphoneStreamRef.current = stream;
+      const preferredType = ["audio/webm;codecs=opus", "audio/mp4", "audio/webm"].find((type) => MediaRecorder.isTypeSupported(type));
+      const recorder = preferredType ? new MediaRecorder(stream, { mimeType: preferredType }) : new MediaRecorder(stream);
+      audioChunksRef.current = [];
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) audioChunksRef.current.push(event.data);
+      };
+      recorder.onstop = () => void transcribeVoice(recorder.mimeType || preferredType || "audio/webm");
+      mediaRecorderRef.current = recorder;
+      recorder.start();
+      setScreen("intake");
+      setVoiceStatus("recording");
+      setError("");
+    } catch {
+      setVoiceStatus("idle");
+      setError(t.voiceUnavailable);
+      setScreen("intake");
     }
-
-    const recognition = new Recognition();
-    recognition.lang = locale === "es" ? "es-MX" : "en-US";
-    recognition.interimResults = false;
-    recognition.continuous = true;
-    recognition.onresult = (event) => {
-      const transcript = Array.from(event.results)
-        .map((result) => result[0]?.transcript || "")
-        .join(" ");
-      setMessage((current) => `${current} ${transcript}`.trim());
-    };
-    recognition.onend = () => setIsListening(false);
-    recognition.onerror = () => setIsListening(false);
-    recognitionRef.current = recognition;
-    recognition.start();
-    setIsListening(true);
-    setError("");
   }
 
-  async function runAnalysis(useDemo = false) {
-    const text = useDemo ? demoMessages[locale] : message.trim();
+  function stopVoiceCapture() {
+    if (mediaRecorderRef.current?.state === "recording") {
+      setVoiceStatus("transcribing");
+      mediaRecorderRef.current.stop();
+      microphoneStreamRef.current?.getTracks().forEach((track) => track.stop());
+    }
+  }
+
+  async function transcribeVoice(mimeType: string) {
+    try {
+      const audio = new Blob(audioChunksRef.current, { type: mimeType });
+      if (audio.size === 0) throw new Error("Empty recording");
+      const extension = mimeType.includes("mp4") ? "m4a" : "webm";
+      const form = new FormData();
+      form.append("locale", locale);
+      form.append("audio", new File([audio], `pausa-voice.${extension}`, { type: mimeType }));
+      const response = await fetch("/api/transcribe", { method: "POST", body: form });
+      if (!response.ok) throw new Error("Transcription failed");
+      const result = (await response.json()) as { text?: string };
+      const transcript = result.text?.trim();
+      if (!transcript) throw new Error("Empty transcript");
+      setMessage(transcript);
+      setVoiceStatus("idle");
+      await runAnalysis(false, transcript);
+    } catch {
+      setVoiceStatus("idle");
+      setError(t.voiceUnavailable);
+      setScreen("intake");
+    }
+  }
+
+  async function runAnalysis(useDemo = false, providedText?: string) {
+    const text = useDemo ? demoMessages[locale] : (providedText ?? message).trim();
     if (!text && !imageFile) {
       setError(t.textRequired);
       return;
@@ -407,23 +517,82 @@ export default function Home() {
     }
   }
 
-  function speakResult() {
-    if (!analysis || !window.speechSynthesis) return;
+  async function speakResult() {
+    if (!analysis) return;
     if (isSpeaking) {
-      window.speechSynthesis.cancel();
+      spokenAudioRef.current?.pause();
       setIsSpeaking(false);
       return;
     }
 
-    const speech = new SpeechSynthesisUtterance(
-      `${analysis.title}. ${analysis.summary}. ${t.next}: ${analysis.nextSteps.join(". ")}`,
-    );
-    speech.lang = locale === "es" ? "es-MX" : "en-US";
-    speech.rate = 0.9;
-    speech.onend = () => setIsSpeaking(false);
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(speech);
-    setIsSpeaking(true);
+    try {
+      setIsSpeaking(true);
+      const response = await fetch("/api/speak", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          locale,
+          text: `${analysis.title}. ${analysis.summary}. ${t.next}: ${analysis.nextSteps.join(". ")}`,
+        }),
+      });
+      if (!response.ok) throw new Error("Speech failed");
+      const audioUrl = URL.createObjectURL(await response.blob());
+      const audio = new Audio(audioUrl);
+      spokenAudioRef.current = audio;
+      audio.onended = () => {
+        URL.revokeObjectURL(audioUrl);
+        setIsSpeaking(false);
+      };
+      audio.onerror = () => {
+        URL.revokeObjectURL(audioUrl);
+        setIsSpeaking(false);
+      };
+      await audio.play();
+    } catch {
+      setIsSpeaking(false);
+      setError(t.error);
+    }
+  }
+
+  async function openInstall() {
+    if (installPrompt) {
+      await installPrompt.prompt();
+      const choice = await installPrompt.userChoice;
+      if (choice.outcome === "accepted") {
+        window.localStorage.setItem("pausa-installed", "true");
+        setShowInstallCard(false);
+      }
+      setInstallPrompt(null);
+      return;
+    }
+    setScreen("install");
+  }
+
+  function dismissInstall() {
+    window.localStorage.setItem("pausa-install-dismissed", "true");
+    setShowInstallCard(false);
+  }
+
+  function goHome() {
+    spokenAudioRef.current?.pause();
+    setIsSpeaking(false);
+    setScreen("home");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function handleTouchStart(event: React.TouchEvent<HTMLElement>) {
+    const touch = event.touches[0];
+    touchStartRef.current = touch ? { x: touch.clientX, y: touch.clientY } : null;
+  }
+
+  function handleTouchEnd(event: React.TouchEvent<HTMLElement>) {
+    const start = touchStartRef.current;
+    const touch = event.changedTouches[0];
+    touchStartRef.current = null;
+    if (!start || !touch || screen === "home" || start.x > 36) return;
+    const horizontal = touch.clientX - start.x;
+    const vertical = Math.abs(touch.clientY - start.y);
+    if (horizontal > 88 && horizontal > vertical * 1.4) goHome();
   }
 
   async function shareGuidance() {
@@ -445,30 +614,50 @@ export default function Home() {
   }
 
   return (
-    <main className="app-shell">
+    <main className="app-shell" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <header className="topbar">
-        <button className="brand" onClick={() => setScreen("home")} aria-label="Pausa home">
-          <span className="brand-mark" aria-hidden="true">Ⅱ</span>
+        <button className="brand" onClick={goHome} aria-label="Pausa home">
+          <PauseMark className="brand-mark" />
           <span>Pausa</span>
         </button>
-        <button className="language-button" onClick={() => setLocale(locale === "es" ? "en" : "es")}>
-          {t.language}
-        </button>
+        <label className="language-picker">
+          <span className="visually-hidden">{t.language}</span>
+          <select value={locale} onChange={(event) => changeLocale(event.target.value as Locale)} aria-label={t.language}>
+            <option value="es">ES</option>
+            <option value="en">EN</option>
+          </select>
+        </label>
       </header>
 
       {screen === "home" && (
         <section className="home-screen screen-enter">
-          <div className="calm-orbit" aria-hidden="true"><span>Ⅱ</span></div>
+          <div className="calm-orbit"><PauseMark /></div>
           <p className="eyebrow">{t.eyebrow}</p>
           <h1>{t.headline}</h1>
           <p className="lead">{t.subhead}</p>
-          <button className="primary-button" onClick={() => setScreen("intake")}>{t.start}</button>
+          <button className="voice-primary-button" onClick={startVoiceCapture}>
+            <span className="voice-symbol" aria-hidden="true">●</span>
+            <span><strong>{t.voiceStart}</strong><small>{t.voiceHint}</small></span>
+          </button>
+          <button className="secondary-button quick-start-button" onClick={() => setScreen("intake")}>{t.start}</button>
           <button className="text-button" onClick={() => runAnalysis(true)}>{t.demo}</button>
-          <button className="install-link" onClick={() => setScreen("install")}>{t.install}</button>
           <div className="three-steps" aria-label={locale === "es" ? "Cómo funciona Pausa" : "How Pausa works"}>
             <span>{t.stepOne}</span><span>{t.stepTwo}</span><span>{t.stepThree}</span>
           </div>
           <p className="privacy-note"><span aria-hidden="true">●</span> {t.privacy}</p>
+          {showInstallCard && (
+            <aside className="install-prompt-card">
+              <div className="mini-phone" aria-hidden="true"><PauseMark /></div>
+              <div>
+                <strong>{t.install}</strong>
+                <p>{t.installIntro}</p>
+                <div className="install-prompt-actions">
+                  <button onClick={openInstall}>{installPrompt ? t.installAction : t.installDetected}</button>
+                  <button onClick={dismissInstall}>{t.installLater}</button>
+                </div>
+              </div>
+            </aside>
+          )}
         </section>
       )}
 
@@ -478,6 +667,18 @@ export default function Home() {
           <p className="eyebrow">Pausa</p>
           <h1>{t.intakeTitle}</h1>
           <p className="lead compact">{t.intakeHelp}</p>
+
+          <button
+            className={`voice-primary-button intake-voice ${voiceStatus === "recording" ? "recording" : ""}`}
+            disabled={voiceStatus === "transcribing"}
+            onClick={voiceStatus === "recording" ? stopVoiceCapture : startVoiceCapture}
+          >
+            <span className="voice-symbol" aria-hidden="true">{voiceStatus === "recording" ? "■" : "●"}</span>
+            <span>
+              <strong>{voiceStatus === "recording" ? t.voiceStop : t.voiceStart}</strong>
+              <small>{voiceStatus === "recording" ? t.listening : voiceStatus === "transcribing" ? t.voiceTranscribing : t.voiceHint}</small>
+            </span>
+          </button>
 
           <div className="capture-grid">
             <button className="capture-card" onClick={() => cameraRef.current?.click()}>
@@ -502,17 +703,23 @@ export default function Home() {
               <h2 id="screenshot-guide-title">{t.screenshotTitle}</h2>
               <p>{t.screenshotIntro}</p>
               <div className="device-options" aria-label={t.screenshotTitle}>
-                {(["iphoneFace", "iphoneHome", "android", "other"] as DeviceGuide[]).map((device) => (
+                {(["iphone", "android", "other"] as DeviceFamily[]).map((family) => (
                   <button
-                    key={device}
-                    className={deviceGuide === device ? "selected" : ""}
-                    aria-pressed={deviceGuide === device}
-                    onClick={() => setDeviceGuide(device)}
+                    key={family}
+                    className={deviceFamily === family ? "selected" : ""}
+                    aria-pressed={deviceFamily === family}
+                    onClick={() => setDeviceGuide(family === "iphone" ? "iphoneFace" : family)}
                   >
-                    {deviceLabels[device]}
+                    {deviceFamilyLabels[family]}
                   </button>
                 ))}
               </div>
+              {deviceFamily === "iphone" && (
+                <div className="iphone-choice" aria-label="iPhone type">
+                  <button className={deviceGuide === "iphoneFace" ? "selected" : ""} onClick={() => setDeviceGuide("iphoneFace")}>{locale === "es" ? "Sin botón frontal" : "No front button"}</button>
+                  <button className={deviceGuide === "iphoneHome" ? "selected" : ""} onClick={() => setDeviceGuide("iphoneHome")}>{locale === "es" ? "Con botón frontal" : "Front button"}</button>
+                </div>
+              )}
               <ol>{screenshotSteps.map((step) => <li key={step}>{step}</li>)}</ol>
               <button className="guide-close" onClick={() => setShowScreenshotGuide(false)}>{t.closeGuide}</button>
             </aside>
@@ -529,19 +736,15 @@ export default function Home() {
           <label className="message-label" htmlFor="message">{t.textLabel}</label>
           <textarea id="message" value={message} onChange={(event) => setMessage(event.target.value)} placeholder={t.textPlaceholder} rows={5} />
 
-          <button className={`voice-button ${isListening ? "listening" : ""}`} onClick={toggleVoice}>
-            <span aria-hidden="true">{isListening ? "■" : "●"}</span>
-            {isListening ? t.stopVoice : t.voice}
-          </button>
-          {isListening && <p className="listening-note">{t.listening}</p>}
           {error && <p className="error-message" role="alert">{error}</p>}
           <button className="primary-button" disabled={isPreparingImage} onClick={() => runAnalysis(false)}>{t.review}</button>
+          <button className="home-return-button" onClick={goHome}>{locale === "es" ? "Volver al inicio" : "Return home"}</button>
         </section>
       )}
 
       {screen === "analyzing" && (
         <section className="analyzing-screen screen-enter" aria-live="polite">
-          <div className="breathing-circle"><span>Ⅱ</span></div>
+          <div className="breathing-circle"><PauseMark /></div>
           <h1>{t.analyzingTitle}</h1>
           <p className="lead compact">{t.analyzingBody}</p>
           <div className="loading-line"><span /></div>
@@ -554,25 +757,35 @@ export default function Home() {
           <p className="eyebrow">Pausa</p>
           <h1>{t.installTitle}</h1>
           <p className="lead compact">{t.installIntro}</p>
-          <div className="install-icon" aria-hidden="true"><span>Ⅱ</span></div>
+          <div className="install-visual" aria-hidden="true">
+            <div className="install-phone"><PauseMark /><span>＋</span></div>
+            <div className="install-arrow">↑</div>
+          </div>
           <article className="guide-card install-guide">
             <p className="detected-device">{t.installDetected}: <strong>{deviceLabels[deviceGuide]}</strong></p>
             <ol>{installSteps.map((step) => <li key={step}>{step}</li>)}</ol>
             <p className="install-done">{t.installDone}</p>
           </article>
           <div className="device-options" aria-label={t.installDetected}>
-            {(["iphoneFace", "iphoneHome", "android", "other"] as DeviceGuide[]).map((device) => (
+            {(["iphone", "android", "other"] as DeviceFamily[]).map((family) => (
               <button
-                key={device}
-                className={deviceGuide === device ? "selected" : ""}
-                aria-pressed={deviceGuide === device}
-                onClick={() => setDeviceGuide(device)}
+                key={family}
+                className={deviceFamily === family ? "selected" : ""}
+                aria-pressed={deviceFamily === family}
+                onClick={() => setDeviceGuide(family === "iphone" ? "iphoneFace" : family)}
               >
-                {deviceLabels[device]}
+                {deviceFamilyLabels[family]}
               </button>
             ))}
           </div>
+          {deviceFamily === "iphone" && (
+            <div className="iphone-choice install-choice" aria-label="iPhone type">
+              <button className={deviceGuide === "iphoneFace" ? "selected" : ""} onClick={() => setDeviceGuide("iphoneFace")}>{locale === "es" ? "Sin botón frontal" : "No front button"}</button>
+              <button className={deviceGuide === "iphoneHome" ? "selected" : ""} onClick={() => setDeviceGuide("iphoneHome")}>{locale === "es" ? "Con botón frontal" : "Front button"}</button>
+            </div>
+          )}
           <button className="primary-button" onClick={() => setScreen("intake")}>{t.start}</button>
+          <button className="home-return-button" onClick={goHome}>{locale === "es" ? "Volver al inicio" : "Return home"}</button>
         </section>
       )}
 
@@ -584,6 +797,11 @@ export default function Home() {
             <h1>{analysis.title}</h1>
             <p>{analysis.summary}</p>
             {analysis.demoMode && <span className="demo-badge">{t.demoBadge}</span>}
+            <button className="risk-voice-button" onClick={speakResult}>
+              <span aria-hidden="true">{isSpeaking ? "■" : "▶"}</span>
+              {isSpeaking ? t.stopSpeak : t.speak}
+            </button>
+            <small className="ai-voice-note">{t.aiVoice}</small>
           </div>
 
           <article className="result-section">
@@ -598,16 +816,21 @@ export default function Home() {
             <span aria-hidden="true">✦</span><div><h2>{t.learning}</h2><p>{analysis.learning}</p></div>
           </article>
 
-          <button className="secondary-button" onClick={speakResult}>{isSpeaking ? t.stopSpeak : t.speak}</button>
           <button className="secondary-button" onClick={shareGuidance}>{t.share}</button>
           {shareStatus && <p className="share-status" role="status">{shareStatus}</p>}
           <button className="primary-button" onClick={reset}>{t.newCheck}</button>
           <p className="disclaimer">{t.disclaimer}</p>
+          {error && <p className="error-message" role="alert">{error}</p>}
+          <button className="home-return-button" onClick={goHome}>{locale === "es" ? "Volver al inicio" : "Return home"}</button>
         </section>
       )}
 
       <footer>
-        <p>{t.notEmergency}</p>
+        <aside className="emergency-card">
+          <div><strong>{t.emergencyTitle}</strong><p>{t.emergencyBody}</p></div>
+          <a href="tel:911">{t.emergencyCall}</a>
+        </aside>
+        <p className="emergency-disclaimer">{t.notEmergency}</p>
         <nav aria-label={locale === "es" ? "Información del proyecto" : "Project information"}>
           <a href="/privacy">{locale === "es" ? "Privacidad" : "Privacy"}</a>
           <a href="https://github.com/elesdex/pausa" target="_blank" rel="noreferrer">

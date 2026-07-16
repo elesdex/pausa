@@ -23,8 +23,8 @@ export default function PrivacyPage() {
         <h2>La versión corta</h2>
         <p>
           Pausa no crea cuentas, no monitorea mensajes en segundo plano, no incluye analítica y no guarda
-          permanentemente lo que compartes. Una imagen o texto solamente se envía para análisis cuando tú
-          presionas “Revisar ahora”.
+          permanentemente lo que compartes. Una imagen, texto o grabación solamente se envía cuando tú
+          eliges revisarla.
         </p>
       </section>
 
@@ -45,9 +45,11 @@ export default function PrivacyPage() {
       <section>
         <h2>Voz</h2>
         <p>
-          Cuando el navegador ofrece dictado, el propio navegador convierte tu voz en texto. Pausa recibe la
-          transcripción, no un archivo de audio. El procesamiento de voz específico depende del navegador y del
-          sistema operativo que uses.
+          Si eliges “Cuéntamelo con voz”, el navegador graba audio mientras mantienes activa la función. Al terminar,
+          el archivo se envía al servidor de Pausa y a OpenAI para convertirlo en texto con
+          <code> gpt-4o-transcribe</code>. Pausa no conserva la grabación en una base de datos. Cuando eliges escuchar
+          un resultado, el texto de la orientación se envía a <code>gpt-4o-mini-tts</code> para generar audio. La voz
+          que escuchas es generada por IA, no por una persona.
         </p>
       </section>
 
@@ -78,8 +80,8 @@ export default function PrivacyPage() {
         <h2>The short version</h2>
         <p>
           Pausa creates no accounts, performs no background message monitoring, includes no analytics, and does
-          not permanently store what you share. Text or an image is sent for analysis only after you press “Check
-          it now.”
+          not permanently store what you share. Text, an image, or a recording is sent only when you choose to
+          have it checked.
         </p>
       </section>
 
@@ -99,8 +101,10 @@ export default function PrivacyPage() {
       <section>
         <h2>Voice</h2>
         <p>
-          When browser dictation is available, your browser converts speech into text. Pausa receives the
-          transcript, not an audio file. Specific voice processing depends on your browser and operating system.
+          If you choose “Tell me by voice,” the browser records audio while the feature is active. When you finish,
+          the file is sent to the Pausa server and OpenAI for transcription with <code>gpt-4o-transcribe</code>.
+          Pausa does not keep the recording in a database. When you listen to a result, the guidance text is sent
+          to <code>gpt-4o-mini-tts</code> to create audio. The voice you hear is AI-generated, not human.
         </p>
       </section>
 

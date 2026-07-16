@@ -15,6 +15,8 @@ This matrix separates automated evidence from checks that require a physical dev
 | Demo is explicitly labeled | Pass | Guided-demo test |
 | Missing API key cannot impersonate analysis | Pass | 503 regression test |
 | GPT-5.6 request contract | Pass | Simulated Responses API integration test |
+| OpenAI voice route contracts | Pass | Transcription and speech model integration test |
+| Live synthetic voice round trip | Pass | `gpt-4o-mini-tts` audio transcribed exactly by `gpt-4o-transcribe` |
 | Privacy disclosure | Pass | Bilingual privacy-route test |
 | Reduced motion | Pass by inspection | `prefers-reduced-motion` stylesheet rule |
 | Pinch zoom | Pass by inspection | No `maximumScale` restriction |
@@ -27,8 +29,8 @@ This matrix separates automated evidence from checks that require a physical dev
 - [ ] Photograph a synthetic message on another screen.
 - [ ] Select a saved screenshot.
 - [ ] Confirm a large photo is prepared without freezing the page.
-- [ ] Confirm browser dictation either works or shows the text fallback.
-- [ ] Hear a complete Spanish result using the device voice.
+- [ ] Record a Spanish description, stop it, and reach the result without typing.
+- [ ] Hear a complete Spanish result using the disclosed AI-generated voice.
 - [ ] Open the native share sheet and confirm the original screenshot is not attached.
 - [ ] Increase system text size and complete the flow.
 - [ ] Pinch zoom the privacy page.
@@ -44,11 +46,12 @@ Issues found: `TBD`
 - [ ] Confirm the icon and title are legible.
 - [ ] Photograph a synthetic message on another screen.
 - [ ] Select a saved screenshot.
-- [ ] Use browser voice input.
-- [ ] Hear a complete English result using the device voice.
+- [ ] Record an English description, stop it, and reach the result without typing.
+- [ ] Hear a complete English result using the disclosed AI-generated voice.
 - [ ] Share only the guidance through the Android share sheet.
 - [ ] Navigate with large system text.
 - [ ] Verify the back action never loses the ability to start over.
+- [ ] Swipe right from the left edge on a secondary screen and return home.
 
 Device/version: `TBD`  
 Tester/date: `TBD`  

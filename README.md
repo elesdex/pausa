@@ -14,15 +14,17 @@ Pausa is not just a scam verdict. It starts before analysis by interrupting urge
 
 - Spanish-first and fully available in English.
 - Large, touch-friendly mobile interface.
-- Text, voice, camera photo, and screenshot input.
+- Primary push-to-talk input using `gpt-4o-transcribe`, plus text, camera photo, and screenshot input.
 - Automatic client-side preparation of large camera images before upload.
 - Device-aware screenshot instructions for iPhone and Android.
 - GPT-5.6 image understanding and structured risk guidance.
-- Calm read-aloud results using the device voice.
+- Calm read-aloud results using `gpt-4o-mini-tts` with a clear AI-voice disclosure.
 - Privacy-conscious sharing of the guidance, without attaching the original message or screenshot.
 - A built-in guided demo that works without an API key.
 - Installable PWA manifest, branded icons, and service worker so it can be added to a phone home screen.
-- Built-in iPhone and Android home-screen installation instructions.
+- Device-aware installation: native prompt when available, simpler iPhone/Android guidance otherwise, and automatic hiding after installation.
+- Automatic language detection with a compact ES/EN override.
+- Edge-swipe and top/bottom controls to return home after a long result.
 - No account, analytics, or permanent storage.
 - Public bilingual privacy disclosure, including OpenAI API retention boundaries.
 
@@ -57,8 +59,8 @@ pnpm test
 ## Test the product
 
 1. Choose “Try a guided example” for the no-key demo.
-2. Or choose “Check something suspicious.”
-3. Paste a message, dictate it, take a photo, or select a screenshot.
+2. Or choose “Tell me by voice” / “Cuéntamelo con voz” for the fastest path.
+3. Speak, paste a message, take a photo, or select a screenshot.
 4. Review the risk signals and the recommended safe next step.
 5. Use “Listen out loud” to hear the result.
 
@@ -88,6 +90,8 @@ The server sends user-provided text and, when present, an image to the OpenAI Re
 - an emergency flag.
 
 The system prompt avoids certainty, shame, and unsafe redirection. When no API key is configured, only the clearly labeled guided example is available as a deterministic fallback.
+
+Voice input is a bounded push-to-talk flow: the browser records only after an explicit tap, the server transcribes with `gpt-4o-transcribe`, and the resulting text enters the same GPT-5.6 safety flow. Spoken guidance uses `gpt-4o-mini-tts` with the `marin` voice and a calm-language instruction. Pausa labels this output as AI-generated.
 
 ## How Codex contributed
 

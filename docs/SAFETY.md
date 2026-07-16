@@ -19,13 +19,15 @@ Pausa is a decision aid, not an authority. It identifies warning signals and rec
 - No account or sign-in.
 - No database or persistent upload storage.
 - Images and text are sent only when the person presses the review button.
+- Voice recordings are sent only after the person explicitly starts and stops recording. Audio is transcribed with OpenAI and is not stored in an app database.
+- Spoken results are AI-generated from the already-visible guidance and are clearly disclosed as synthetic voice.
 - Inputs are processed server-side and are not placed in browser storage.
 - No analytics, advertising, or third-party tracking.
 - Demo and evaluation data must be synthetic or redacted.
 
 ## High-stakes boundaries
 
-Pausa does not replace emergency services, law enforcement, banks, healthcare professionals, legal counsel, or trusted people. The MVP does not automatically call or message anyone. A future emergency-routing feature would require jurisdiction-aware data, explicit user configuration, confirmation, auditability, and separate safety review.
+Pausa does not replace emergency services, law enforcement, banks, healthcare professionals, legal counsel, or trusted people. The MVP does not automatically call or message anyone. It offers a user-initiated `tel:911` link labeled specifically for Mexico and the United States; it does not infer location or route emergencies through AI. Broader emergency routing would require jurisdiction-aware data, explicit user configuration, confirmation, auditability, and separate safety review.
 
 ## Evaluation risks
 
