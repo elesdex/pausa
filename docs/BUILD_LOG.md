@@ -39,3 +39,6 @@ Complete the local build, connect a real API key, and verify one text example an
 - Added full PWA installation support: branded 192px and 512px icons, a service worker, and mobile installation metadata.
 - Rebuilt successfully, passed lint, passed the rendered-product tests, and verified the service worker, manifest, and guided-analysis endpoint from the running app.
 - Confirmed that the live GPT-5.6 path still needs a separately configured OpenAI API key before it can be verified.
+- Added device-aware screenshot guidance for iPhone models with and without a Home button, Android, and other devices.
+- Added a bilingual installation walkthrough so a family member can place Pausa on an iPhone or Android home screen without an app store.
+- Removed the viewport zoom restriction, localized the document language, expanded visible focus treatment, and retained reduced-motion support.

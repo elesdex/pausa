@@ -3,8 +3,9 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 
 type Locale = "es" | "en";
-type Screen = "home" | "intake" | "analyzing" | "result";
+type Screen = "home" | "intake" | "analyzing" | "result" | "install";
 type Risk = "low" | "medium" | "high" | "uncertain";
+type DeviceGuide = "iphoneFace" | "iphoneHome" | "android" | "other";
 
 type Analysis = {
   risk: Risk;
@@ -51,10 +52,23 @@ const copy = {
       "Si un mensaje te asustó o te está presionando, no respondas todavía. Lo revisamos contigo, con calma.",
     start: "Revisar algo sospechoso",
     demo: "Probar con un ejemplo",
+    install: "Poner Pausa en mi pantalla",
     privacy: "Nada se analiza hasta que tú lo compartes.",
     notEmergency: "Pausa no sustituye a los servicios de emergencia.",
     intakeTitle: "¿Qué tienes a la mano?",
     intakeHelp: "Elige la opción más fácil. No necesitas saber hacer una captura.",
+    screenshotHelp: "No sé hacer una captura",
+    screenshotTitle: "Te guiamos paso a paso",
+    screenshotIntro: "Detectamos una guía probable para tu dispositivo. Puedes cambiarla si no coincide.",
+    iphoneFace: "iPhone sin botón frontal",
+    iphoneHome: "iPhone con botón frontal",
+    android: "Android",
+    otherDevice: "Otro dispositivo",
+    closeGuide: "Cerrar guía",
+    installTitle: "Ten Pausa siempre a la mano",
+    installIntro: "Guárdala como un icono en tu pantalla de inicio. No necesitas una tienda de aplicaciones.",
+    installDetected: "Pasos para este dispositivo",
+    installDone: "Cuando termines, abre Pausa desde el nuevo icono.",
     camera: "Tomar una foto",
     cameraHelp: "Apunta la cámara al mensaje en otra pantalla.",
     upload: "Elegir foto o captura",
@@ -96,10 +110,23 @@ const copy = {
       "If a message scared or pressured you, do not respond yet. We will review it with you, calmly.",
     start: "Check something suspicious",
     demo: "Try a guided example",
+    install: "Put Pausa on my home screen",
     privacy: "Nothing is analyzed until you choose to share it.",
     notEmergency: "Pausa does not replace emergency services.",
     intakeTitle: "What do you have available?",
     intakeHelp: "Choose the easiest option. You do not need to know how to take a screenshot.",
+    screenshotHelp: "I do not know how to take a screenshot",
+    screenshotTitle: "We will guide you step by step",
+    screenshotIntro: "We detected a likely guide for your device. You can change it if it does not match.",
+    iphoneFace: "iPhone without a front button",
+    iphoneHome: "iPhone with a front button",
+    android: "Android",
+    otherDevice: "Another device",
+    closeGuide: "Close guide",
+    installTitle: "Keep Pausa within reach",
+    installIntro: "Save it as an icon on your home screen. You do not need an app store.",
+    installDetected: "Steps for this device",
+    installDone: "When you finish, open Pausa from the new icon.",
     camera: "Take a photo",
     cameraHelp: "Point your camera at the message on another screen.",
     upload: "Choose a photo or screenshot",
@@ -140,6 +167,13 @@ const demoMessages = {
   en: "BANK ALERT: A deposit of $18,450 is being processed. If you do not recognize this transaction, call 555-000-1234 immediately to cancel it.",
 };
 
+function detectDevice(): DeviceGuide {
+  if (typeof navigator === "undefined") return "other";
+  if (/Android/i.test(navigator.userAgent)) return "android";
+  if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) return "iphoneFace";
+  return "other";
+}
+
 export default function Home() {
   const [locale, setLocale] = useState<Locale>("es");
   const [screen, setScreen] = useState<Screen>("home");
@@ -150,6 +184,8 @@ export default function Home() {
   const [error, setError] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [deviceGuide, setDeviceGuide] = useState<DeviceGuide>(detectDevice);
+  const [showScreenshotGuide, setShowScreenshotGuide] = useState(false);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const cameraRef = useRef<HTMLInputElement | null>(null);
   const uploadRef = useRef<HTMLInputElement | null>(null);
@@ -165,6 +201,10 @@ export default function Home() {
   }, [analysis, locale]);
 
   useEffect(() => {
+    document.documentElement.lang = locale === "es" ? "es-MX" : "en";
+  }, [locale]);
+
+  useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch(() => {
         // Installation support is progressive; the core safety flow still works.
@@ -178,6 +218,49 @@ export default function Home() {
       window.speechSynthesis?.cancel();
     };
   }, [imagePreview]);
+
+  const deviceLabels = {
+    iphoneFace: t.iphoneFace,
+    iphoneHome: t.iphoneHome,
+    android: t.android,
+    other: t.otherDevice,
+  };
+
+  const screenshotSteps = useMemo(() => {
+    const steps = {
+      es: {
+        iphoneFace: ["Abre el mensaje que quieres revisar.", "Presiona al mismo tiempo el botón lateral y el botón de subir volumen.", "Suelta ambos botones. La captura quedará en Fotos.", "Regresa a Pausa y toca “Elegir foto o captura”."],
+        iphoneHome: ["Abre el mensaje que quieres revisar.", "Presiona al mismo tiempo el botón lateral o superior y el botón frontal.", "Suelta ambos botones. La captura quedará en Fotos.", "Regresa a Pausa y toca “Elegir foto o captura”."],
+        android: ["Abre el mensaje que quieres revisar.", "Presiona al mismo tiempo el botón de encendido y el de bajar volumen.", "Suelta ambos botones. La captura quedará en Fotos o Galería.", "Regresa a Pausa y toca “Elegir foto o captura”."],
+        other: ["Abre el mensaje que quieres revisar.", "Busca en el menú del dispositivo la opción “Captura de pantalla”.", "Si no la encuentras, usa “Tomar una foto” en Pausa y fotografía el mensaje desde otra pantalla."],
+      },
+      en: {
+        iphoneFace: ["Open the message you want to check.", "Press the side button and volume-up button at the same time.", "Release both buttons. The screenshot will be saved in Photos.", "Return to Pausa and tap “Choose a photo or screenshot.”"],
+        iphoneHome: ["Open the message you want to check.", "Press the side or top button and the front Home button at the same time.", "Release both buttons. The screenshot will be saved in Photos.", "Return to Pausa and tap “Choose a photo or screenshot.”"],
+        android: ["Open the message you want to check.", "Press the power and volume-down buttons at the same time.", "Release both buttons. The screenshot will be saved in Photos or Gallery.", "Return to Pausa and tap “Choose a photo or screenshot.”"],
+        other: ["Open the message you want to check.", "Look for “Screenshot” in your device menu.", "If you cannot find it, use “Take a photo” in Pausa and photograph the message on another screen."],
+      },
+    };
+    return steps[locale][deviceGuide];
+  }, [deviceGuide, locale]);
+
+  const installSteps = useMemo(() => {
+    const steps = {
+      es: {
+        iphoneFace: ["Abre Pausa en Safari.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
+        iphoneHome: ["Abre Pausa en Safari.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
+        android: ["Abre Pausa en Chrome.", "Toca el menú de tres puntos.", "Elige “Instalar aplicación” o “Agregar a pantalla principal”.", "Confirma la instalación."],
+        other: ["Abre el menú de tu navegador.", "Busca “Instalar aplicación” o “Agregar a pantalla de inicio”.", "Si no aparece, guarda Pausa como favorito."],
+      },
+      en: {
+        iphoneFace: ["Open Pausa in Safari.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
+        iphoneHome: ["Open Pausa in Safari.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
+        android: ["Open Pausa in Chrome.", "Tap the three-dot menu.", "Choose “Install app” or “Add to Home screen.”", "Confirm the installation."],
+        other: ["Open your browser menu.", "Look for “Install app” or “Add to Home screen.”", "If it is unavailable, save Pausa as a bookmark."],
+      },
+    };
+    return steps[locale][deviceGuide];
+  }, [deviceGuide, locale]);
 
   function reset() {
     setMessage("");
@@ -306,7 +389,8 @@ export default function Home() {
           <p className="lead">{t.subhead}</p>
           <button className="primary-button" onClick={() => setScreen("intake")}>{t.start}</button>
           <button className="text-button" onClick={() => runAnalysis(true)}>{t.demo}</button>
-          <div className="three-steps" aria-label="How Pausa works">
+          <button className="install-link" onClick={() => setScreen("install")}>{t.install}</button>
+          <div className="three-steps" aria-label={locale === "es" ? "Cómo funciona Pausa" : "How Pausa works"}>
             <span>{t.stepOne}</span><span>{t.stepTwo}</span><span>{t.stepThree}</span>
           </div>
           <p className="privacy-note"><span aria-hidden="true">●</span> {t.privacy}</p>
@@ -332,6 +416,31 @@ export default function Home() {
           </div>
           <input ref={cameraRef} className="visually-hidden" type="file" accept="image/*" capture="environment" onChange={chooseImage} />
           <input ref={uploadRef} className="visually-hidden" type="file" accept="image/*" onChange={chooseImage} />
+
+          <button className="screenshot-help-button" aria-expanded={showScreenshotGuide} onClick={() => setShowScreenshotGuide((current) => !current)}>
+            <span aria-hidden="true">?</span>{t.screenshotHelp}
+          </button>
+
+          {showScreenshotGuide && (
+            <aside className="guide-card" aria-labelledby="screenshot-guide-title">
+              <h2 id="screenshot-guide-title">{t.screenshotTitle}</h2>
+              <p>{t.screenshotIntro}</p>
+              <div className="device-options" aria-label={t.screenshotTitle}>
+                {(["iphoneFace", "iphoneHome", "android", "other"] as DeviceGuide[]).map((device) => (
+                  <button
+                    key={device}
+                    className={deviceGuide === device ? "selected" : ""}
+                    aria-pressed={deviceGuide === device}
+                    onClick={() => setDeviceGuide(device)}
+                  >
+                    {deviceLabels[device]}
+                  </button>
+                ))}
+              </div>
+              <ol>{screenshotSteps.map((step) => <li key={step}>{step}</li>)}</ol>
+              <button className="guide-close" onClick={() => setShowScreenshotGuide(false)}>{t.closeGuide}</button>
+            </aside>
+          )}
 
           {imagePreview && (
             <div className="image-preview-card">
@@ -360,6 +469,34 @@ export default function Home() {
           <h1>{t.analyzingTitle}</h1>
           <p className="lead compact">{t.analyzingBody}</p>
           <div className="loading-line"><span /></div>
+        </section>
+      )}
+
+      {screen === "install" && (
+        <section className="install-screen screen-enter">
+          <button className="back-button" onClick={() => setScreen("home")}>← {t.back}</button>
+          <p className="eyebrow">Pausa</p>
+          <h1>{t.installTitle}</h1>
+          <p className="lead compact">{t.installIntro}</p>
+          <div className="install-icon" aria-hidden="true"><span>Ⅱ</span></div>
+          <article className="guide-card install-guide">
+            <p className="detected-device">{t.installDetected}: <strong>{deviceLabels[deviceGuide]}</strong></p>
+            <ol>{installSteps.map((step) => <li key={step}>{step}</li>)}</ol>
+            <p className="install-done">{t.installDone}</p>
+          </article>
+          <div className="device-options" aria-label={t.installDetected}>
+            {(["iphoneFace", "iphoneHome", "android", "other"] as DeviceGuide[]).map((device) => (
+              <button
+                key={device}
+                className={deviceGuide === device ? "selected" : ""}
+                aria-pressed={deviceGuide === device}
+                onClick={() => setDeviceGuide(device)}
+              >
+                {deviceLabels[device]}
+              </button>
+            ))}
+          </div>
+          <button className="primary-button" onClick={() => setScreen("intake")}>{t.start}</button>
         </section>
       )}
 

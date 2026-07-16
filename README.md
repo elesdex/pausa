@@ -15,10 +15,12 @@ Pausa is not just a scam verdict. It starts before analysis by interrupting urge
 - Spanish-first and fully available in English.
 - Large, touch-friendly mobile interface.
 - Text, voice, camera photo, and screenshot input.
+- Device-aware screenshot instructions for iPhone and Android.
 - GPT-5.6 image understanding and structured risk guidance.
 - Calm read-aloud results using the device voice.
 - A built-in guided demo that works without an API key.
 - Installable PWA manifest, branded icons, and service worker so it can be added to a phone home screen.
+- Built-in iPhone and Android home-screen installation instructions.
 - No account, analytics, or permanent storage.
 
 ## Run locally

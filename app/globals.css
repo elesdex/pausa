@@ -49,7 +49,7 @@ button { color: inherit; }
 .language-button { border: 1px solid rgba(23, 50, 77, 0.2); background: rgba(255,255,255,.45); border-radius: 999px; padding: 9px 14px; font-size: .9rem; font-weight: 700; cursor: pointer; }
 
 .home-screen, .analyzing-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 38px 0 28px; }
-.intake-screen, .result-screen { flex: 1; padding: 28px 0 22px; }
+.intake-screen, .result-screen, .install-screen { flex: 1; padding: 28px 0 22px; }
 .screen-enter { animation: enter .38s ease-out both; }
 @keyframes enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
@@ -70,6 +70,7 @@ h1 { font-size: clamp(2.55rem, 12vw, 4.2rem); letter-spacing: -.055em; line-heig
 .primary-button:active, .secondary-button:active, .capture-card:active { transform: translateY(0); }
 .secondary-button { border: 1px solid rgba(23,50,77,.25); background: transparent; margin-bottom: 12px; }
 .text-button { border: 0; background: transparent; color: var(--green-dark); font-weight: 800; padding: 18px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.install-link { border: 1px solid rgba(47,122,103,.25); background: rgba(255,255,255,.38); color: var(--green-dark); border-radius: 999px; font-weight: 800; padding: 11px 16px; cursor: pointer; }
 .back-button { border: 0; background: transparent; padding: 8px 0; margin-bottom: 28px; cursor: pointer; font-weight: 800; color: var(--ink-soft); }
 
 .three-steps { display: flex; width: 100%; justify-content: space-between; gap: 6px; margin: 30px 0 20px; font-size: .75rem; color: var(--ink-soft); }
@@ -83,6 +84,18 @@ h1 { font-size: clamp(2.55rem, 12vw, 4.2rem); letter-spacing: -.055em; line-heig
 .capture-icon { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; background: var(--green-soft); color: var(--green-dark); font-size: 1.45rem; font-weight: 900; }
 .capture-card strong { display: block; margin-bottom: 5px; line-height: 1.2; }
 .capture-card small { color: var(--ink-soft); line-height: 1.35; display: block; }
+.screenshot-help-button { width: 100%; border: 0; background: transparent; color: var(--green-dark); font-weight: 800; padding: 2px 8px 20px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.screenshot-help-button span { display: inline-grid; place-items: center; width: 23px; height: 23px; margin-right: 8px; border: 1px solid var(--green); border-radius: 50%; text-decoration: none; }
+.guide-card { background: var(--paper); border: 1px solid rgba(47,122,103,.28); border-radius: 22px; padding: 20px; margin: 0 0 24px; box-shadow: 0 10px 28px rgba(23,50,77,.06); }
+.guide-card h2 { margin: 0 0 8px; font-size: 1.15rem; }
+.guide-card > p { color: var(--ink-soft); line-height: 1.45; margin: 0 0 16px; }
+.guide-card ol { margin: 18px 0 0; padding: 0; list-style: none; counter-reset: guide; display: grid; gap: 13px; }
+.guide-card li { counter-increment: guide; display: flex; gap: 11px; color: var(--ink-soft); line-height: 1.45; }
+.guide-card li::before { content: counter(guide); flex: 0 0 27px; height: 27px; display: grid; place-items: center; border-radius: 9px; background: var(--green-soft); color: var(--green-dark); font-size: .78rem; font-weight: 900; }
+.device-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.device-options button { border: 1px solid var(--border); background: transparent; border-radius: 999px; padding: 9px 11px; color: var(--ink-soft); font-size: .76rem; font-weight: 800; cursor: pointer; }
+.device-options button.selected { background: var(--green); color: white; border-color: var(--green); }
+.guide-close { width: 100%; border: 0; border-top: 1px solid var(--border); background: transparent; color: var(--green-dark); margin-top: 18px; padding: 15px 0 0; font-weight: 800; cursor: pointer; }
 
 .message-label { display: block; font-weight: 800; margin: 8px 0 10px; }
 textarea { width: 100%; resize: vertical; min-height: 126px; border: 1px solid var(--border); border-radius: 18px; padding: 16px; background: var(--paper); color: var(--ink); outline: none; line-height: 1.5; box-shadow: 0 6px 20px rgba(23,50,77,.04); }
@@ -130,9 +143,16 @@ textarea:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(47,122,1
 .learning-card p { margin: 0; color: var(--ink-soft); line-height: 1.45; }
 .disclaimer { font-size: .75rem; line-height: 1.45; color: var(--ink-soft); text-align: center; margin: 18px 8px 0; }
 
+.install-icon { width: 112px; height: 112px; margin: 8px auto 24px; display: grid; place-items: center; border-radius: 28px; background: var(--green-dark); color: white; box-shadow: 0 12px 30px rgba(23,63,56,.22); }
+.install-icon span { font-size: 2.4rem; font-weight: 900; letter-spacing: -9px; padding-right: 9px; }
+.install-guide { margin-bottom: 14px; }
+.install-guide .detected-device { color: var(--ink); }
+.install-guide .install-done { margin: 18px 0 0; padding-top: 16px; border-top: 1px solid var(--border); color: var(--green-dark); font-weight: 800; }
+.install-screen > .device-options { justify-content: center; margin-bottom: 22px; }
+
 footer { text-align: center; color: var(--ink-soft); font-size: .7rem; padding-top: 16px; }
 
-button:focus-visible, textarea:focus-visible { outline: 3px solid rgba(221,117,65,.55); outline-offset: 3px; }
+button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 3px solid rgba(221,117,65,.55); outline-offset: 3px; }
 
 @media (min-width: 700px) {
   .app-shell { padding-top: 28px; }

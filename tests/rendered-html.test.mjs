@@ -26,6 +26,7 @@ test("server-renders the Pausa product shell", async () => {
   assert.match(html, /<title>Pausa/);
   assert.match(html, /Primero, pausa/);
   assert.match(html, /Revisar algo sospechoso/);
+  assert.match(html, /Poner Pausa en mi pantalla/);
   assert.match(html, /Nothing is analyzed|Nada se analiza/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/);
 });
