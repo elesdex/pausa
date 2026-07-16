@@ -105,3 +105,5 @@ Pausa provides guidance, not a guarantee. It does not replace emergency services
 Licensed under Apache License 2.0. Contributions that improve accessibility, language coverage, scam education, evaluation data, and safe routing are welcome.
 
 Public repository: [github.com/elesdex/pausa](https://github.com/elesdex/pausa)
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the safety and privacy rules that apply to community contributions.

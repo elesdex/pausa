@@ -47,3 +47,4 @@ Complete the local build, connect a real API key, and verify one text example an
 - Added an integration-contract test that captures the outbound Responses API request and verifies the `gpt-5.6` model, strict JSON schema, prompt-injection boundary, and parsed non-demo response without spending a live API call.
 - Added a bilingual public privacy page covering voluntary submission, image previews, browser dictation, native sharing, the lack of an app database, and OpenAI's standard abuse-monitoring retention of up to 30 days.
 - Removed unused starter authentication, database, migration, and D1 example code plus the related dependencies so the public repository matches the product's no-account, no-database architecture.
+- Added contribution rules and an evidence-based mobile QA matrix that keeps automated checks separate from the physical iPhone, Android, and first-time-user tests still required.
