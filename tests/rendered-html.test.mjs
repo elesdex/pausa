@@ -73,6 +73,66 @@ test("live analysis never impersonates the demo when the API key is absent", asy
   assert.equal(result.code, "live_analysis_unavailable");
 });
 
+test("live path requests GPT-5.6 with strict structured output", async () => {
+  const originalFetch = globalThis.fetch;
+  const originalKey = process.env.OPENAI_API_KEY;
+  let capturedRequest;
+
+  process.env.OPENAI_API_KEY = "test-key-not-a-secret";
+  globalThis.fetch = async (input, init) => {
+    if (String(input) === "https://api.openai.com/v1/responses") {
+      capturedRequest = JSON.parse(String(init?.body));
+      return new Response(
+        JSON.stringify({
+          output: [{
+            type: "message",
+            content: [{
+              type: "output_text",
+              text: JSON.stringify({
+                risk: "uncertain",
+                title: "Not enough information yet",
+                summary: "The message is too short to assess confidently.",
+                signals: ["There is limited context."],
+                nextSteps: ["Open the service through a channel you already know."],
+                learning: "Verify independently before acting.",
+                emergency: false,
+              }),
+            }],
+          }],
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      );
+    }
+    return originalFetch(input, init);
+  };
+
+  try {
+    const worker = await getWorker();
+    const form = new FormData();
+    form.set("locale", "en");
+    form.set("text", "Please review your account.");
+    form.set("demo", "false");
+    const response = await worker.fetch(
+      new Request("http://localhost/api/analyze", { method: "POST", body: form }),
+      { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+      { waitUntil() {}, passThroughOnException() {} },
+    );
+    assert.equal(response.status, 200);
+    const result = await response.json();
+    assert.equal(result.model, "gpt-5.6");
+    assert.equal(result.demoMode, false);
+    assert.equal(capturedRequest.model, "gpt-5.6");
+    assert.equal(capturedRequest.text.format.type, "json_schema");
+    assert.equal(capturedRequest.text.format.strict, true);
+    assert.match(capturedRequest.instructions, /untrusted evidence/);
+    assert.match(capturedRequest.instructions, /Never invent an official link/);
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalKey === undefined) delete process.env.OPENAI_API_KEY;
+    else process.env.OPENAI_API_KEY = originalKey;
+  }
+});
+
 test("safety evaluation set covers the required scam and benign scenarios", async () => {
   const cases = JSON.parse(
     await readFile(new URL("./scam-evals.json", import.meta.url), "utf8"),

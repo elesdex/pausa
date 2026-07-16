@@ -59,6 +59,8 @@ The repository includes 12 synthetic safety cases covering scams, benign message
 npm run eval:live
 ```
 
+The automated test suite also verifies the outbound GPT-5.6 request contract with a simulated Responses API response. This does not replace the required live-key evaluation before submission.
+
 ## GPT-5.6 integration
 
 The server sends user-provided text and, when present, an image to the OpenAI Responses API using the `gpt-5.6` model. A strict JSON schema constrains the result to:
