@@ -43,3 +43,4 @@ Complete the local build, connect a real API key, and verify one text example an
 - Added a bilingual installation walkthrough so a family member can place Pausa on an iPhone or Android home screen without an app store.
 - Removed the viewport zoom restriction, localized the document language, expanded visible focus treatment, and retained reduced-motion support.
 - Added an optional trusted-person share action that includes only Pausa's guidance and safe steps, never the original private message or screenshot.
+- Added automatic preparation for oversized camera images and a 25-second request timeout so common mobile-network failures produce an honest recovery state instead of a stuck screen.

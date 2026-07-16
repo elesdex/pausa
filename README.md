@@ -15,6 +15,7 @@ Pausa is not just a scam verdict. It starts before analysis by interrupting urge
 - Spanish-first and fully available in English.
 - Large, touch-friendly mobile interface.
 - Text, voice, camera photo, and screenshot input.
+- Automatic client-side preparation of large camera images before upload.
 - Device-aware screenshot instructions for iPhone and Android.
 - GPT-5.6 image understanding and structured risk guidance.
 - Calm read-aloud results using the device voice.

@@ -99,6 +99,8 @@ const copy = {
     error: "No pudimos revisar esto todavía. Intenta con texto o una imagen más pequeña.",
     liveUnavailable: "El análisis en vivo aún no está conectado. Puedes probar el ejemplo guiado.",
     imageTooLarge: "La imagen es demasiado grande. Elige una captura o foto de menos de 5 MB.",
+    preparingImage: "Preparando la imagen…",
+    timeout: "La revisión tardó demasiado. No respondas al mensaje; inténtalo nuevamente.",
     textRequired: "Comparte una imagen, escribe el mensaje o cuéntamelo con voz.",
     demoBadge: "Modo de demostración",
     stepOne: "1. No respondas",
@@ -160,6 +162,8 @@ const copy = {
     error: "We could not review this yet. Try text or a smaller image.",
     liveUnavailable: "Live analysis is not connected yet. You can try the guided example.",
     imageTooLarge: "The image is too large. Choose a screenshot or photo under 5 MB.",
+    preparingImage: "Preparing the image…",
+    timeout: "The check took too long. Do not respond to the message; please try again.",
     textRequired: "Share an image, type the message, or tell me with your voice.",
     demoBadge: "Demonstration mode",
     stepOne: "1. Do not respond",
@@ -180,6 +184,27 @@ function detectDevice(): DeviceGuide {
   return "other";
 }
 
+async function prepareImage(file: File) {
+  if (file.size <= 4_500_000 || typeof createImageBitmap === "undefined") return file;
+
+  const bitmap = await createImageBitmap(file);
+  const maxDimension = 1600;
+  const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+  canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+  const context = canvas.getContext("2d");
+  if (!context) {
+    bitmap.close();
+    return file;
+  }
+
+  context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+  const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.84));
+  return blob ? new File([blob], "pausa-message.jpg", { type: "image/jpeg" }) : file;
+}
+
 export default function Home() {
   const [locale, setLocale] = useState<Locale>("es");
   const [screen, setScreen] = useState<Screen>("home");
@@ -191,6 +216,7 @@ export default function Home() {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [shareStatus, setShareStatus] = useState("");
+  const [isPreparingImage, setIsPreparingImage] = useState(false);
   const [deviceGuide, setDeviceGuide] = useState<DeviceGuide>(detectDevice);
   const [showScreenshotGuide, setShowScreenshotGuide] = useState(false);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -279,12 +305,31 @@ export default function Home() {
     setScreen("intake");
   }
 
-  function chooseImage(event: ChangeEvent<HTMLInputElement>) {
+  async function chooseImage(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
+    if (file.size > 20_000_000) {
+      setError(t.imageTooLarge);
+      event.target.value = "";
+      return;
+    }
+
+    setIsPreparingImage(true);
     setError("");
+    try {
+      const prepared = await prepareImage(file);
+      if (prepared.size > 5_000_000) {
+        setError(t.imageTooLarge);
+        return;
+      }
+      setImageFile(prepared);
+      setImagePreview(URL.createObjectURL(prepared));
+    } catch {
+      setError(t.imageTooLarge);
+    } finally {
+      setIsPreparingImage(false);
+      event.target.value = "";
+    }
   }
 
   function toggleVoice() {
@@ -326,6 +371,8 @@ export default function Home() {
 
     setScreen("analyzing");
     setError("");
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 25_000);
 
     try {
       const form = new FormData();
@@ -334,7 +381,7 @@ export default function Home() {
       form.append("demo", String(useDemo));
       if (imageFile) form.append("image", imageFile);
 
-      const response = await fetch("/api/analyze", { method: "POST", body: form });
+      const response = await fetch("/api/analyze", { method: "POST", body: form, signal: controller.signal });
       if (!response.ok) {
         const failure = (await response.json().catch(() => null)) as { code?: string } | null;
         if (failure?.code === "live_analysis_unavailable") {
@@ -352,9 +399,11 @@ export default function Home() {
       const result = (await response.json()) as Analysis;
       setAnalysis(result);
       setScreen("result");
-    } catch {
-      setError(t.error);
+    } catch (reason) {
+      setError(reason instanceof DOMException && reason.name === "AbortError" ? t.timeout : t.error);
       setScreen("intake");
+    } finally {
+      window.clearTimeout(timeout);
     }
   }
 
@@ -442,6 +491,7 @@ export default function Home() {
           </div>
           <input ref={cameraRef} className="visually-hidden" type="file" accept="image/*" capture="environment" onChange={chooseImage} />
           <input ref={uploadRef} className="visually-hidden" type="file" accept="image/*" onChange={chooseImage} />
+          {isPreparingImage && <p className="preparing-image" role="status">{t.preparingImage}</p>}
 
           <button className="screenshot-help-button" aria-expanded={showScreenshotGuide} onClick={() => setShowScreenshotGuide((current) => !current)}>
             <span aria-hidden="true">?</span>{t.screenshotHelp}
@@ -485,7 +535,7 @@ export default function Home() {
           </button>
           {isListening && <p className="listening-note">{t.listening}</p>}
           {error && <p className="error-message" role="alert">{error}</p>}
-          <button className="primary-button" onClick={() => runAnalysis(false)}>{t.review}</button>
+          <button className="primary-button" disabled={isPreparingImage} onClick={() => runAnalysis(false)}>{t.review}</button>
         </section>
       )}
 
