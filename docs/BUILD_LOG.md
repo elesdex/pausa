@@ -49,3 +49,5 @@ Complete the local build, connect a real API key, and verify one text example an
 - Removed unused starter authentication, database, migration, and D1 example code plus the related dependencies so the public repository matches the product's no-account, no-database architecture.
 - Added contribution rules and an evidence-based mobile QA matrix that keeps automated checks separate from the physical iPhone, Android, and first-time-user tests still required.
 - Created a clearly labeled, fully synthetic bank-message screenshot in SVG and PNG formats for the live vision test and video, avoiding the use of any real person's message or financial data.
+- Added a requirement-by-requirement readiness audit and corrected the submission checklist so simulated integration evidence is never mistaken for a live GPT-5.6 evaluation or public delivery.
+- Documented the Sites starter origin, retained deployment toolchain, third-party packages, and the fact that no existing scam-detector product or dataset was copied.

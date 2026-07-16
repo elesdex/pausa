@@ -11,18 +11,20 @@
 
 - [x] Category selected: Apps for Your Life.
 - [x] Working mobile-first project created with Codex.
-- [ ] GPT-5.6 live path verified in code and demo.
+- [x] GPT-5.6 request contract verified with a simulated Responses API.
+- [ ] GPT-5.6 verified with a real API key using text and the synthetic screenshot.
 - [x] Guided no-key demo available.
 - [ ] Public working URL available to judges.
 - [ ] Mobile and accessibility checks complete.
-- [ ] Safety evaluation set complete.
+- [x] Twelve-case synthetic safety evaluation set complete.
+- [ ] Twelve-case evaluation run against live GPT-5.6 and failures reviewed.
 
 ## Repository
 
 - [x] Public GitHub repository created: `https://github.com/elesdex/pausa`.
 - [x] Apache 2.0 license included locally.
 - [x] README includes setup, sample/test path, Codex role, and GPT-5.6 integration.
-- [x] Pre-existing and third-party work disclosed where relevant.
+- [x] Starter origin and third-party software disclosed.
 - [ ] Local source pushed to the public repository and final history reviewed.
 
 ## Video
@@ -38,9 +40,9 @@
 
 ## Devpost
 
-- [ ] Project name and one-line pitch.
+- [x] Project name and one-line pitch drafted.
 - [ ] Apps for Your Life selected.
-- [ ] English project description.
+- [x] English project description drafted.
 - [ ] Working demo URL.
 - [ ] Code repository URL.
 - [ ] YouTube URL.

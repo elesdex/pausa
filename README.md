@@ -98,6 +98,12 @@ This project is being designed and built in one primary Codex task. Codex has he
 
 Key product decisions and daily progress are recorded in `docs/BUILD_LOG.md`. The primary Codex `/feedback` Session ID will be added before submission.
 
+## Build origin and third-party software
+
+Work on Pausa began on July 16, 2026 during OpenAI Build Week. The product concept, interaction, visual language, bilingual copy, GPT-5.6 safety prompt, evaluation cases, privacy disclosure, tests, and submission materials were created during the event with Codex.
+
+The project began from the OpenAI Sites Next.js/vinext starter and retains its deployment toolchain. It uses open-source packages including Next.js, React, vinext, Vite, and the Cloudflare Vite plugin under their respective licenses. No existing scam-detector product or dataset was copied into Pausa.
+
 ## Safety boundary
 
 Pausa provides guidance, not a guarantee. It does not replace emergency services, banks, law enforcement, medical professionals, or trusted people. It never instructs a person to contact a phone number or link supplied by suspicious content. See `docs/SAFETY.md`.
