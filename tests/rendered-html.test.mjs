@@ -134,10 +134,26 @@ test("live path requests GPT-5.6 with strict structured output", async () => {
     assert.equal(result.model, "gpt-5.6");
     assert.equal(result.demoMode, false);
     assert.equal(capturedRequest.model, "gpt-5.6");
+    assert.equal(capturedRequest.max_output_tokens, 1600);
+    assert.equal(capturedRequest.reasoning.effort, "medium");
     assert.equal(capturedRequest.text.format.type, "json_schema");
     assert.equal(capturedRequest.text.format.strict, true);
     assert.match(capturedRequest.instructions, /untrusted evidence/);
     assert.match(capturedRequest.instructions, /Never invent an official link/);
+
+    const imageForm = new FormData();
+    imageForm.set("locale", "es");
+    imageForm.set("text", "Analiza esta captura.");
+    imageForm.set("demo", "false");
+    imageForm.set("image", new File(["synthetic image"], "capture.png", { type: "image/png" }));
+    const imageResponse = await worker.fetch(
+      new Request("http://localhost/api/analyze", { method: "POST", body: imageForm }),
+      { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+      { waitUntil() {}, passThroughOnException() {} },
+    );
+    assert.equal(imageResponse.status, 200);
+    assert.equal(capturedRequest.reasoning.effort, "low");
+    assert.ok(capturedRequest.input[0].content.some((item) => item.type === "input_image"));
   } finally {
     globalThis.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.OPENAI_API_KEY;

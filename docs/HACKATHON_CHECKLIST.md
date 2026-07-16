@@ -3,21 +3,21 @@
 ## Registration and credits
 
 - [x] Joined OpenAI Build Week on Devpost.
-- [ ] Eligibility and country requirements confirmed.
+- [x] Eligibility and country requirements confirmed.
 - [x] Codex credit request submitted before Friday, July 17 at 12:00 PM PT / 1:00 PM Mexico City.
-- [ ] Separate OpenAI API billing or credits available for GPT-5.6 runtime calls.
+- [x] Separate OpenAI API billing or credits available for GPT-5.6 runtime calls.
 
 ## Product
 
 - [x] Category selected: Apps for Your Life.
 - [x] Working mobile-first project created with Codex.
 - [x] GPT-5.6 request contract verified with a simulated Responses API.
-- [ ] GPT-5.6 verified with a real API key using text and the synthetic screenshot.
+- [x] GPT-5.6 verified with a real API key using text and the synthetic screenshot.
 - [x] Guided no-key demo available.
 - [ ] Public working URL available to judges.
 - [ ] Mobile and accessibility checks complete.
 - [x] Twelve-case synthetic safety evaluation set complete.
-- [ ] Twelve-case evaluation run against live GPT-5.6 and failures reviewed.
+- [x] Twelve-case evaluation run against live GPT-5.6 and failures reviewed.
 
 ## Repository
 

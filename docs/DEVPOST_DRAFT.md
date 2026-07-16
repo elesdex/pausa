@@ -37,7 +37,7 @@ Most scam checkers begin after a person has already captured and submitted a mes
 
 ## How we built it
 
-Pausa is a mobile-first Next.js application built and iterated with Codex. The server uses the OpenAI Responses API with GPT-5.6, image input, medium reasoning effort, and a strict JSON schema. The schema limits responses to a risk level, short explanation, observed signals, safe next steps, one reusable lesson, and an emergency flag.
+Pausa is a mobile-first Next.js application built and iterated with Codex. The server uses the OpenAI Responses API with GPT-5.6, image input, adaptive reasoning effort, and a strict JSON schema. Text analysis uses medium reasoning; image analysis uses low reasoning to stay within the mobile response-time budget. The schema limits responses to a risk level, short explanation, observed signals, safe next steps, one reusable lesson, and an emergency flag.
 
 The client uses standard browser capabilities for camera/file input, speech recognition when available, and speech synthesis for read-aloud results. It stores no submissions, requires no account, includes no analytics, and does not monitor messages in the background.
 

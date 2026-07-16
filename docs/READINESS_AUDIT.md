@@ -63,10 +63,8 @@ Status meanings:
 
 ## Critical path
 
-1. **User billing setup:** add API credit or billing to the OpenAI project; the securely configured key is recognized, but live calls currently return `insufficient_quota`.
-2. **Codex:** rerun text, image, and 12-case live evaluations; fix failures.
-3. **Codex + user device:** complete the physical QA matrix.
-4. **Codex:** deploy the current commit publicly and verify every public route.
-5. **User + Codex:** record the prepared script, upload to YouTube, add `/feedback` Session ID, submit Devpost, and reopen the entry to verify it.
+1. **Codex + user device:** complete the physical QA matrix.
+2. **Codex:** deploy the current commit publicly and verify every public route.
+3. **User + Codex:** record the prepared script, upload to YouTube, add `/feedback` Session ID, submit Devpost, and reopen the entry to verify it.
 
 The project is not submission-ready until every **Missing** item is resolved and every **Partial** judge-facing artifact is verified in its public form.
