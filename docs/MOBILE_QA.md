@@ -22,7 +22,7 @@ This matrix separates automated evidence from checks that require a physical dev
 ## iPhone Safari — physical check required
 
 - [ ] Open the public URL without authentication.
-- [ ] Add HELP to the Home Screen and launch it in standalone mode.
+- [ ] Add Pausa to the Home Screen and launch it in standalone mode.
 - [ ] Confirm the icon and title are legible.
 - [ ] Photograph a synthetic message on another screen.
 - [ ] Select a saved screenshot.
@@ -56,7 +56,7 @@ Issues found: `TBD`
 
 ## First-time-user observation
 
-Give the phone to one person who has not seen HELP. Say only:
+Give the phone to one person who has not seen Pausa. Say only:
 
 > “You received a suspicious message. Use this to decide what to do next.”
 

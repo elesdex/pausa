@@ -18,15 +18,15 @@ async function render(path = "/") {
   );
 }
 
-test("server-renders the HELP product shell", async () => {
+test("server-renders the Pausa product shell", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
-  assert.match(html, /<title>HELP/);
+  assert.match(html, /<title>Pausa/);
   assert.match(html, /Primero, pausa/);
   assert.match(html, /Revisar algo sospechoso/);
-  assert.match(html, /Poner HELP en mi pantalla/);
+  assert.match(html, /Poner Pausa en mi pantalla/);
   assert.match(html, /Nothing is analyzed|Nada se analiza/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/);
 });

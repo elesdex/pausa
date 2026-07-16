@@ -4,8 +4,8 @@ Official deadline: Tuesday, July 21, 2026 at 5:00 PM Pacific Time / 6:00 PM Mexi
 
 ## Thursday, July 16 — foundation and first visible product
 
-- Confirm Devpost registration and eligibility.
-- Request Codex credits or prepare to request them before Friday's cutoff.
+- Confirm Devpost registration and eligibility. Registration confirmed July 16; eligibility confirmation remains.
+- Request Codex credits or prepare to request them before Friday's cutoff. Submitted July 16.
 - Freeze the problem, audience, promise, MVP boundary, and provisional name.
 - Create the public-ready project structure, Apache 2.0 license, README, build log, and safety notes.
 - Build the first bilingual, mobile-first product flow.
@@ -16,7 +16,7 @@ Exit criterion: the complete interaction can be demonstrated locally, even befor
 
 ## Friday, July 17 — live intelligence
 
-- Request the $100 Codex credits before 12:00 PM Pacific / 1:00 PM Mexico City.
+- Request the $100 Codex credits before 12:00 PM Pacific / 1:00 PM Mexico City. Completed July 16.
 - Add the OpenAI API key separately; Codex credits do not cover API usage.
 - Connect GPT-5.6 through the Responses API.
 - Validate image input and strict structured output.

@@ -1,6 +1,6 @@
 {
-  "name": "HELP — ayuda digital",
-  "short_name": "HELP",
+  "name": "Pausa — ayuda digital",
+  "short_name": "Pausa",
   "description": "Ayuda calmada ante mensajes digitales sospechosos.",
   "start_url": "/",
   "display": "standalone",

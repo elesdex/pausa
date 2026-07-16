@@ -2,9 +2,9 @@
 
 ## Registration and credits
 
-- [ ] Joined OpenAI Build Week on Devpost.
+- [x] Joined OpenAI Build Week on Devpost.
 - [ ] Eligibility and country requirements confirmed.
-- [ ] Codex credit request submitted before Friday, July 17 at 12:00 PM PT / 1:00 PM Mexico City.
+- [x] Codex credit request submitted before Friday, July 17 at 12:00 PM PT / 1:00 PM Mexico City.
 - [ ] Separate OpenAI API billing or credits available for GPT-5.6 runtime calls.
 
 ## Product
@@ -21,8 +21,7 @@
 
 ## Repository
 
-- [x] Initial public GitHub repository created under the provisional name.
-- [ ] Rename it to `https://github.com/elesdex/help`.
+- [x] Public GitHub repository created at `https://github.com/elesdex/pausa`.
 - [x] Apache 2.0 license included locally.
 - [x] README includes setup, sample/test path, Codex role, and GPT-5.6 integration.
 - [x] Starter origin and third-party software disclosed.

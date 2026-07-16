@@ -8,15 +8,15 @@ The final video must remain under three minutes and include voiceover, a working
 
 **Voiceover:**
 
-> Scam messages use urgency to make us act before we think. This is especially frightening when someone we love does not feel confident with technology. HELP is a free, open-source help button for that moment.
+> Scam messages use urgency to make us act before we think. This is especially frightening when someone we love does not feel confident with technology. Pausa is a free, open-source help button for that moment.
 
 ## 0:18–0:38 — pause before analysis
 
-**Visual:** Open HELP from the phone home screen. Show the Spanish landing screen, the large pause symbol, and “Revisar algo sospechoso.”
+**Visual:** Open Pausa from the phone home screen. Show the Spanish landing screen, the large pause symbol, and “Revisar algo sospechoso.”
 
 **Voiceover:**
 
-> HELP does not monitor private messages. The person opens it only when they want help. The first instruction is simple: do not respond yet.
+> Pausa does not monitor private messages. The person opens it only when they want help. The first instruction is simple: do not respond yet.
 
 ## 0:38–1:08 — accessible input
 
@@ -32,7 +32,7 @@ The final video must remain under three minutes and include voiceover, a working
 
 **Voiceover:**
 
-> GPT-5.6 reads the text and image, identifies possible warning signals, and returns a constrained result. It never claims certainty. Here it notices urgency, a phone number supplied by the message, and a financial fear trigger. Instead of calling that number, HELP guides us to leave the message and verify through a channel we already trusted.
+> GPT-5.6 reads the text and image, identifies possible warning signals, and returns a constrained result. It never claims certainty. Here it notices urgency, a phone number supplied by the message, and a financial fear trigger. Instead of calling that number, Pausa guides us to leave the message and verify through a channel we already trusted.
 
 ## 1:38–1:53 — bilingual and installable
 
@@ -40,7 +40,7 @@ The final video must remain under three minutes and include voiceover, a working
 
 **Voiceover:**
 
-> HELP works in Spanish and English, reads the guidance aloud, and installs as a mobile web app without an app store.
+> Pausa works in Spanish and English, reads the guidance aloud, and installs as a mobile web app without an app store.
 
 ## 1:53–2:22 — Codex story
 
@@ -52,11 +52,11 @@ The final video must remain under three minutes and include voiceover, a working
 
 ## 2:22–2:35 — mission and close
 
-**Visual:** HELP logo, public URL, GitHub repository, Apache 2.0 mark.
+**Visual:** Pausa logo, public URL, GitHub repository, Apache 2.0 mark.
 
 **Voiceover:**
 
-> Scams use urgency. HELP gives people calm and one safer next step. It is free, open source, and ready for families and communities to improve together.
+> Scams use urgency. Pausa gives people calm and one safer next step. It is free, open source, and ready for families and communities to improve together.
 
 ## Final recording checklist
 

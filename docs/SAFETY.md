@@ -2,7 +2,7 @@
 
 ## Product position
 
-HELP is a decision aid, not an authority. It identifies warning signals and recommends safer verification behavior. It never certifies that a message is safe or fraudulent.
+Pausa is a decision aid, not an authority. It identifies warning signals and recommends safer verification behavior. It never certifies that a message is safe or fraudulent.
 
 ## Mandatory behaviors
 
@@ -25,7 +25,7 @@ HELP is a decision aid, not an authority. It identifies warning signals and reco
 
 ## High-stakes boundaries
 
-HELP does not replace emergency services, law enforcement, banks, healthcare professionals, legal counsel, or trusted people. The MVP does not automatically call or message anyone. A future emergency-routing feature would require jurisdiction-aware data, explicit user configuration, confirmation, auditability, and separate safety review.
+Pausa does not replace emergency services, law enforcement, banks, healthcare professionals, legal counsel, or trusted people. The MVP does not automatically call or message anyone. A future emergency-routing feature would require jurisdiction-aware data, explicit user configuration, confirmation, auditability, and separate safety review.
 
 ## Evaluation risks
 

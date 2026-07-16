@@ -49,7 +49,7 @@ Status meanings:
 | Deliverable | Status | Evidence | Remaining action |
 |---|---|---|---|
 | Day-by-day plan | Proven | `docs/ROADMAP.md` | Keep current |
-| Public repository | Partial | A shell repository exists under the former provisional name | Rename it to `https://github.com/elesdex/help`, authenticate, and push all local commits |
+| Public repository | Partial | A shell repository exists at `https://github.com/elesdex/pausa` | Authenticate and push all local commits |
 | License | Proven locally | Apache 2.0 `LICENSE` | Verify visible on GitHub |
 | README and setup | Proven locally | `README.md` | Verify install from clean clone |
 | Starter and third-party disclosure | Proven locally | README build-origin section | Verify visible on GitHub |
@@ -57,18 +57,17 @@ Status meanings:
 | Working judge URL | Missing | Private first Sites deployment exists | Deploy latest commit publicly with API key |
 | English Devpost copy | Proven as draft | `docs/DEVPOST_DRAFT.md` | Enter and proofread in Devpost |
 | Under-three-minute video | Partial | Timed 2:35 script and synthetic visual | Record, edit, upload publicly, verify duration |
-| Devpost registration | Missing confirmation | None available to Codex | User confirms joined event |
-| Codex credits request | Missing confirmation | None available to Codex | Submit before July 17 at 1:00 PM Mexico City |
+| Devpost registration | Confirmed by user | User confirmation on July 16 | No action |
+| Codex credits request | Confirmed by user | User confirmation on July 16 | Await approval or credit delivery |
 | Final Devpost submission | Missing | Not yet possible | Add all URLs and Session ID, submit, reopen, verify |
 
 ## Critical path
 
-1. **User today:** confirm Devpost registration and submit the Codex credit request before its cutoff.
-2. **User authorization:** authenticate GitHub so Codex can push the existing local history.
-3. **User secret setup:** configure `OPENAI_API_KEY` through a secure local or hosting environment; never paste it into chat.
-4. **Codex:** run text, image, and 12-case live evaluations; fix failures.
-5. **Codex + user device:** complete the physical QA matrix.
-6. **Codex:** deploy the current commit publicly and verify every public route.
-7. **User + Codex:** record the prepared script, upload to YouTube, add `/feedback` Session ID, submit Devpost, and reopen the entry to verify it.
+1. **User authorization:** authenticate GitHub so Codex can push the existing local history.
+2. **User secret setup:** configure `OPENAI_API_KEY` through a secure local or hosting environment; never paste it into chat.
+3. **Codex:** run text, image, and 12-case live evaluations; fix failures.
+4. **Codex + user device:** complete the physical QA matrix.
+5. **Codex:** deploy the current commit publicly and verify every public route.
+6. **User + Codex:** record the prepared script, upload to YouTube, add `/feedback` Session ID, submit Devpost, and reopen the entry to verify it.
 
 The project is not submission-ready until every **Missing** item is resolved and every **Partial** judge-facing artifact is verified in its public form.

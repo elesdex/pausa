@@ -1,6 +1,6 @@
-# Contributing to HELP
+# Contributing to Pausa
 
-HELP is an accessibility-first, open-source safety project. Contributions are welcome when they make the product calmer, clearer, more inclusive, or more honest about uncertainty.
+Pausa is an accessibility-first, open-source safety project. Contributions are welcome when they make the product calmer, clearer, more inclusive, or more honest about uncertainty.
 
 ## Start safely
 

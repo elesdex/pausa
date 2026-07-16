@@ -52,3 +52,5 @@ Complete the local build, connect a real API key, and verify one text example an
 - Added a requirement-by-requirement readiness audit and corrected the submission checklist so simulated integration evidence is never mistaken for a live GPT-5.6 evaluation or public delivery.
 - Documented the Sites starter origin, retained deployment toolchain, third-party packages, and the fact that no existing scam-detector product or dataset was copied.
 - Replaced the provisional product name “Pausa” with the selected final name **HELP** across the interface, PWA metadata, prompts, documentation, tests, Devpost draft, and video script. “Primero, pausa” remains the product's first safety instruction, not its brand name.
+- Reconsidered the naming decision and confirmed **Pausa** as the final project name. Restored Pausa across the product, repository targets, PWA metadata, prompts, tests, and submission materials.
+- User confirmed joining OpenAI Build Week on Devpost and submitting the Codex credit request on July 16.

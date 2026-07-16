@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "HELP — ayuda ante mensajes sospechosos",
+  title: "Pausa — ayuda ante mensajes sospechosos",
   description: "Una guía calmada y accesible para reconocer señales de fraude y elegir un siguiente paso seguro.",
   manifest: "/manifest.webmanifest",
   icons: {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     shortcut: "/favicon.svg",
     apple: "/icon-192.png",
   },
-  appleWebApp: { capable: true, statusBarStyle: "default", title: "HELP" },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "Pausa" },
 };
 
 export const viewport: Viewport = {
