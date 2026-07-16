@@ -60,6 +60,8 @@ pnpm test
 
 Never upload real passwords, PINs, full card numbers, identity documents, or private financial records. Use synthetic or redacted examples for judging.
 
+A clearly labeled synthetic Spanish bank-message screenshot is included at `public/demo/bank-alert-es.png` for vision testing and video recording.
+
 Pausa does not keep submissions in its own database. Under standard API settings, OpenAI may retain customer content in abuse-monitoring logs for up to 30 days. See the in-product privacy page and [OpenAI data controls](https://developers.openai.com/api/docs/guides/your-data).
 
 The repository includes 12 synthetic safety cases covering scams, benign messages, ambiguity, and prompt injection. With a live local server and API key configured, run:

@@ -1,0 +1,44 @@
+<svg width="1170" height="2532" viewBox="0 0 1170 2532" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1170" height="2532" fill="#F2F3F5"/>
+  <rect width="1170" height="144" fill="#FFFFFF"/>
+  <text x="62" y="88" fill="#17191C" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700">9:41</text>
+  <text x="585" y="88" text-anchor="middle" fill="#17191C" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700">Mensajes</text>
+  <rect y="144" width="1170" height="198" fill="#FFFFFF"/>
+  <circle cx="585" cy="228" r="52" fill="#DCE2E8"/>
+  <text x="585" y="244" text-anchor="middle" fill="#5C6770" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700">?</text>
+  <text x="585" y="316" text-anchor="middle" fill="#17191C" font-family="Arial, Helvetica, sans-serif" font-size="34">+52 55 0000 1234</text>
+
+  <text x="585" y="432" text-anchor="middle" fill="#777F87" font-family="Arial, Helvetica, sans-serif" font-size="30">Hoy 9:38</text>
+
+  <rect x="58" y="500" width="936" height="640" rx="44" fill="#FFFFFF"/>
+  <path d="M58 1070L28 1137L112 1103L58 1070Z" fill="#FFFFFF"/>
+  <text x="108" y="582" fill="#17191C" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700">AVISO BANCO</text>
+  <text x="108" y="670" fill="#17191C" font-family="Arial, Helvetica, sans-serif" font-size="40">
+    <tspan x="108" dy="0">Se está realizando un depósito</tspan>
+    <tspan x="108" dy="64">por $18,450.00 MXN.</tspan>
+    <tspan x="108" dy="92">Si usted no reconoce esta</tspan>
+    <tspan x="108" dy="64">operación, llame inmediatamente</tspan>
+    <tspan x="108" dy="64">al 55 0000 1234 para cancelarla.</tspan>
+  </text>
+
+  <rect x="58" y="1204" width="810" height="252" rx="44" fill="#FFFFFF"/>
+  <path d="M58 1390L28 1457L112 1423L58 1390Z" fill="#FFFFFF"/>
+  <text x="108" y="1288" fill="#17191C" font-family="Arial, Helvetica, sans-serif" font-size="40">
+    <tspan x="108" dy="0">No cierre este mensaje hasta</tspan>
+    <tspan x="108" dy="64">terminar la verificación.</tspan>
+  </text>
+
+  <rect y="2330" width="1170" height="202" fill="#FFFFFF"/>
+  <rect x="58" y="2370" width="910" height="96" rx="48" fill="#F0F1F3"/>
+  <text x="108" y="2432" fill="#8A9299" font-family="Arial, Helvetica, sans-serif" font-size="36">Mensaje de texto</text>
+  <circle cx="1060" cy="2418" r="48" fill="#D8DDE2"/>
+  <path d="M1038 2418H1082M1060 2396V2440" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+
+  <rect x="36" y="1680" width="1098" height="330" rx="36" fill="#FFF4E4"/>
+  <text x="86" y="1760" fill="#8A4A28" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700">EJEMPLO SINTÉTICO PARA DEMOSTRACIÓN</text>
+  <text x="86" y="1834" fill="#5E4A3C" font-family="Arial, Helvetica, sans-serif" font-size="34">
+    <tspan x="86" dy="0">Este mensaje es ficticio. El banco, teléfono,</tspan>
+    <tspan x="86" dy="54">monto y conversación no corresponden a una</tspan>
+    <tspan x="86" dy="54">persona ni institución real.</tspan>
+  </text>
+</svg>

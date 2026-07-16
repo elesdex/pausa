@@ -4,7 +4,7 @@ The final video must remain under three minutes and include voiceover, a working
 
 ## 0:00–0:18 — the human problem
 
-**Visual:** A phone receives a synthetic bank message: “A deposit is being processed. Call now if you do not recognize it.”
+**Visual:** Show `public/demo/bank-alert-es.png`, the clearly labeled synthetic bank message: “A deposit is being processed. Call now if you do not recognize it.”
 
 **Voiceover:**
 

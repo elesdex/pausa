@@ -48,3 +48,4 @@ Complete the local build, connect a real API key, and verify one text example an
 - Added a bilingual public privacy page covering voluntary submission, image previews, browser dictation, native sharing, the lack of an app database, and OpenAI's standard abuse-monitoring retention of up to 30 days.
 - Removed unused starter authentication, database, migration, and D1 example code plus the related dependencies so the public repository matches the product's no-account, no-database architecture.
 - Added contribution rules and an evidence-based mobile QA matrix that keeps automated checks separate from the physical iPhone, Android, and first-time-user tests still required.
+- Created a clearly labeled, fully synthetic bank-message screenshot in SVG and PNG formats for the live vision test and video, avoiding the use of any real person's message or financial data.

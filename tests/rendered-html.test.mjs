@@ -160,3 +160,16 @@ test("safety evaluation set covers the required scam and benign scenarios", asyn
     assert.ok(item.mustNot.length > 0);
   }
 });
+
+test("ships a clearly labeled synthetic screenshot for vision demos", async () => {
+  const svg = await readFile(
+    new URL("../public/demo/bank-alert-es.svg", import.meta.url),
+    "utf8",
+  );
+  const png = await readFile(
+    new URL("../public/demo/bank-alert-es.png", import.meta.url),
+  );
+  assert.match(svg, /EJEMPLO SINTÉTICO PARA DEMOSTRACIÓN/);
+  assert.match(svg, /no corresponden a una/);
+  assert.deepEqual([...png.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+});
