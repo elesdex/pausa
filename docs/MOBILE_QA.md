@@ -40,7 +40,7 @@ Changes prepared from this review:
 - Installed mode and the `appinstalled` event suppress the installation suggestion.
 - The service worker uses a new network-first shell and requests updates so installed phones receive the current interface.
 
-These changes still require the physical-device checks below. Do not convert them to “Pass” until observed on the named device.
+The user confirmed on July 17 that Pausa was installed and launched successfully on an iPhone, with the current interface rendering well in standalone mode. The remaining interaction, accessibility, and sharing checks below still require observation on the named device.
 
 ## Start physical QA from the public QR
 
@@ -52,12 +52,12 @@ These changes still require the physical-device checks below. Do not convert the
 4. Take one screenshot of the home screen and one of a real synthetic-result flow.
 5. Write the exact issue under “Issues found”; do not silently interpret it as passed.
 
-## iPhone Safari — physical check required
+## iPhone — physical QA in progress
 
-- [ ] Open the public URL without authentication.
-- [ ] Add Pausa to the Home Screen and launch it in standalone mode.
-- [ ] Confirm the installed app shows the current simplified home screen, not “First pass.”
-- [ ] Confirm the install suggestion is absent in standalone mode.
+- [x] Open the public URL without authentication.
+- [x] Add Pausa to the Home Screen and launch it in standalone mode.
+- [x] Confirm the installed app shows the current simplified home screen, not “First pass.”
+- [x] Confirm the install suggestion is absent in standalone mode. Manual install help remains accessible from the footer.
 - [ ] Confirm the icon and title are legible.
 - [ ] Photograph a synthetic message on another screen.
 - [ ] Select a saved screenshot.
@@ -69,8 +69,8 @@ These changes still require the physical-device checks below. Do not convert the
 - [ ] Pinch zoom the privacy page.
 
 Device/version: `TBD`  
-Tester/date: `TBD`  
-Issues found: `TBD`
+Tester/date: `User / July 17, 2026`
+Issues found: `No installation or standalone-display issue reported. Remaining functional checks are pending.`
 
 ## Android Chrome — physical check required
 

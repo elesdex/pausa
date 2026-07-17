@@ -43,8 +43,9 @@ const copy = {
       "Si un mensaje te asustó o te está presionando, no respondas todavía. Lo revisamos contigo, con calma.",
     start: "Compartir foto o texto",
     voiceStart: "Cuéntamelo con voz",
-    voiceHint: "Solo habla. Al terminar, lo revisamos.",
-    voiceStop: "Terminar y revisar",
+    voiceTap: "Toca para hablar",
+    voiceHint: "Al terminar, lo revisamos.",
+    voiceStop: "Toca para terminar y revisar",
     voicePreparing: "Preparando tu audio…",
     voiceTranscribing: "Entendiendo lo que dijiste…",
     voiceUnavailable: "No pudimos usar el micrófono. Revisa el permiso del navegador o comparte texto.",
@@ -55,12 +56,14 @@ const copy = {
     installAction: "Instalar Pausa",
     installClose: "Listo, volver al inicio",
     privacy: "Nada se analiza hasta que lo compartes.",
-    notEmergency: "En una emergencia, contacta a los servicios locales.",
+    notEmergency: "Contacta a los servicios locales de emergencia.",
     emergencyTitle: "¿Peligro inmediato?",
     emergencyBody: "México y Estados Unidos",
     emergencyCall: "Llamar al 911",
     intakeTitle: "¿Qué tienes a la mano?",
     intakeHelp: "Elige la opción más fácil. No necesitas saber hacer una captura.",
+    voiceIntakeTitle: "¿Qué viste?",
+    voiceIntakeHelp: "Cuéntame qué pasó: quién te contactó, qué te pidió y qué te pareció extraño.",
     screenshotHelp: "No sé hacer una captura",
     screenshotTitle: "Te guiamos paso a paso",
     screenshotIntro: "Detectamos una guía probable para tu dispositivo. Puedes cambiarla si no coincide.",
@@ -130,8 +133,9 @@ const copy = {
       "If a message scared or pressured you, do not respond yet. We will review it with you, calmly.",
     start: "Share a photo or text",
     voiceStart: "Tell me by voice",
-    voiceHint: "Just speak. When you finish, we'll check it.",
-    voiceStop: "Finish and check",
+    voiceTap: "Tap to speak",
+    voiceHint: "When you finish, we'll check it.",
+    voiceStop: "Tap to finish and check",
     voicePreparing: "Preparing your audio…",
     voiceTranscribing: "Understanding what you said…",
     voiceUnavailable: "We could not use the microphone. Check browser permission or share text instead.",
@@ -142,12 +146,14 @@ const copy = {
     installAction: "Install Pausa",
     installClose: "Done, return home",
     privacy: "Nothing is analyzed until you share it.",
-    notEmergency: "For emergencies, contact local emergency services.",
+    notEmergency: "Contact local emergency services.",
     emergencyTitle: "Immediate danger?",
     emergencyBody: "Mexico and the United States",
     emergencyCall: "Call 911",
     intakeTitle: "What do you have available?",
     intakeHelp: "Choose the easiest option. You do not need to know how to take a screenshot.",
+    voiceIntakeTitle: "What did you see?",
+    voiceIntakeHelp: "Tell me what happened: who contacted you, what they asked for, and what felt unusual.",
     screenshotHelp: "I do not know how to take a screenshot",
     screenshotTitle: "We will guide you step by step",
     screenshotIntro: "We detected a likely guide for your device. You can change it if it does not match.",
@@ -416,15 +422,15 @@ export default function Home() {
   const installSteps = useMemo(() => {
     const steps = {
       es: {
-        iphoneFace: ["Abre Pausa en Safari.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
-        iphoneHome: ["Abre Pausa en Safari.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
-        android: ["Abre Pausa en Chrome.", "Toca el menú de tres puntos.", "Elige “Instalar aplicación” o “Agregar a pantalla principal”.", "Confirma la instalación."],
+        iphoneFace: ["Abre Pausa en Safari, Chrome o tu navegador.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
+        iphoneHome: ["Abre Pausa en Safari, Chrome o tu navegador.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
+        android: ["Abre Pausa en Chrome o tu navegador.", "Toca el menú del navegador.", "Elige “Instalar aplicación” o “Agregar a pantalla principal”.", "Confirma la instalación."],
         other: ["Abre el menú de tu navegador.", "Busca “Instalar aplicación” o “Agregar a pantalla de inicio”.", "Si no aparece, guarda Pausa como favorito."],
       },
       en: {
-        iphoneFace: ["Open Pausa in Safari.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
-        iphoneHome: ["Open Pausa in Safari.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
-        android: ["Open Pausa in Chrome.", "Tap the three-dot menu.", "Choose “Install app” or “Add to Home screen.”", "Confirm the installation."],
+        iphoneFace: ["Open Pausa in Safari, Chrome, or your browser.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
+        iphoneHome: ["Open Pausa in Safari, Chrome, or your browser.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
+        android: ["Open Pausa in Chrome or your browser.", "Open the browser menu.", "Choose “Install app” or “Add to Home screen.”", "Confirm the installation."],
         other: ["Open your browser menu.", "Look for “Install app” or “Add to Home screen.”", "If it is unavailable, save Pausa as a bookmark."],
       },
     };
@@ -730,8 +736,10 @@ export default function Home() {
           <p className="lead">{hasUsedBefore ? t.returningSubhead : t.subhead}</p>
           <button className="voice-primary-button" onClick={startVoiceCapture}>
             <span className="voice-symbol" aria-hidden="true"><i /><i /><i /></span>
-            <span><strong>{t.voiceStart}</strong><small>{t.voiceHint}</small></span>
-            <span className="voice-action-arrow" aria-hidden="true">→</span>
+            <span className="voice-copy">
+              <span className="voice-title-row"><strong>{t.voiceStart}</strong><em>{t.voiceTap}</em></span>
+              <small>{t.voiceHint}</small>
+            </span>
           </button>
           <button className="secondary-button quick-start-button" onClick={() => setScreen("intake")}>
             <AttachmentIcon />
@@ -785,9 +793,9 @@ export default function Home() {
 
       {screen === "intake" && (
         <section className="intake-screen screen-enter">
-          <button className="back-button" onClick={() => setScreen("home")}>← {t.back}</button>
-          <h1>{t.intakeTitle}</h1>
-          <p className="lead compact">{t.intakeHelp}</p>
+          {voiceStatus !== "recording" && <button className="back-button compact-back-button" onClick={() => setScreen("home")}>← {t.back}</button>}
+          <h1>{voiceStatus === "recording" ? t.voiceIntakeTitle : t.intakeTitle}</h1>
+          <p className="lead compact">{voiceStatus === "recording" ? t.voiceIntakeHelp : t.intakeHelp}</p>
 
           <button
             className={`voice-primary-button intake-voice ${voiceStatus === "recording" ? "recording" : ""}`}
@@ -795,8 +803,8 @@ export default function Home() {
             onClick={voiceStatus === "recording" ? stopVoiceCapture : startVoiceCapture}
           >
             <span className="voice-symbol" aria-hidden="true">{voiceStatus === "recording" ? "■" : <><i /><i /><i /></>}</span>
-            <span>
-              <strong>{voiceStatus === "recording" ? t.voiceStop : t.voiceStart}</strong>
+            <span className="voice-copy">
+              {voiceStatus === "recording" ? <strong>{t.voiceStop}</strong> : <span className="voice-title-row"><strong>{t.voiceStart}</strong><em>{t.voiceTap}</em></span>}
               <small>{voiceStatus === "recording" ? t.listening : voiceStatus === "transcribing" ? t.voiceTranscribing : t.voiceHint}</small>
             </span>
           </button>
@@ -896,11 +904,8 @@ export default function Home() {
                   <span className={`install-step-visual step-${index + 1}`} aria-hidden="true">
                     {index === 0 && (
                       <span className="browser-tile">
-                        {deviceFamily !== "other" && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={deviceFamily === "iphone" ? "/brands/safari.svg" : "/brands/chrome.svg"} alt="" />
-                        )}
-                        <small>{deviceFamily === "iphone" ? "Safari" : deviceFamily === "android" ? "Chrome" : "Web"}</small>
+                        <span className="browser-glyph">◎</span>
+                        <small>{locale === "es" ? "Navegador" : "Browser"}</small>
                       </span>
                     )}
                     {index === 1 && <span className="tap-target">{deviceFamily === "iphone" ? "↥" : "•••"}</span>}
@@ -984,7 +989,9 @@ export default function Home() {
           <a href="https://github.com/elesdex/pausa" target="_blank" rel="noreferrer">
             {locale === "es" ? "Código abierto" : "Open source"}
           </a>
+          <button onClick={openInstall}>{t.installAction}</button>
         </nav>
+        <button className="footer-brand-link" onClick={goHome} aria-label={locale === "es" ? "Volver al inicio de Pausa" : "Return to Pausa home"}>Pausa</button>
       </footer>
     </main>
   );
