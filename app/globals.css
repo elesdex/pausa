@@ -64,10 +64,8 @@ button { color: inherit; }
 .calm-orbit::before, .calm-orbit::after { content: ""; position: absolute; border: 1px solid rgba(47,122,103,.25); border-radius: 50%; inset: -14px; }
 .calm-orbit::after { inset: -28px; border-color: rgba(47,122,103,.1); }
 .calm-orbit > .pause-mark { width: 78px; height: 78px; border-radius: 50%; background: var(--green-dark); color: #fff8e9; }
-.calm-orbit > .pause-mark > span { width: 11px; height: 28px; margin-top: 15px; border-radius: 7px; box-shadow: 20px 0 0 currentColor; transform: translateX(-10px); }
-.assistant-eyes { position: absolute; z-index: 2; top: 46px; left: 50%; display: flex; gap: 15px; transform: translateX(-50%); pointer-events: none; }
-.assistant-eyes i { width: 7px; height: 7px; border-radius: 50%; background: #fff8e9; animation: blink 4.8s ease-in-out infinite; }
-@keyframes blink { 0%,44%,48%,100% { transform: scaleY(1); } 46% { transform: scaleY(.12); } }
+.calm-orbit > .pause-mark > span { width: 13px; height: 38px; border-radius: 8px; box-shadow: 22px 0 0 currentColor; transform: translateX(-11px); animation: watch 5.2s ease-in-out infinite; }
+@keyframes watch { 0%,18%,100% { transform: translateX(-11px) rotate(0); } 34%,46% { transform: translateX(-15px) rotate(-3deg); } 62%,74% { transform: translateX(-7px) rotate(3deg); } }
 
 .eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; line-height: 1.4; font-weight: 800; color: var(--green-dark); margin: 0 0 12px; }
 h1 { font-size: clamp(2.55rem, 12vw, 4.2rem); letter-spacing: -.055em; line-height: .98; margin: 0 0 20px; font-weight: 800; }
@@ -92,23 +90,25 @@ h1 { font-size: clamp(2.55rem, 12vw, 4.2rem); letter-spacing: -.055em; line-heig
 .voice-primary-button strong, .voice-primary-button small { display: block; }
 .voice-primary-button strong { font-size: 1.05rem; margin-bottom: 4px; }
 .voice-primary-button small { color: rgba(255,255,255,.76); line-height: 1.35; }
-.voice-symbol { flex: 0 0 48px; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.14); color: #f2d79a; font-size: 1.1rem; }
-.quick-start-button { margin: 12px 0 0; background: rgba(255,250,240,.78); }
+.voice-symbol { flex: 0 0 48px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; gap: 4px; border-radius: 50%; background: rgba(255,255,255,.14); color: #f2d79a; font-size: 1.1rem; box-shadow: 0 0 0 0 rgba(242,215,154,.25); animation: voiceHalo 2.2s ease-out infinite; }
+.voice-symbol i { width: 4px; height: 15px; border-radius: 99px; background: currentColor; animation: voiceWave 1.05s ease-in-out infinite; }
+.voice-symbol i:nth-child(2) { height: 24px; animation-delay: -.22s; }
+.voice-symbol i:nth-child(3) { animation-delay: -.44s; }
+@keyframes voiceWave { 0%,100% { transform: scaleY(.55); opacity: .65; } 50% { transform: scaleY(1); opacity: 1; } }
+@keyframes voiceHalo { 70%,100% { box-shadow: 0 0 0 13px rgba(242,215,154,0); } }
+.quick-start-button { width: 82%; min-height: 48px; margin: 14px auto 0; padding: 11px 18px; background: rgba(255,250,240,.72); font-size: .9rem; }
 .intake-voice { margin: 0 0 18px; }
 .home-mark-button { width: 50px; height: 50px; margin: 34px auto 2px; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--green-dark); color: white; cursor: pointer; box-shadow: 0 9px 22px rgba(18,63,57,.18); }
 .home-mark-button .pause-mark > span { width: 7px; height: 20px; border-radius: 4px; box-shadow: 12px 0 0 currentColor; transform: translateX(-6px); }
 
-.install-prompt-card { width: 100%; display: flex; gap: 14px; align-items: center; text-align: left; margin-top: 22px; padding: 15px; border: 1px solid rgba(189,145,68,.27); border-radius: 20px; background: rgba(255,250,240,.64); }
+.install-prompt-card { width: min(100%, 430px); display: flex; gap: 12px; align-items: center; text-align: left; margin-top: 22px; padding: 12px 14px; border: 1px solid rgba(189,145,68,.27); border-radius: 18px; background: rgba(255,250,240,.58); }
 .mini-phone { flex: 0 0 48px; height: 62px; border: 2px solid var(--green-dark); border-radius: 12px; display: grid; place-items: center; color: var(--green-dark); }
 .mini-phone .pause-mark > span { width: 6px; height: 16px; border-radius: 3px; box-shadow: 10px 0 0 currentColor; transform: translateX(-5px); }
 .install-prompt-card strong { display: block; font-size: .92rem; }
-.install-prompt-card p { margin: 3px 0 8px; color: var(--ink-soft); font-size: .76rem; line-height: 1.35; }
+.install-prompt-card p { margin: 3px 0 7px; max-width: 245px; color: var(--ink-soft); font-size: .72rem; line-height: 1.3; }
 .install-prompt-actions { display: flex; gap: 12px; }
 .install-prompt-actions button { border: 0; background: transparent; color: var(--green-dark); padding: 2px 0; font-size: .76rem; font-weight: 850; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 
-.three-steps { display: flex; width: 100%; justify-content: space-between; gap: 6px; margin: 30px 0 20px; font-size: .75rem; color: var(--ink-soft); }
-.three-steps span { flex: 1; position: relative; padding-top: 13px; }
-.three-steps span::before { content: ""; position: absolute; left: 4px; right: 4px; top: 0; height: 3px; border-radius: 99px; background: var(--green-soft); }
 .privacy-note { font-size: .8rem; color: var(--ink-soft); }
 .privacy-note span { color: var(--green); font-size: .55rem; vertical-align: 2px; }
 
@@ -157,12 +157,18 @@ textarea:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(47,122,1
 .loading-line span { display: block; width: 45%; height: 100%; border-radius: inherit; background: var(--green); animation: loading 1.4s ease-in-out infinite; }
 @keyframes loading { from { transform: translateX(-100%); } to { transform: translateX(320%); } }
 
-.risk-card { border-radius: 26px; padding: 24px; margin: 14px 0 24px; box-shadow: var(--shadow); }
-.risk-high { background: var(--orange-soft); }
-.risk-medium { background: var(--yellow-soft); }
-.risk-low { background: var(--green-soft); }
-.risk-uncertain { background: #e7edf2; }
-.risk-pill { display: inline-block; border-radius: 999px; background: rgba(255,255,255,.7); padding: 8px 11px; font-size: .78rem; font-weight: 800; margin-bottom: 22px; }
+.risk-card { position: relative; overflow: hidden; border-radius: 26px; padding: 28px 24px 24px; margin: 14px 0 24px; box-shadow: var(--shadow); border: 1px solid transparent; }
+.risk-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 7px; }
+.risk-high { background: #f9dfdc; border-color: rgba(168,64,53,.28); }
+.risk-high::before, .risk-high .risk-dot { background: #a84035; }
+.risk-medium { background: #f7edc7; border-color: rgba(189,145,68,.32); }
+.risk-medium::before, .risk-medium .risk-dot { background: #bd9144; }
+.risk-low { background: #deeee5; border-color: rgba(30,103,89,.25); }
+.risk-low::before, .risk-low .risk-dot { background: #1e6759; }
+.risk-uncertain { background: #e7edf2; border-color: rgba(82,107,101,.2); }
+.risk-uncertain::before, .risk-uncertain .risk-dot { background: #667984; }
+.risk-pill { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; background: rgba(255,255,255,.72); padding: 8px 11px; font-size: .78rem; font-weight: 800; margin-bottom: 22px; }
+.risk-dot { width: 9px; height: 9px; border-radius: 50%; }
 .risk-card h1 { font-size: 2.2rem; margin-bottom: 14px; }
 .risk-card p { color: var(--ink-soft); line-height: 1.55; margin: 0; }
 .demo-badge { display: inline-block; margin-top: 18px; border-top: 1px solid rgba(23,50,77,.12); padding-top: 12px; width: 100%; font-size: .75rem; font-weight: 800; color: var(--ink-soft); }
@@ -190,11 +196,14 @@ textarea:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(47,122,1
 .install-guide .detected-device { color: var(--ink); }
 .install-guide .install-done { margin: 18px 0 0; padding-top: 16px; border-top: 1px solid var(--border); color: var(--green-dark); font-weight: 800; }
 .install-screen > .device-options { justify-content: center; margin-bottom: 22px; }
+.install-choice { margin-bottom: 28px; }
 .install-story { margin-top: 20px !important; gap: 18px !important; }
 .install-story li { display: grid !important; grid-template-columns: 92px 1fr; align-items: center !important; gap: 15px !important; }
 .install-story li::before { display: none !important; }
 .install-step-visual { width: 92px; height: 76px; display: grid; place-items: center; border-radius: 18px; overflow: hidden; position: relative; background: linear-gradient(145deg, #f7ebd0, #fffaf0); border: 1px solid rgba(189,145,68,.23); color: var(--green-dark); }
-.browser-tile { width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; background: white; border: 1px solid rgba(18,63,57,.15); font-size: .62rem; font-weight: 900; box-shadow: 0 6px 14px rgba(18,63,57,.1); }
+.browser-tile { width: 58px; height: 58px; border-radius: 15px; display: grid; place-items: center; align-content: center; gap: 3px; background: white; border: 1px solid rgba(18,63,57,.15); font-size: .62rem; font-weight: 900; box-shadow: 0 6px 14px rgba(18,63,57,.1); }
+.browser-tile img { width: 29px; height: 29px; display: block; }
+.browser-tile small { font-size: .52rem; line-height: 1; }
 .tap-target { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 13px; background: white; border: 1px solid rgba(18,63,57,.18); font-size: 1.35rem; animation: tapPulse 1.8s ease-in-out infinite; }
 @keyframes tapPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(189,145,68,.28); } 50% { box-shadow: 0 0 0 12px rgba(189,145,68,0); } }
 .menu-row { width: 78px; min-height: 42px; padding: 8px; border-radius: 9px; display: grid; place-items: center; text-align: center; background: white; border: 2px solid var(--gold); font-size: .57rem; font-weight: 900; line-height: 1.15; animation: menuGlow 2.2s ease-in-out infinite; }
@@ -214,6 +223,7 @@ footer a { color: var(--green-dark); font-weight: 800; text-underline-offset: 3p
 .emergency-card p { font-size: .58rem; line-height: 1.2; margin: 2px 0 0; }
 .emergency-card a { flex: 0 0 auto; min-width: 47px; border-radius: 999px; padding: 9px 10px; background: #873d34; color: white; text-decoration: none; font-size: .78rem; }
 .emergency-disclaimer { margin-bottom: 18px; font-size: .62rem; }
+footer .home-mark-button { width: 44px; height: 44px; margin: 0 auto 24px; }
 
 .legal-shell { width: min(100% - 40px, 720px); margin: 0 auto; padding: 28px 0 64px; }
 .legal-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; }

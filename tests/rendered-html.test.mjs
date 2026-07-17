@@ -113,8 +113,8 @@ test("live path requests GPT-5.6 with strict structured output", async () => {
                 risk: "uncertain",
                 title: "Not enough information yet",
                 summary: "The message is too short to assess confidently.",
-                signals: ["There is limited context."],
-                nextSteps: ["Open the service through a channel you already know."],
+                signals: ["There is limited context.", "The sender is not identified.", "No trusted channel is named.", "This fourth signal must be removed."],
+                nextSteps: ["Open the service through a channel you already know. ".repeat(8), "Do not use the supplied contact.", "Ask a trusted person to help verify.", "This fourth step must be removed."],
                 learning: "Verify independently before acting.",
                 emergency: false,
               }),
@@ -142,13 +142,19 @@ test("live path requests GPT-5.6 with strict structured output", async () => {
     const result = await response.json();
     assert.equal(result.model, "gpt-5.6");
     assert.equal(result.demoMode, false);
+    assert.equal(result.signals.length, 3);
+    assert.equal(result.nextSteps.length, 3);
+    assert.ok(result.nextSteps[0].length <= 118);
     assert.equal(capturedRequest.model, "gpt-5.6");
     assert.equal(capturedRequest.max_output_tokens, 1600);
     assert.equal(capturedRequest.reasoning.effort, "medium");
     assert.equal(capturedRequest.text.format.type, "json_schema");
     assert.equal(capturedRequest.text.format.strict, true);
+    assert.equal(capturedRequest.text.format.schema.properties.nextSteps.maxItems, 3);
+    assert.equal(capturedRequest.text.format.schema.properties.nextSteps.items.maxLength, 118);
     assert.match(capturedRequest.instructions, /untrusted evidence/);
     assert.match(capturedRequest.instructions, /Never invent an official link/);
+    assert.match(capturedRequest.instructions, /at most 16 words/);
 
     const imageForm = new FormData();
     imageForm.set("locale", "es");
@@ -258,4 +264,14 @@ test("ships a clearly labeled synthetic screenshot for vision demos", async () =
   assert.match(svg, /EJEMPLO SINTÉTICO PARA DEMOSTRACIÓN/);
   assert.match(svg, /no corresponden a una/);
   assert.deepEqual([...png.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+});
+
+test("includes lightweight local browser marks and manual test cases", async () => {
+  const safari = await readFile(new URL("../public/brands/safari.svg", import.meta.url), "utf8");
+  const chrome = await readFile(new URL("../public/brands/chrome.svg", import.meta.url), "utf8");
+  const cases = JSON.parse(await readFile(new URL("../examples/test-cases/messages.json", import.meta.url), "utf8"));
+  assert.match(safari, /<title>Safari<\/title>/);
+  assert.match(chrome, /<title>Google Chrome<\/title>/);
+  assert.equal(cases.length, 12);
+  assert.deepEqual(new Set(cases.map((item) => item.expectedRisk)), new Set(["high", "medium", "uncertain", "low"]));
 });

@@ -67,7 +67,7 @@ const copy = {
     otherDevice: "Otro dispositivo",
     closeGuide: "Cerrar guía",
     installTitle: "Ten Pausa siempre a la mano",
-    installIntro: "Guárdala como un icono en tu pantalla de inicio. No necesitas una tienda de aplicaciones.",
+    installIntro: "Guárdala como un icono en tu pantalla de inicio.",
     installDetected: "Pasos para este dispositivo",
     installDone: "Cuando termines, abre Pausa desde el nuevo icono.",
     camera: "Tomar una foto",
@@ -95,6 +95,8 @@ const copy = {
     share: "Pedir ayuda a alguien de confianza",
     shareHelp: "Comparte esta orientación para pedir una segunda opinión antes de actuar.",
     shareIntro: "Recibí algo que me preocupa. Pausa encontró estas señales. ¿Me ayudas a verificarlo antes de que haga algo?",
+    shareSignals: "Lo que llamó la atención",
+    sharePromo: "Puedes revisar mensajes sospechosos con Pausa",
     shared: "Listo para pedir una segunda opinión.",
     shareTitle: "¿Me ayudas a verificar esto?",
     newCheck: "Revisar otro mensaje",
@@ -107,9 +109,6 @@ const copy = {
     timeout: "La revisión tardó demasiado. No respondas al mensaje; inténtalo nuevamente.",
     textRequired: "Comparte una imagen, escribe el mensaje o cuéntamelo con voz.",
     demoBadge: "Modo de demostración",
-    stepOne: "1. No respondas",
-    stepTwo: "2. Comparte lo que ves",
-    stepThree: "3. Sigue un paso seguro",
   },
   en: {
     language: "Language",
@@ -146,7 +145,7 @@ const copy = {
     otherDevice: "Another device",
     closeGuide: "Close guide",
     installTitle: "Keep Pausa within reach",
-    installIntro: "Save it as an icon on your home screen. You do not need an app store.",
+    installIntro: "Save it as an icon on your home screen.",
     installDetected: "Steps for this device",
     installDone: "When you finish, open Pausa from the new icon.",
     camera: "Take a photo",
@@ -174,6 +173,8 @@ const copy = {
     share: "Ask someone you trust",
     shareHelp: "Share this guidance to ask for a second opinion before you act.",
     shareIntro: "I received something that worries me. Pausa found these signals. Can you help me verify it before I do anything?",
+    shareSignals: "What stood out",
+    sharePromo: "You can check suspicious messages with Pausa",
     shared: "Ready to ask for a second opinion.",
     shareTitle: "Can you help me verify this?",
     newCheck: "Check another message",
@@ -186,9 +187,6 @@ const copy = {
     timeout: "The check took too long. Do not respond to the message; please try again.",
     textRequired: "Share an image, type the message, or tell me with your voice.",
     demoBadge: "Demonstration mode",
-    stepOne: "1. Do not respond",
-    stepTwo: "2. Share what you see",
-    stepThree: "3. Take one safe step",
   },
 } as const;
 
@@ -278,6 +276,8 @@ export default function Home() {
   const audioChunksRef = useRef<Blob[]>([]);
   const microphoneStreamRef = useRef<MediaStream | null>(null);
   const spokenAudioRef = useRef<HTMLAudioElement | null>(null);
+  const speechUrlRef = useRef<string | null>(null);
+  const speechPromiseRef = useRef<Promise<string> | null>(null);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const cameraRef = useRef<HTMLInputElement | null>(null);
   const uploadRef = useRef<HTMLInputElement | null>(null);
@@ -336,6 +336,7 @@ export default function Home() {
   useEffect(() => {
     return () => {
       spokenAudioRef.current?.pause();
+      if (speechUrlRef.current) URL.revokeObjectURL(speechUrlRef.current);
       microphoneStreamRef.current?.getTracks().forEach((track) => track.stop());
     };
   }, []);
@@ -395,6 +396,10 @@ export default function Home() {
   }, [deviceGuide, locale]);
 
   function reset() {
+    spokenAudioRef.current?.pause();
+    if (speechUrlRef.current) URL.revokeObjectURL(speechUrlRef.current);
+    speechUrlRef.current = null;
+    speechPromiseRef.current = null;
     setMessage("");
     setImageFile(null);
     setImagePreview(null);
@@ -526,16 +531,46 @@ export default function Home() {
         throw new Error("Analysis failed");
       }
       const result = (await response.json()) as Analysis;
+      if (speechUrlRef.current) URL.revokeObjectURL(speechUrlRef.current);
+      speechUrlRef.current = null;
+      speechPromiseRef.current = null;
       setAnalysis(result);
       window.localStorage.setItem("pausa-used", "true");
       setHasUsedBefore(true);
       setScreen("result");
+      void prepareSpeech(result).catch(() => {
+        // The visible result remains usable even if audio preparation fails.
+      });
     } catch (reason) {
       setError(reason instanceof DOMException && reason.name === "AbortError" ? t.timeout : t.error);
       setScreen("intake");
     } finally {
       window.clearTimeout(timeout);
     }
+  }
+
+  function prepareSpeech(result: Analysis) {
+    if (speechUrlRef.current) return Promise.resolve(speechUrlRef.current);
+    if (speechPromiseRef.current) return speechPromiseRef.current;
+
+    const promise = fetch("/api/speak", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        locale,
+        text: `${result.title}. ${result.summary}. ${locale === "es" ? "Siguiente paso" : "Next step"}: ${result.nextSteps[0] || ""}`,
+      }),
+    }).then(async (response) => {
+      if (!response.ok) throw new Error("Speech failed");
+      const audioUrl = URL.createObjectURL(await response.blob());
+      speechUrlRef.current = audioUrl;
+      return audioUrl;
+    }).finally(() => {
+      speechPromiseRef.current = null;
+    });
+
+    speechPromiseRef.current = promise;
+    return promise;
   }
 
   async function speakResult() {
@@ -548,24 +583,13 @@ export default function Home() {
 
     try {
       setIsSpeaking(true);
-      const response = await fetch("/api/speak", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          locale,
-          text: `${analysis.title}. ${analysis.summary}. ${t.next}: ${analysis.nextSteps.join(". ")}`,
-        }),
-      });
-      if (!response.ok) throw new Error("Speech failed");
-      const audioUrl = URL.createObjectURL(await response.blob());
+      const audioUrl = await prepareSpeech(analysis);
       const audio = new Audio(audioUrl);
       spokenAudioRef.current = audio;
       audio.onended = () => {
-        URL.revokeObjectURL(audioUrl);
         setIsSpeaking(false);
       };
       audio.onerror = () => {
-        URL.revokeObjectURL(audioUrl);
         setIsSpeaking(false);
       };
       await audio.play();
@@ -618,9 +642,10 @@ export default function Home() {
 
   async function shareGuidance() {
     if (!analysis) return;
-    const shareText = `${t.shareIntro}\n\n${analysis.title}\n\n${analysis.summary}\n\n${t.next}:\n${analysis.nextSteps
-      .map((step, index) => `${index + 1}. ${step}`)
-      .join("\n")}\n\n${t.disclaimer}`;
+    const shareText = `${t.shareIntro}\n\n${analysis.title}\n${analysis.summary}\n\n${t.shareSignals}:\n${analysis.signals
+      .slice(0, 2)
+      .map((signal) => `• ${signal}`)
+      .join("\n")}\n\n${t.sharePromo}:\nhttps://pausa-digital.elesdex.chatgpt.site`;
 
     try {
       if (navigator.share) {
@@ -655,23 +680,17 @@ export default function Home() {
       {screen === "home" && (
         <section className="home-screen screen-enter">
           <div className="calm-orbit">
-            <span className="assistant-eyes" aria-hidden="true"><i /><i /></span>
             <PauseMark className="assistant-mark" />
           </div>
           {!hasUsedBefore && <p className="eyebrow">{t.eyebrow}</p>}
           <h1>{hasUsedBefore ? t.returningHeadline : t.headline}</h1>
           <p className="lead">{hasUsedBefore ? t.returningSubhead : t.subhead}</p>
           <button className="voice-primary-button" onClick={startVoiceCapture}>
-            <span className="voice-symbol" aria-hidden="true">●</span>
+            <span className="voice-symbol" aria-hidden="true"><i /><i /><i /></span>
             <span><strong>{t.voiceStart}</strong><small>{t.voiceHint}</small></span>
           </button>
           <button className="secondary-button quick-start-button" onClick={() => setScreen("intake")}>{t.start}</button>
           <button className="text-button" onClick={() => runAnalysis(true)}>{t.demo}</button>
-          {!hasUsedBefore && (
-            <div className="three-steps" aria-label={locale === "es" ? "Cómo funciona Pausa" : "How Pausa works"}>
-              <span>{t.stepOne}</span><span>{t.stepTwo}</span><span>{t.stepThree}</span>
-            </div>
-          )}
           <p className="privacy-note"><span aria-hidden="true">●</span> {t.privacy}</p>
           {showInstallCard && (
             <aside className="install-prompt-card">
@@ -700,7 +719,7 @@ export default function Home() {
             disabled={voiceStatus === "transcribing"}
             onClick={voiceStatus === "recording" ? stopVoiceCapture : startVoiceCapture}
           >
-            <span className="voice-symbol" aria-hidden="true">{voiceStatus === "recording" ? "■" : "●"}</span>
+            <span className="voice-symbol" aria-hidden="true">{voiceStatus === "recording" ? "■" : <><i /><i /><i /></>}</span>
             <span>
               <strong>{voiceStatus === "recording" ? t.voiceStop : t.voiceStart}</strong>
               <small>{voiceStatus === "recording" ? t.listening : voiceStatus === "transcribing" ? t.voiceTranscribing : t.voiceHint}</small>
@@ -765,7 +784,6 @@ export default function Home() {
 
           {error && <p className="error-message" role="alert">{error}</p>}
           <button className="primary-button" disabled={isPreparingImage} onClick={() => runAnalysis(false)}>{t.review}</button>
-          <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />
         </section>
       )}
 
@@ -789,7 +807,15 @@ export default function Home() {
               {installSteps.map((step, index) => (
                 <li key={step}>
                   <span className={`install-step-visual step-${index + 1}`} aria-hidden="true">
-                    {index === 0 && <span className="browser-tile">{deviceFamily === "iphone" ? "Safari" : deviceFamily === "android" ? "Chrome" : "Web"}</span>}
+                    {index === 0 && (
+                      <span className="browser-tile">
+                        {deviceFamily !== "other" && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={deviceFamily === "iphone" ? "/brands/safari.svg" : "/brands/chrome.svg"} alt="" />
+                        )}
+                        <small>{deviceFamily === "iphone" ? "Safari" : deviceFamily === "android" ? "Chrome" : "Web"}</small>
+                      </span>
+                    )}
                     {index === 1 && <span className="tap-target">{deviceFamily === "iphone" ? "↥" : "•••"}</span>}
                     {index === 2 && <span className="menu-row">＋ {locale === "es" ? "Pantalla de inicio" : "Home screen"}</span>}
                     {index === 3 && <span className="new-app"><PauseMark /></span>}
@@ -819,7 +845,6 @@ export default function Home() {
             </div>
           )}
           <button className="primary-button" onClick={() => setScreen("intake")}>{t.start}</button>
-          <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />
         </section>
       )}
 
@@ -827,7 +852,7 @@ export default function Home() {
         <section className="result-screen screen-enter">
           <p className="eyebrow">{t.resultEyebrow}</p>
           <div className={`risk-card risk-${analysis.risk}`}>
-            <span className="risk-pill">{riskLabel}</span>
+            <span className="risk-pill"><span className="risk-dot" aria-hidden="true" />{riskLabel}</span>
             <h1>{analysis.title}</h1>
             <p>{analysis.summary}</p>
             {analysis.demoMode && <span className="demo-badge">{t.demoBadge}</span>}
@@ -858,11 +883,11 @@ export default function Home() {
           <button className="primary-button" onClick={reset}>{t.newCheck}</button>
           <p className="disclaimer">{t.disclaimer}</p>
           {error && <p className="error-message" role="alert">{error}</p>}
-          <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />
         </section>
       )}
 
       <footer>
+        <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />
         <aside className="emergency-card">
           <div><strong>{t.emergencyTitle}</strong><p>{t.emergencyBody}</p></div>
           <a href="tel:911">911</a>

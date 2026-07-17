@@ -1,0 +1,75 @@
+[
+  {
+    "id": "bank-urgent-call-es",
+    "locale": "es",
+    "expectedRisk": "high",
+    "message": "ALERTA: Detectamos una transferencia. Si no la reconoces, llama inmediatamente al número incluido en este mensaje."
+  },
+  {
+    "id": "unsolicited-credit-es",
+    "locale": "es",
+    "expectedRisk": "high",
+    "message": "Fuiste aprobado para un crédito que no solicitaste. Envíanos foto de tu identificación y el código que llegará por SMS."
+  },
+  {
+    "id": "delivery-link-es",
+    "locale": "es",
+    "expectedRisk": "high",
+    "message": "Tu paquete está retenido. Paga una pequeña tarifa hoy desde el enlace adjunto o será devuelto."
+  },
+  {
+    "id": "family-impersonation-es",
+    "locale": "es",
+    "expectedRisk": "high",
+    "message": "Hola mamá, cambié de número. Estoy en un problema y necesito que me transfieras dinero sin decirle a nadie."
+  },
+  {
+    "id": "unexpected-invoice-es",
+    "locale": "es",
+    "expectedRisk": "medium",
+    "message": "Adjunto la factura pendiente. Necesitamos el pago hoy. Confirma si todavía usas la misma cuenta bancaria."
+  },
+  {
+    "id": "short-family-message-es",
+    "locale": "es",
+    "expectedRisk": "uncertain",
+    "message": "Hola, soy yo. Contéstame cuando puedas."
+  },
+  {
+    "id": "appointment-reminder-es",
+    "locale": "es",
+    "expectedRisk": "low",
+    "message": "Recordatorio: tu cita es mañana a las 10:30. No necesitas responder ni compartir información."
+  },
+  {
+    "id": "purchase-receipt-es",
+    "locale": "es",
+    "expectedRisk": "low",
+    "message": "Recibo de tu compra en tienda. Este mensaje es informativo y no solicita pagos, contraseñas ni llamadas."
+  },
+  {
+    "id": "tech-support-en",
+    "locale": "en",
+    "expectedRisk": "high",
+    "message": "Your device is infected. Install our remote access app now and read us the security code on your screen."
+  },
+  {
+    "id": "gift-card-boss-en",
+    "locale": "en",
+    "expectedRisk": "high",
+    "message": "I am in a meeting. Buy gift cards immediately, send me the codes, and do not call me."
+  },
+  {
+    "id": "payment-change-en",
+    "locale": "en",
+    "expectedRisk": "medium",
+    "message": "We changed our bank account. Please use the new details in the attached document for today's payment."
+  },
+  {
+    "id": "calendar-confirmation-en",
+    "locale": "en",
+    "expectedRisk": "low",
+    "message": "Your calendar invitation was accepted. No action is required. Open your calendar directly to see the event."
+  }
+]
+
