@@ -29,6 +29,10 @@ Pausa is a decision aid, not an authority. It identifies warning signals and rec
 
 Pausa does not replace emergency services, law enforcement, banks, healthcare professionals, legal counsel, or trusted people. The MVP does not automatically call or message anyone. It offers a user-initiated `tel:911` link labeled specifically for Mexico and the United States; it does not infer location or route emergencies through AI. Broader emergency routing would require jurisdiction-aware data, explicit user configuration, confirmation, auditability, and separate safety review.
 
+## Verified organization channels
+
+A future verified-channel directory may offer official contact options for named organizations such as banks or delivery services. Every entry must be maintained separately from model output, link to a first-party source, record its country and verification date, and expire for re-review. Until that directory exists, Pausa must never present a phone number or link from model memory as official.
+
 ## Evaluation risks
 
 Test specifically for:

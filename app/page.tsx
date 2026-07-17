@@ -36,6 +36,8 @@ const copy = {
     language: "Idioma",
     eyebrow: "Ayuda para momentos de incertidumbre digital",
     headline: "Primero, pausa.",
+    returningHeadline: "¿Qué necesitas revisar?",
+    returningSubhead: "Cuéntamelo o comparte lo que ves. Te ayudamos a decidir el siguiente paso seguro.",
     subhead:
       "Si un mensaje te asustó o te está presionando, no respondas todavía. Lo revisamos contigo, con calma.",
     start: "Compartir foto o texto",
@@ -51,8 +53,8 @@ const copy = {
     installAction: "Instalar Pausa",
     privacy: "Nada se analiza hasta que tú lo compartes.",
     notEmergency: "Pausa no sustituye a los servicios de emergencia.",
-    emergencyTitle: "¿Hay peligro inmediato?",
-    emergencyBody: "No esperes una respuesta de Pausa. En México y Estados Unidos puedes llamar al 911.",
+    emergencyTitle: "¿Peligro inmediato?",
+    emergencyBody: "México y Estados Unidos",
     emergencyCall: "Llamar al 911",
     intakeTitle: "¿Qué tienes a la mano?",
     intakeHelp: "Elige la opción más fácil. No necesitas saber hacer una captura.",
@@ -89,10 +91,12 @@ const copy = {
     learning: "Para la próxima",
     speak: "Escuchar en voz alta",
     stopSpeak: "Detener voz",
-    aiVoice: "Voz generada por IA",
-    share: "Compartir con alguien de confianza",
-    shared: "Orientación lista para compartir.",
-    shareTitle: "Orientación de Pausa",
+    aiVoice: "Audio con voz sintética",
+    share: "Pedir ayuda a alguien de confianza",
+    shareHelp: "Comparte esta orientación para pedir una segunda opinión antes de actuar.",
+    shareIntro: "Recibí algo que me preocupa. Pausa encontró estas señales. ¿Me ayudas a verificarlo antes de que haga algo?",
+    shared: "Listo para pedir una segunda opinión.",
+    shareTitle: "¿Me ayudas a verificar esto?",
     newCheck: "Revisar otro mensaje",
     disclaimer:
       "Pausa identifica señales de riesgo, pero puede equivocarse. Verifica siempre por un canal oficial que tú ya conozcas.",
@@ -111,6 +115,8 @@ const copy = {
     language: "Language",
     eyebrow: "Help for moments of digital uncertainty",
     headline: "First, pause.",
+    returningHeadline: "What do you need to check?",
+    returningSubhead: "Tell me or share what you see. We will help you choose one safe next step.",
     subhead:
       "If a message scared or pressured you, do not respond yet. We will review it with you, calmly.",
     start: "Share a photo or text",
@@ -126,8 +132,8 @@ const copy = {
     installAction: "Install Pausa",
     privacy: "Nothing is analyzed until you choose to share it.",
     notEmergency: "Pausa does not replace emergency services.",
-    emergencyTitle: "Is anyone in immediate danger?",
-    emergencyBody: "Do not wait for Pausa. In the United States and Mexico, you can call 911.",
+    emergencyTitle: "Immediate danger?",
+    emergencyBody: "Mexico and the United States",
     emergencyCall: "Call 911",
     intakeTitle: "What do you have available?",
     intakeHelp: "Choose the easiest option. You do not need to know how to take a screenshot.",
@@ -164,10 +170,12 @@ const copy = {
     learning: "For next time",
     speak: "Listen out loud",
     stopSpeak: "Stop voice",
-    aiVoice: "AI-generated voice",
-    share: "Share with someone you trust",
-    shared: "Guidance is ready to share.",
-    shareTitle: "Pausa guidance",
+    aiVoice: "Audio uses a synthetic voice",
+    share: "Ask someone you trust",
+    shareHelp: "Share this guidance to ask for a second opinion before you act.",
+    shareIntro: "I received something that worries me. Pausa found these signals. Can you help me verify it before I do anything?",
+    shared: "Ready to ask for a second opinion.",
+    shareTitle: "Can you help me verify this?",
     newCheck: "Check another message",
     disclaimer:
       "Pausa identifies risk signals, but it can be wrong. Always verify through an official channel you already know.",
@@ -220,6 +228,14 @@ function PauseMark({ className = "" }: { className?: string }) {
   return <span className={`pause-mark ${className}`} aria-hidden="true"><span /></span>;
 }
 
+function HomeMarkButton({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button className="home-mark-button" onClick={onClick} aria-label={label}>
+      <PauseMark />
+    </button>
+  );
+}
+
 async function prepareImage(file: File) {
   if (file.size <= 4_500_000 || typeof createImageBitmap === "undefined") return file;
 
@@ -257,6 +273,7 @@ export default function Home() {
   const [voiceStatus, setVoiceStatus] = useState<"idle" | "recording" | "transcribing">("idle");
   const [installPrompt, setInstallPrompt] = useState<InstallPromptEvent | null>(null);
   const [showInstallCard, setShowInstallCard] = useState(false);
+  const [hasUsedBefore, setHasUsedBefore] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const microphoneStreamRef = useRef<MediaStream | null>(null);
@@ -282,6 +299,7 @@ export default function Home() {
   useEffect(() => {
     const localeTimer = window.setTimeout(() => setLocale(getInitialLocale()), 0);
     const installVisibilityTimer = window.setTimeout(() => setShowInstallCard(shouldShowInstallCard()), 0);
+    const returningUserTimer = window.setTimeout(() => setHasUsedBefore(window.localStorage.getItem("pausa-used") === "true"), 0);
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch(() => {
         // Installation support is progressive; the core safety flow still works.
@@ -303,6 +321,7 @@ export default function Home() {
     return () => {
       window.clearTimeout(localeTimer);
       window.clearTimeout(installVisibilityTimer);
+      window.clearTimeout(returningUserTimer);
       window.removeEventListener("beforeinstallprompt", captureInstallPrompt);
       window.removeEventListener("appinstalled", markInstalled);
     };
@@ -508,6 +527,8 @@ export default function Home() {
       }
       const result = (await response.json()) as Analysis;
       setAnalysis(result);
+      window.localStorage.setItem("pausa-used", "true");
+      setHasUsedBefore(true);
       setScreen("result");
     } catch (reason) {
       setError(reason instanceof DOMException && reason.name === "AbortError" ? t.timeout : t.error);
@@ -597,7 +618,7 @@ export default function Home() {
 
   async function shareGuidance() {
     if (!analysis) return;
-    const shareText = `${analysis.title}\n\n${analysis.summary}\n\n${t.next}:\n${analysis.nextSteps
+    const shareText = `${t.shareIntro}\n\n${analysis.title}\n\n${analysis.summary}\n\n${t.next}:\n${analysis.nextSteps
       .map((step, index) => `${index + 1}. ${step}`)
       .join("\n")}\n\n${t.disclaimer}`;
 
@@ -620,30 +641,37 @@ export default function Home() {
           <PauseMark className="brand-mark" />
           <span>Pausa</span>
         </button>
-        <label className="language-picker">
-          <span className="visually-hidden">{t.language}</span>
-          <select value={locale} onChange={(event) => changeLocale(event.target.value as Locale)} aria-label={t.language}>
-            <option value="es">ES</option>
-            <option value="en">EN</option>
-          </select>
-        </label>
+        {(screen === "home" || screen === "intake" || screen === "install") && (
+          <label className="language-picker">
+            <span className="visually-hidden">{t.language}</span>
+            <select value={locale} onChange={(event) => changeLocale(event.target.value as Locale)} aria-label={t.language}>
+              <option value="es">ES</option>
+              <option value="en">EN</option>
+            </select>
+          </label>
+        )}
       </header>
 
       {screen === "home" && (
         <section className="home-screen screen-enter">
-          <div className="calm-orbit"><PauseMark /></div>
-          <p className="eyebrow">{t.eyebrow}</p>
-          <h1>{t.headline}</h1>
-          <p className="lead">{t.subhead}</p>
+          <div className="calm-orbit">
+            <span className="assistant-eyes" aria-hidden="true"><i /><i /></span>
+            <PauseMark className="assistant-mark" />
+          </div>
+          {!hasUsedBefore && <p className="eyebrow">{t.eyebrow}</p>}
+          <h1>{hasUsedBefore ? t.returningHeadline : t.headline}</h1>
+          <p className="lead">{hasUsedBefore ? t.returningSubhead : t.subhead}</p>
           <button className="voice-primary-button" onClick={startVoiceCapture}>
             <span className="voice-symbol" aria-hidden="true">●</span>
             <span><strong>{t.voiceStart}</strong><small>{t.voiceHint}</small></span>
           </button>
           <button className="secondary-button quick-start-button" onClick={() => setScreen("intake")}>{t.start}</button>
           <button className="text-button" onClick={() => runAnalysis(true)}>{t.demo}</button>
-          <div className="three-steps" aria-label={locale === "es" ? "Cómo funciona Pausa" : "How Pausa works"}>
-            <span>{t.stepOne}</span><span>{t.stepTwo}</span><span>{t.stepThree}</span>
-          </div>
+          {!hasUsedBefore && (
+            <div className="three-steps" aria-label={locale === "es" ? "Cómo funciona Pausa" : "How Pausa works"}>
+              <span>{t.stepOne}</span><span>{t.stepTwo}</span><span>{t.stepThree}</span>
+            </div>
+          )}
           <p className="privacy-note"><span aria-hidden="true">●</span> {t.privacy}</p>
           {showInstallCard && (
             <aside className="install-prompt-card">
@@ -664,7 +692,6 @@ export default function Home() {
       {screen === "intake" && (
         <section className="intake-screen screen-enter">
           <button className="back-button" onClick={() => setScreen("home")}>← {t.back}</button>
-          <p className="eyebrow">Pausa</p>
           <h1>{t.intakeTitle}</h1>
           <p className="lead compact">{t.intakeHelp}</p>
 
@@ -738,7 +765,7 @@ export default function Home() {
 
           {error && <p className="error-message" role="alert">{error}</p>}
           <button className="primary-button" disabled={isPreparingImage} onClick={() => runAnalysis(false)}>{t.review}</button>
-          <button className="home-return-button" onClick={goHome}>{locale === "es" ? "Volver al inicio" : "Return home"}</button>
+          <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />
         </section>
       )}
 
@@ -754,16 +781,23 @@ export default function Home() {
       {screen === "install" && (
         <section className="install-screen screen-enter">
           <button className="back-button" onClick={() => setScreen("home")}>← {t.back}</button>
-          <p className="eyebrow">Pausa</p>
           <h1>{t.installTitle}</h1>
           <p className="lead compact">{t.installIntro}</p>
-          <div className="install-visual" aria-hidden="true">
-            <div className="install-phone"><PauseMark /><span>＋</span></div>
-            <div className="install-arrow">↑</div>
-          </div>
           <article className="guide-card install-guide">
             <p className="detected-device">{t.installDetected}: <strong>{deviceLabels[deviceGuide]}</strong></p>
-            <ol>{installSteps.map((step) => <li key={step}>{step}</li>)}</ol>
+            <ol className="install-story">
+              {installSteps.map((step, index) => (
+                <li key={step}>
+                  <span className={`install-step-visual step-${index + 1}`} aria-hidden="true">
+                    {index === 0 && <span className="browser-tile">{deviceFamily === "iphone" ? "Safari" : deviceFamily === "android" ? "Chrome" : "Web"}</span>}
+                    {index === 1 && <span className="tap-target">{deviceFamily === "iphone" ? "↥" : "•••"}</span>}
+                    {index === 2 && <span className="menu-row">＋ {locale === "es" ? "Pantalla de inicio" : "Home screen"}</span>}
+                    {index === 3 && <span className="new-app"><PauseMark /></span>}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
             <p className="install-done">{t.installDone}</p>
           </article>
           <div className="device-options" aria-label={t.installDetected}>
@@ -785,7 +819,7 @@ export default function Home() {
             </div>
           )}
           <button className="primary-button" onClick={() => setScreen("intake")}>{t.start}</button>
-          <button className="home-return-button" onClick={goHome}>{locale === "es" ? "Volver al inicio" : "Return home"}</button>
+          <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />
         </section>
       )}
 
@@ -816,19 +850,22 @@ export default function Home() {
             <span aria-hidden="true">✦</span><div><h2>{t.learning}</h2><p>{analysis.learning}</p></div>
           </article>
 
-          <button className="secondary-button" onClick={shareGuidance}>{t.share}</button>
+          <div className="trust-share">
+            <button className="secondary-button" onClick={shareGuidance}>{t.share}</button>
+            <p>{t.shareHelp}</p>
+          </div>
           {shareStatus && <p className="share-status" role="status">{shareStatus}</p>}
           <button className="primary-button" onClick={reset}>{t.newCheck}</button>
           <p className="disclaimer">{t.disclaimer}</p>
           {error && <p className="error-message" role="alert">{error}</p>}
-          <button className="home-return-button" onClick={goHome}>{locale === "es" ? "Volver al inicio" : "Return home"}</button>
+          <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />
         </section>
       )}
 
       <footer>
         <aside className="emergency-card">
           <div><strong>{t.emergencyTitle}</strong><p>{t.emergencyBody}</p></div>
-          <a href="tel:911">{t.emergencyCall}</a>
+          <a href="tel:911">911</a>
         </aside>
         <p className="emergency-disclaimer">{t.notEmergency}</p>
         <nav aria-label={locale === "es" ? "Información del proyecto" : "Project information"}>

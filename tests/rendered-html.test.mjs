@@ -27,9 +27,17 @@ test("server-renders the Pausa product shell", async () => {
   assert.match(html, /Primero, pausa/);
   assert.match(html, /Cuéntamelo con voz/);
   assert.match(html, /Compartir foto o texto/);
-  assert.match(html, /¿Hay peligro inmediato\?/);
+  assert.match(html, /¿Peligro inmediato\?/);
   assert.match(html, /Nothing is analyzed|Nada se analiza/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/);
+});
+
+test("keeps generated guidance in the language selected before analysis", async () => {
+  const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+  assert.match(source, /screen === "home" \|\| screen === "intake" \|\| screen === "install"/);
+  assert.match(source, /Pedir ayuda a alguien de confianza/);
+  assert.match(source, /segunda opinión antes de actuar/);
+  assert.match(source, /Audio con voz sintética/);
 });
 
 test("includes mobile installation metadata", async () => {
