@@ -15,6 +15,7 @@ export default function PrivacyPage() {
         <Link href="/">← Volver / Back</Link>
       </header>
 
+      <div id="es" className="legal-anchor" />
       <p className="eyebrow">Pausa</p>
       <h1>Privacidad</h1>
       <p className="updated">Versión del 16 de julio de 2026</p>
@@ -57,7 +58,7 @@ export default function PrivacyPage() {
         <h2>Demostración y compartir</h2>
         <ul>
           <li>El ejemplo guiado usa un mensaje ficticio y no llama al modelo.</li>
-          <li>La opción de compartir incluye la orientación y los pasos seguros, no el mensaje ni la imagen original.</li>
+          <li>La opción de compartir incluye un resumen y hasta dos señales, no el mensaje ni la imagen original.</li>
           <li>Pausa no envía nada automáticamente a familiares, bancos o autoridades.</li>
         </ul>
       </section>
@@ -72,6 +73,7 @@ export default function PrivacyPage() {
 
       <hr className="language-divider" />
 
+      <div id="en" className="legal-anchor" />
       <p className="eyebrow">English</p>
       <h1>Privacy</h1>
       <p className="updated">Version dated July 16, 2026</p>
@@ -112,7 +114,7 @@ export default function PrivacyPage() {
         <h2>Demo and sharing</h2>
         <ul>
           <li>The guided example uses a fictional message and does not call the model.</li>
-          <li>Sharing includes the guidance and safe steps, not the original message or image.</li>
+          <li>Sharing includes a short summary and up to two signals, not the original message or image.</li>
           <li>Pausa never contacts relatives, banks, or authorities automatically.</li>
         </ul>
       </section>

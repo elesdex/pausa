@@ -36,8 +36,9 @@ test("keeps generated guidance in the language selected before analysis", async 
   const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   assert.match(source, /screen === "home" \|\| screen === "intake" \|\| screen === "install"/);
   assert.match(source, /Pedir ayuda a alguien de confianza/);
-  assert.match(source, /segunda opinión antes de actuar/);
+  assert.match(source, /Comparte un resumen breve/);
   assert.match(source, /Audio con voz sintética/);
+  assert.match(source, /Revisado con Pausa/);
 });
 
 test("includes mobile installation metadata", async () => {
@@ -111,6 +112,7 @@ test("live path requests GPT-5.6 with strict structured output", async () => {
               type: "output_text",
               text: JSON.stringify({
                 risk: "uncertain",
+                subject: "A short account-review message from an unidentified sender.",
                 title: "Not enough information yet",
                 summary: "The message is too short to assess confidently.",
                 signals: ["There is limited context.", "The sender is not identified.", "No trusted channel is named.", "This fourth signal must be removed."],
@@ -152,6 +154,7 @@ test("live path requests GPT-5.6 with strict structured output", async () => {
     assert.equal(capturedRequest.text.format.strict, true);
     assert.equal(capturedRequest.text.format.schema.properties.nextSteps.maxItems, 3);
     assert.equal(capturedRequest.text.format.schema.properties.nextSteps.items.maxLength, 118);
+    assert.equal(capturedRequest.text.format.schema.properties.subject.maxLength, 110);
     assert.match(capturedRequest.instructions, /untrusted evidence/);
     assert.match(capturedRequest.instructions, /Never invent an official link/);
     assert.match(capturedRequest.instructions, /at most 16 words/);

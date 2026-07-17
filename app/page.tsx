@@ -10,6 +10,7 @@ type DeviceFamily = "iphone" | "android" | "other";
 
 type Analysis = {
   risk: Risk;
+  subject: string;
   title: string;
   summary: string;
   signals: string[];
@@ -50,7 +51,9 @@ const copy = {
     demo: "Probar con un ejemplo",
     install: "Guardar Pausa en mi celular",
     installLater: "Ahora no",
+    installDismiss: "Quitar sugerencia",
     installAction: "Instalar Pausa",
+    installClose: "Listo, volver al inicio",
     privacy: "Nada se analiza hasta que tú lo compartes.",
     notEmergency: "Pausa no sustituye a los servicios de emergencia.",
     emergencyTitle: "¿Peligro inmediato?",
@@ -93,15 +96,16 @@ const copy = {
     stopSpeak: "Detener voz",
     aiVoice: "Audio con voz sintética",
     share: "Pedir ayuda a alguien de confianza",
-    shareHelp: "Comparte esta orientación para pedir una segunda opinión antes de actuar.",
-    shareIntro: "Recibí algo que me preocupa. Pausa encontró estas señales. ¿Me ayudas a verificarlo antes de que haga algo?",
-    shareSignals: "Lo que llamó la atención",
-    sharePromo: "Puedes revisar mensajes sospechosos con Pausa",
-    shared: "Listo para pedir una segunda opinión.",
+    shareHelp: "Comparte un resumen breve para verificarlo antes de actuar.",
+    shareIntro: "Recibí algo que me preocupa. ¿Me ayudas a verificarlo?",
+    shareSubject: "Lo que recibí",
+    shareSignals: "Por qué Pausa lo marcó como",
+    sharePromo: "Revisado con Pausa",
+    shared: "Listo para compartir.",
     shareTitle: "¿Me ayudas a verificar esto?",
     newCheck: "Revisar otro mensaje",
     disclaimer:
-      "Pausa identifica señales de riesgo, pero puede equivocarse. Verifica siempre por un canal oficial que tú ya conozcas.",
+      "Pausa identifica señales de riesgo, pero puede equivocarse.\nVerifica siempre por un canal oficial que tú ya conozcas.",
     error: "No pudimos revisar esto todavía. Intenta con texto o una imagen más pequeña.",
     liveUnavailable: "El análisis en vivo aún no está conectado. Puedes probar el ejemplo guiado.",
     imageTooLarge: "La imagen es demasiado grande. Elige una captura o foto de menos de 5 MB.",
@@ -128,7 +132,9 @@ const copy = {
     demo: "Try a guided example",
     install: "Keep Pausa on my phone",
     installLater: "Not now",
+    installDismiss: "Dismiss suggestion",
     installAction: "Install Pausa",
+    installClose: "Done, return home",
     privacy: "Nothing is analyzed until you choose to share it.",
     notEmergency: "Pausa does not replace emergency services.",
     emergencyTitle: "Immediate danger?",
@@ -171,15 +177,16 @@ const copy = {
     stopSpeak: "Stop voice",
     aiVoice: "Audio uses a synthetic voice",
     share: "Ask someone you trust",
-    shareHelp: "Share this guidance to ask for a second opinion before you act.",
-    shareIntro: "I received something that worries me. Pausa found these signals. Can you help me verify it before I do anything?",
-    shareSignals: "What stood out",
-    sharePromo: "You can check suspicious messages with Pausa",
-    shared: "Ready to ask for a second opinion.",
+    shareHelp: "Share a short summary so you can verify it before acting.",
+    shareIntro: "I received something that worries me. Can you help me verify it?",
+    shareSubject: "What I received",
+    shareSignals: "Why Pausa marked it as",
+    sharePromo: "Reviewed with Pausa",
+    shared: "Ready to share.",
     shareTitle: "Can you help me verify this?",
     newCheck: "Check another message",
     disclaimer:
-      "Pausa identifies risk signals, but it can be wrong. Always verify through an official channel you already know.",
+      "Pausa identifies risk signals, but it can be wrong.\nAlways verify through an official channel you already know.",
     error: "We could not review this yet. Try text or a smaller image.",
     liveUnavailable: "Live analysis is not connected yet. You can try the guided example.",
     imageTooLarge: "The image is too large. Choose a screenshot or photo under 5 MB.",
@@ -642,10 +649,10 @@ export default function Home() {
 
   async function shareGuidance() {
     if (!analysis) return;
-    const shareText = `${t.shareIntro}\n\n${analysis.title}\n${analysis.summary}\n\n${t.shareSignals}:\n${analysis.signals
+    const shareText = `${t.shareIntro}\n\n${t.shareSubject}:\n${analysis.subject || analysis.summary}\n\n${t.shareSignals} ${riskLabel.toLocaleLowerCase(locale === "es" ? "es-MX" : "en")}:\n${analysis.signals
       .slice(0, 2)
       .map((signal) => `• ${signal}`)
-      .join("\n")}\n\n${t.sharePromo}:\nhttps://pausa-digital.elesdex.chatgpt.site`;
+      .join("\n")}\n\n${t.sharePromo}\nhttps://pausa-digital.elesdex.chatgpt.site`;
 
     try {
       if (navigator.share) {
@@ -694,15 +701,15 @@ export default function Home() {
           <p className="privacy-note"><span aria-hidden="true">●</span> {t.privacy}</p>
           {showInstallCard && (
             <aside className="install-prompt-card">
-              <div className="mini-phone" aria-hidden="true"><PauseMark /></div>
-              <div>
+              <div className="install-suggestion-mark" aria-hidden="true"><PauseMark /></div>
+              <div className="install-suggestion-copy">
                 <strong>{t.install}</strong>
                 <p>{t.installIntro}</p>
                 <div className="install-prompt-actions">
                   <button onClick={openInstall}>{installPrompt ? t.installAction : t.installDetected}</button>
-                  <button onClick={dismissInstall}>{t.installLater}</button>
                 </div>
               </div>
+              <button className="install-dismiss" onClick={dismissInstall} aria-label={t.installDismiss}>×</button>
             </aside>
           )}
         </section>
@@ -844,7 +851,7 @@ export default function Home() {
               <button className={deviceGuide === "iphoneHome" ? "selected" : ""} onClick={() => setDeviceGuide("iphoneHome")}>{locale === "es" ? "Con botón frontal" : "Front button"}</button>
             </div>
           )}
-          <button className="primary-button" onClick={() => setScreen("intake")}>{t.start}</button>
+          <button className="secondary-button install-home-button" onClick={goHome}>{t.installClose}</button>
         </section>
       )}
 
@@ -894,7 +901,7 @@ export default function Home() {
         </aside>
         <p className="emergency-disclaimer">{t.notEmergency}</p>
         <nav aria-label={locale === "es" ? "Información del proyecto" : "Project information"}>
-          <a href="/privacy">{locale === "es" ? "Privacidad" : "Privacy"}</a>
+          <a href={`/privacy#${locale}`}>{locale === "es" ? "Privacidad" : "Privacy"}</a>
           <a href="https://github.com/elesdex/pausa" target="_blank" rel="noreferrer">
             {locale === "es" ? "Código abierto" : "Open source"}
           </a>
