@@ -80,3 +80,5 @@ Complete the local build, connect a real API key, and verify one text example an
 - Rewrote the video plan as a 2:45 story-led commercial with exact narration, shots, recording order, assembly guidance, and final submission checks.
 - Documented the Codex `/feedback` handoff and the privacy implication of optionally including the current session and logs.
 - Production build, lint, and all 12 automated tests passed; responsive local QA covered the home, intake, screenshot-help, guided-example, and emergency sections in Spanish.
+- Unified the first-time and returning-user home screen as “What should we check?” / “¿Qué revisamos?”, made the animated Pausa mark start voice capture, shortened the primary voice action, and removed the obsolete local-state headline split.
+- Replaced the dotted-ring PWA artwork with a versioned ring-free app icon, added editable SVG and 1024px promotional exports, updated the install walkthrough, and bumped the network-first service-worker cache to `pausa-shell-v10`.

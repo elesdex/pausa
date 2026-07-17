@@ -26,7 +26,7 @@ This matrix separates automated evidence from checks that require a physical dev
 
 ## July 17 product QA findings
 
-The public site was reviewed in desktop and 390×844 browser viewports. Both showed the same simplified “What do you need to check?” experience. A physical phone showing the older “First pass” screen is therefore treated as an installed-PWA cache issue, not a separate mobile layout.
+The public site was reviewed in desktop and 390×844 browser viewports. A later physical comparison confirmed that “First, pause.” and “What do you need to check?” were not separate deployments: the page intentionally changed its headline after a completed analysis. That local-state split has now been removed. Fresh browsers and the installed PWA must all show the same simplified “What should we check?” / “¿Qué revisamos?” experience.
 
 Changes prepared from this review:
 
@@ -39,6 +39,7 @@ Changes prepared from this review:
 - Installation dismissal lasts only for the current browser session. It returns next visit unless Pausa is installed.
 - Installed mode and the `appinstalled` event suppress the installation suggestion.
 - The service worker uses a new network-first shell and requests updates so installed phones receive the current interface.
+- The PWA icon now uses versioned URLs and a ring-free Pausa mark. On iPhone, remove and add the Home Screen app again when validating the icon because iOS may retain the previously installed artwork.
 
 The user confirmed on July 17 that Pausa was installed and launched successfully on an iPhone, with the current interface rendering well in standalone mode. The remaining interaction, accessibility, and sharing checks below still require observation on the named device.
 

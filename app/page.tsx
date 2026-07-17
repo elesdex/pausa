@@ -35,12 +35,8 @@ declare global {
 const copy = {
   es: {
     language: "Idioma",
-    eyebrow: "Ayuda para momentos de incertidumbre digital",
-    headline: "Primero, pausa.",
-    returningHeadline: "¿Qué necesitas revisar?",
-    returningSubhead: "Cuéntamelo o comparte lo que ves. Te ayudamos a decidir el siguiente paso seguro.",
-    subhead:
-      "Si un mensaje te asustó o te está presionando, no respondas todavía. Lo revisamos contigo, con calma.",
+    homeHeadline: "¿Qué revisamos?",
+    homeSubhead: "Cuéntamelo o comparte lo que ves. Te ayudamos a decidir el siguiente paso.",
     start: "Compartir foto o texto",
     voiceStart: "Cuéntamelo con voz",
     voiceTap: "Toca para hablar",
@@ -54,6 +50,7 @@ const copy = {
     installLater: "Ahora no",
     installDismiss: "Quitar sugerencia",
     installAction: "Instalar Pausa",
+    installFooter: "Instalar",
     installClose: "Listo, volver al inicio",
     privacy: "Nada se analiza hasta que lo compartes.",
     notEmergency: "Contacta a los servicios locales de emergencia.",
@@ -125,12 +122,8 @@ const copy = {
   },
   en: {
     language: "Language",
-    eyebrow: "Help for moments of digital uncertainty",
-    headline: "First, pause.",
-    returningHeadline: "What do you need to check?",
-    returningSubhead: "Tell me or share what you see. We will help you choose one safe next step.",
-    subhead:
-      "If a message scared or pressured you, do not respond yet. We will review it with you, calmly.",
+    homeHeadline: "What should we check?",
+    homeSubhead: "Tell me or share what you see. We'll help you choose the next step.",
     start: "Share a photo or text",
     voiceStart: "Tell me by voice",
     voiceTap: "Tap to speak",
@@ -144,6 +137,7 @@ const copy = {
     installLater: "Not now",
     installDismiss: "Dismiss suggestion",
     installAction: "Install Pausa",
+    installFooter: "Install",
     installClose: "Done, return home",
     privacy: "Nothing is analyzed until you share it.",
     notEmergency: "Contact local emergency services.",
@@ -304,7 +298,6 @@ export default function Home() {
   const [voiceStatus, setVoiceStatus] = useState<"idle" | "recording" | "transcribing">("idle");
   const [installPrompt, setInstallPrompt] = useState<InstallPromptEvent | null>(null);
   const [showInstallCard, setShowInstallCard] = useState(false);
-  const [hasUsedBefore, setHasUsedBefore] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const microphoneStreamRef = useRef<MediaStream | null>(null);
@@ -332,7 +325,6 @@ export default function Home() {
   useEffect(() => {
     const localeTimer = window.setTimeout(() => setLocale(getInitialLocale()), 0);
     const installVisibilityTimer = window.setTimeout(() => setShowInstallCard(shouldShowInstallCard()), 0);
-    const returningUserTimer = window.setTimeout(() => setHasUsedBefore(window.localStorage.getItem("pausa-used") === "true"), 0);
     let refreshingForUpdate = false;
     const refreshAfterWorkerUpdate = () => {
       if (refreshingForUpdate || window.sessionStorage.getItem("pausa-worker-refreshed") === "true") return;
@@ -342,7 +334,7 @@ export default function Home() {
     };
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.addEventListener("controllerchange", refreshAfterWorkerUpdate);
-      navigator.serviceWorker.register("/sw.js").then((registration) => registration.update()).catch(() => {
+      navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" }).then((registration) => registration.update()).catch(() => {
         // Installation support is progressive; the core safety flow still works.
       });
     }
@@ -362,7 +354,6 @@ export default function Home() {
     return () => {
       window.clearTimeout(localeTimer);
       window.clearTimeout(installVisibilityTimer);
-      window.clearTimeout(returningUserTimer);
       window.removeEventListener("beforeinstallprompt", captureInstallPrompt);
       window.removeEventListener("appinstalled", markInstalled);
       navigator.serviceWorker?.removeEventListener("controllerchange", refreshAfterWorkerUpdate);
@@ -425,13 +416,13 @@ export default function Home() {
         iphoneFace: ["Abre Pausa en Safari, Chrome o tu navegador.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
         iphoneHome: ["Abre Pausa en Safari, Chrome o tu navegador.", "Toca el botón Compartir: el cuadro con una flecha hacia arriba.", "Desliza y elige “Agregar a pantalla de inicio”.", "Toca “Agregar”."],
         android: ["Abre Pausa en Chrome o tu navegador.", "Toca el menú del navegador.", "Elige “Instalar aplicación” o “Agregar a pantalla principal”.", "Confirma la instalación."],
-        other: ["Abre el menú de tu navegador.", "Busca “Instalar aplicación” o “Agregar a pantalla de inicio”.", "Si no aparece, guarda Pausa como favorito."],
+        other: ["Abre el menú de tu navegador.", "Busca “Instalar aplicación” o “Agregar a pantalla de inicio”.", "Si no aparece, guarda Pausa como favorito.", "Listo: busca el icono de Pausa o vuelve desde tus favoritos."],
       },
       en: {
         iphoneFace: ["Open Pausa in Safari, Chrome, or your browser.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
         iphoneHome: ["Open Pausa in Safari, Chrome, or your browser.", "Tap Share: the square with an upward arrow.", "Scroll and choose “Add to Home Screen.”", "Tap “Add.”"],
         android: ["Open Pausa in Chrome or your browser.", "Open the browser menu.", "Choose “Install app” or “Add to Home screen.”", "Confirm the installation."],
-        other: ["Open your browser menu.", "Look for “Install app” or “Add to Home screen.”", "If it is unavailable, save Pausa as a bookmark."],
+        other: ["Open your browser menu.", "Look for “Install app” or “Add to Home screen.”", "If it is unavailable, save Pausa as a bookmark.", "Done: look for the Pausa icon or return from your bookmarks."],
       },
     };
     return steps[locale][deviceGuide];
@@ -577,8 +568,6 @@ export default function Home() {
       speechUrlRef.current = null;
       speechPromiseRef.current = null;
       setAnalysis(result);
-      window.localStorage.setItem("pausa-used", "true");
-      setHasUsedBefore(true);
       setScreen("result");
       void prepareSpeech(result).catch(() => {
         // The visible result remains usable even if audio preparation fails.
@@ -728,17 +717,15 @@ export default function Home() {
 
       {screen === "home" && (
         <section className="home-screen screen-enter">
-          <div className="calm-orbit">
+          <button className="calm-orbit" onClick={startVoiceCapture} aria-label={locale === "es" ? "Cuéntamelo con voz" : "Tell me by voice"}>
             <PauseMark className="assistant-mark" />
-          </div>
-          {!hasUsedBefore && <p className="eyebrow">{t.eyebrow}</p>}
-          <h1>{hasUsedBefore ? t.returningHeadline : t.headline}</h1>
-          <p className="lead">{hasUsedBefore ? t.returningSubhead : t.subhead}</p>
+          </button>
+          <h1>{t.homeHeadline}</h1>
+          <p className="lead">{t.homeSubhead}</p>
           <button className="voice-primary-button" onClick={startVoiceCapture}>
             <span className="voice-symbol" aria-hidden="true"><i /><i /><i /></span>
             <span className="voice-copy">
               <span className="voice-title-row"><strong>{t.voiceStart}</strong><em>{t.voiceTap}</em></span>
-              <small>{t.voiceHint}</small>
             </span>
           </button>
           <button className="secondary-button quick-start-button" onClick={() => setScreen("intake")}>
@@ -856,7 +843,10 @@ export default function Home() {
                       {index === 0 && <span className="message-preview">•••</span>}
                       {index === 1 && <span className="button-combo">{deviceFamily === "iphone" ? "+  ↕" : "−  ⏻"}</span>}
                       {index === 2 && <span className="saved-photo">▧</span>}
-                      {index === 3 && <span className="new-app"><PauseMark /></span>}
+                      {index === 3 && <span className="new-app">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/brand/pausa-app-icon.svg" alt="" />
+                      </span>}
                     </span>
                     <span>{step}</span>
                   </li>
@@ -910,7 +900,10 @@ export default function Home() {
                     )}
                     {index === 1 && <span className="tap-target">{deviceFamily === "iphone" ? "↥" : "•••"}</span>}
                     {index === 2 && <span className="menu-row">＋ {locale === "es" ? "Pantalla de inicio" : "Home screen"}</span>}
-                    {index === 3 && <span className="new-app"><PauseMark /></span>}
+                    {index === 3 && <span className="new-app">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/brand/pausa-app-icon.svg" alt="" />
+                    </span>}
                   </span>
                   <span>{step}</span>
                 </li>
@@ -989,7 +982,7 @@ export default function Home() {
           <a href="https://github.com/elesdex/pausa" target="_blank" rel="noreferrer">
             {locale === "es" ? "Código abierto" : "Open source"}
           </a>
-          <button onClick={openInstall}>{t.installAction}</button>
+          <button onClick={openInstall}>{t.installFooter}</button>
         </nav>
         <button className="footer-brand-link" onClick={goHome} aria-label={locale === "es" ? "Volver al inicio de Pausa" : "Return to Pausa home"}>Pausa</button>
       </footer>

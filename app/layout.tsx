@@ -18,17 +18,17 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: {
       icon: [
         { url: "/favicon.svg", type: "image/svg+xml" },
-        { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+        { url: "/pausa-icon-v2-192.png", sizes: "192x192", type: "image/png" },
       ],
       shortcut: "/favicon.svg",
-      apple: "/icon-192.png",
+      apple: "/pausa-apple-touch-icon-v2.png",
     },
     appleWebApp: { capable: true, statusBarStyle: "default", title: "Pausa" },
     openGraph: {
       title,
       description,
       type: "website",
-      images: [{ url: socialImage, width: 1536, height: 1024, alt: "Pausa — Primero, pausa." }],
+      images: [{ url: socialImage, width: 1536, height: 1024, alt: "Pausa — ¿Qué revisamos?" }],
     },
     twitter: {
       card: "summary_large_image",

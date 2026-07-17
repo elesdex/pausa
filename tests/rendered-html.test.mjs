@@ -24,7 +24,8 @@ test("server-renders the Pausa product shell", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<title>Pausa/);
-  assert.match(html, /Primero, pausa/);
+  assert.match(html, /¿Qué revisamos\?/);
+  assert.match(html, /Cuéntamelo o comparte lo que ves\. Te ayudamos a decidir el siguiente paso\./);
   assert.match(html, /Cuéntamelo con voz/);
   assert.match(html, /Compartir foto o texto/);
   assert.match(html, /¿Peligro inmediato\?/);
@@ -282,7 +283,9 @@ test("includes lightweight local browser marks and manual test cases", async () 
 test("keeps the installed experience current and ships the public QR", async () => {
   const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   const worker = await readFile(new URL("../public/sw.js", import.meta.url), "utf8");
+  const manifest = await readFile(new URL("../public/manifest.webmanifest", import.meta.url), "utf8");
   const qr = await readFile(new URL("../public/pausa-qr.png", import.meta.url));
+  const appIcon = await readFile(new URL("../public/pausa-icon-v2-512.png", import.meta.url));
   assert.match(source, /sessionStorage\.getItem\("pausa-install-dismissed"\)/);
   assert.match(source, /localStorage\.setItem\("pausa-installed", "true"\)/);
   assert.match(source, /registration\.update\(\)/);
@@ -296,9 +299,16 @@ test("keeps the installed experience current and ships the public QR", async () 
   assert.match(source, /Contact local emergency services\./);
   assert.match(source, /Open Pausa in Safari, Chrome, or your browser/);
   assert.match(source, /footer-brand-link/);
+  assert.match(source, /homeHeadline: "¿Qué revisamos\?"/);
+  assert.match(source, /className="calm-orbit" onClick={startVoiceCapture}/);
+  assert.doesNotMatch(source, /hasUsedBefore|pausa-used|First, pause|Primero, pausa/);
   assert.doesNotMatch(source, /<p className="privacy-note"/);
   assert.match(source, /AttachmentIcon/);
-  assert.match(worker, /pausa-shell-v9/);
+  assert.match(worker, /pausa-shell-v10/);
   assert.match(worker, /networkFirst/);
+  assert.match(worker, /cache: "no-store"/);
+  assert.match(manifest, /pausa-icon-v2-192\.png/);
+  assert.match(manifest, /pausa-icon-v2-512\.png/);
   assert.deepEqual([...qr.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+  assert.deepEqual([...appIcon.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
 });

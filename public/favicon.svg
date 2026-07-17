@@ -3,5 +3,4 @@
   <circle cx="256" cy="256" r="164" fill="#173F38"/>
   <rect x="206" y="168" width="32" height="176" rx="16" fill="#FFF9ED"/>
   <rect x="274" y="168" width="32" height="176" rx="16" fill="#FFF9ED"/>
-  <circle cx="256" cy="256" r="202" stroke="#C8A86B" stroke-width="12" stroke-dasharray="18 24"/>
 </svg>
