@@ -87,11 +87,11 @@ We also learned that “no API key” is a product state, not an excuse to retur
 
 ## What is next
 
-The next version will add device-specific screenshot guidance, trusted-contact escalation that is always user-approved, community-reviewed multilingual evaluation data, and partnerships that can keep the basic protection free. The long-term vision is a calm, personal help button for moments of digital uncertainty; scam protection is where it begins.
+The next version will deepen trusted-contact escalation that is always user-approved, expand community-reviewed multilingual evaluation data, and explore partnerships that can keep the basic protection free. The long-term vision is a calm, personal help button for moments of digital uncertainty; scam protection is where it begins.
 
 ## Links to add before submission
 
-- Working public app: `TBD`
+- Working public app: `https://pausa-digital.elesdex.chatgpt.site/`
 - Public repository: `https://github.com/elesdex/pausa`
 - Public YouTube video: `TBD`
 - Primary Codex `/feedback` Session ID: `TBD`

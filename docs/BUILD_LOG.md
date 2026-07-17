@@ -64,3 +64,19 @@ Complete the local build, connect a real API key, and verify one text example an
 - Added browser-language detection with a compact ES/EN override, edge-swipe navigation, bottom return-home actions, a scoped 911 action for Mexico and the United States, and device-aware installation visibility.
 - Simplified device choices to iPhone, Android, and Other, exposing the iPhone Home-button distinction only after iPhone is selected and removing green selection competition with the primary action.
 - Updated privacy, safety, README, route-contract tests, and the mobile QA matrix for server-side audio processing. The complete suite now contains nine passing tests.
+
+## July 17, 2026
+
+### Final QA preparation and story pass
+
+- Confirmed that the public desktop and responsive mobile URL render the same simplified product. The older “First pass” screen seen on an installed phone is therefore treated as stale PWA cache, not a separate mobile build.
+- Updated the service worker to a network-first shell and added an update-on-load/controller-change path so installed copies receive the current interface sooner.
+- Changed install-card dismissal to the current browser session: it stays out of the way after dismissal, returns on a later visit when Pausa is not installed, and remains hidden in standalone mode or after installation is confirmed.
+- Increased vertical space among the voice, photo/text, guided-example, result, Pausa-home, and emergency actions; added a paperclip to photo/text; softened the guided-example action; and made the 911 button more visibly urgent.
+- Shortened the voice and privacy copy while preserving the calm, non-alarmist product tone.
+- Rebuilt the guided example as a three-step tutorial that shows a synthetic message entering Pausa before the deterministic result appears.
+- Reworked screenshot help into a visual, device-aware sequence modeled on the installation instructions.
+- Added a public QR in PNG and SVG formats, placed it in the README, and documented a physical iPhone/Android QA procedure that distinguishes automated evidence from checks that still require real devices.
+- Rewrote the video plan as a 2:45 story-led commercial with exact narration, shots, recording order, assembly guidance, and final submission checks.
+- Documented the Codex `/feedback` handoff and the privacy implication of optionally including the current session and logs.
+- Production build, lint, and all 12 automated tests passed; responsive local QA covered the home, intake, screenshot-help, guided-example, and emergency sections in Spanish.

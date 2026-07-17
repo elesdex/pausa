@@ -1,7 +1,9 @@
 # OpenAI Build Week readiness audit
 
-Audit date: July 16, 2026  
-Deadline: Tuesday, July 21, 2026 at 5:00 PM Pacific / 6:00 PM Mexico City  
+Audit date: July 17, 2026
+
+Deadline: Tuesday, July 21, 2026 at 5:00 PM Pacific / 6:00 PM Mexico City
+
 Target internal submission time: 4:00 PM Mexico City
 
 Status meanings:
@@ -14,7 +16,7 @@ Status meanings:
 
 | Requirement | Status | Current evidence | Remaining proof |
 |---|---|---|---|
-| Mobile web app | Proven locally | `app/page.tsx`, manifest, service worker, icons, successful production build | Public deployment of the current commit |
+| Mobile web app | Proven | `app/page.tsx`, manifest, service worker, icons, successful production build, and public Sites URL | Complete the physical-device matrix |
 | Free and open source | Proven | Apache 2.0 `LICENSE`, no payment or account flow, `CONTRIBUTING.md`, public GitHub repository | Keep final commit synchronized |
 | Screenshot and photo input | Proven in code | Camera and file inputs plus client-side preparation | Physical iPhone and Android test |
 | Text input | Proven live | Textarea flow, API contract test, and live GPT-5.6 evaluations | Physical-browser usability check |
@@ -26,7 +28,7 @@ Status meanings:
 | Trusted-person support | Proven in code | Native share action excludes original input | Physical-device privacy check |
 | Spanish and English | Proven | Full product copy, results, privacy, install, and capture guidance | Visual review on physical devices |
 | Installable PWA | Proven by files, partial device | Manifest, icons, service worker, install instructions | Install and launch on iPhone and Android |
-| Privacy disclosure | Proven | `/privacy` route and automated test | Verify published route |
+| Privacy disclosure | Proven | Published `/privacy` route and automated test | Keep synchronized with product behavior |
 
 ## Technical and safety evidence
 
@@ -44,7 +46,7 @@ Status meanings:
 | Synthetic evaluation coverage | Proven | 12 cases in `tests/scam-evals.json` |
 | Synthetic screenshot | Proven | Labeled SVG and PNG plus signature test |
 | Build and lint | Proven | Clean lint and `pnpm test` |
-| Automated suite | Proven | 9 passing tests |
+| Automated suite | Proven | 12 passing tests |
 
 ## Hackathon deliverables
 
@@ -56,9 +58,9 @@ Status meanings:
 | README and setup | Proven locally | `README.md` | Verify install from clean clone |
 | Starter and third-party disclosure | Proven locally | README build-origin section | Verify visible on GitHub |
 | Codex build evidence | Partial | Build log and commit history | Add primary `/feedback` Session ID |
-| Working judge URL | Missing | Private first Sites deployment exists | Deploy latest commit publicly with API key |
+| Working judge URL | Proven | `https://pausa-digital.elesdex.chatgpt.site/` | Keep the final validated commit deployed |
 | English Devpost copy | Proven as draft | `docs/DEVPOST_DRAFT.md` | Enter and proofread in Devpost |
-| Under-three-minute video | Partial | Timed 2:35 script and synthetic visual | Record, edit, upload publicly, verify duration |
+| Under-three-minute video | Partial | Timed 2:45 commercial-style script and synthetic visual | Record, edit, upload publicly, verify duration |
 | Devpost registration | Confirmed by user | User confirmation on July 16 | No action |
 | Codex credits request | Confirmed by user | User confirmation on July 16 | Await approval or credit delivery |
 | Final Devpost submission | Missing | Not yet possible | Add all URLs and Session ID, submit, reopen, verify |
@@ -66,7 +68,7 @@ Status meanings:
 ## Critical path
 
 1. **Codex + user device:** complete the physical QA matrix.
-2. **Codex:** deploy the current commit publicly and verify every public route.
-3. **User + Codex:** record the prepared script, upload to YouTube, add `/feedback` Session ID, submit Devpost, and reopen the entry to verify it.
+2. **User + Codex:** record the prepared script and assemble the under-three-minute cut.
+3. **User + Codex:** upload to YouTube, add the `/feedback` Session ID, submit Devpost, and reopen the entry to verify it.
 
 The project is not submission-ready until every **Missing** item is resolved and every **Partial** judge-facing artifact is verified in its public form.

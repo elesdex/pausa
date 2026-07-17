@@ -14,7 +14,7 @@
 - [x] GPT-5.6 request contract verified with a simulated Responses API.
 - [x] GPT-5.6 verified with a real API key using text and the synthetic screenshot.
 - [x] Guided no-key demo available.
-- [ ] Public working URL available to judges.
+- [x] Public working URL available to judges at `https://pausa-digital.elesdex.chatgpt.site/`.
 - [ ] Mobile and accessibility checks complete.
 - [x] Twelve-case synthetic safety evaluation set complete.
 - [x] Twelve-case evaluation run against live GPT-5.6 and failures reviewed.
@@ -41,10 +41,11 @@
 ## Devpost
 
 - [x] Project name and one-line pitch drafted.
-- [ ] Apps for Your Life selected.
+- [x] Apps for Your Life selected.
 - [x] English project description drafted.
-- [ ] Working demo URL.
-- [ ] Code repository URL.
+- [x] Working demo URL: `https://pausa-digital.elesdex.chatgpt.site/`.
+- [x] Code repository URL: `https://github.com/elesdex/pausa`.
 - [ ] YouTube URL.
 - [ ] Primary Codex `/feedback` Session ID.
+- [x] `/feedback` procedure documented in `docs/CODEX_FEEDBACK.md`.
 - [ ] Submission completed and reopened for verification before the deadline.

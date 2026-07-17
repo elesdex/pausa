@@ -28,13 +28,13 @@ test("server-renders the Pausa product shell", async () => {
   assert.match(html, /Cuéntamelo con voz/);
   assert.match(html, /Compartir foto o texto/);
   assert.match(html, /¿Peligro inmediato\?/);
-  assert.match(html, /Nothing is analyzed|Nada se analiza/);
+  assert.match(html, /Nothing is analyzed until you share it|Nada se analiza hasta que lo compartes/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/);
 });
 
 test("keeps generated guidance in the language selected before analysis", async () => {
   const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
-  assert.match(source, /screen === "home" \|\| screen === "intake" \|\| screen === "install"/);
+  assert.match(source, /screen === "home" \|\| screen === "intake" \|\| screen === "demo" \|\| screen === "install"/);
   assert.match(source, /Pedir ayuda a alguien de confianza/);
   assert.match(source, /Comparte un resumen breve/);
   assert.match(source, /Audio con voz sintética/);
@@ -277,4 +277,18 @@ test("includes lightweight local browser marks and manual test cases", async () 
   assert.match(chrome, /<title>Google Chrome<\/title>/);
   assert.equal(cases.length, 12);
   assert.deepEqual(new Set(cases.map((item) => item.expectedRisk)), new Set(["high", "medium", "uncertain", "low"]));
+});
+
+test("keeps the installed experience current and ships the public QR", async () => {
+  const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+  const worker = await readFile(new URL("../public/sw.js", import.meta.url), "utf8");
+  const qr = await readFile(new URL("../public/pausa-qr.png", import.meta.url));
+  assert.match(source, /sessionStorage\.getItem\("pausa-install-dismissed"\)/);
+  assert.match(source, /localStorage\.setItem\("pausa-installed", "true"\)/);
+  assert.match(source, /registration\.update\(\)/);
+  assert.match(source, /How Pausa works/);
+  assert.match(source, /AttachmentIcon/);
+  assert.match(worker, /pausa-shell-v9/);
+  assert.match(worker, /networkFirst/);
+  assert.deepEqual([...qr.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
 });

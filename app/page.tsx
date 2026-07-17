@@ -3,7 +3,7 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 
 type Locale = "es" | "en";
-type Screen = "home" | "intake" | "analyzing" | "result" | "install";
+type Screen = "home" | "intake" | "demo" | "analyzing" | "result" | "install";
 type Risk = "low" | "medium" | "high" | "uncertain";
 type DeviceGuide = "iphoneFace" | "iphoneHome" | "android" | "other";
 type DeviceFamily = "iphone" | "android" | "other";
@@ -43,7 +43,7 @@ const copy = {
       "Si un mensaje te asustó o te está presionando, no respondas todavía. Lo revisamos contigo, con calma.",
     start: "Compartir foto o texto",
     voiceStart: "Cuéntamelo con voz",
-    voiceHint: "Habla con calma. Al terminar, lo revisamos de inmediato.",
+    voiceHint: "Solo habla. Al terminar, lo revisamos enseguida.",
     voiceStop: "Terminar y revisar",
     voicePreparing: "Preparando tu audio…",
     voiceTranscribing: "Entendiendo lo que dijiste…",
@@ -54,7 +54,7 @@ const copy = {
     installDismiss: "Quitar sugerencia",
     installAction: "Instalar Pausa",
     installClose: "Listo, volver al inicio",
-    privacy: "Nada se analiza hasta que tú lo compartes.",
+    privacy: "Nada se analiza hasta que lo compartes.",
     notEmergency: "Pausa no sustituye a los servicios de emergencia.",
     emergencyTitle: "¿Peligro inmediato?",
     emergencyBody: "México y Estados Unidos",
@@ -88,7 +88,6 @@ const copy = {
     chosenImage: "Imagen lista para revisar",
     analyzingTitle: "Lo estamos revisando",
     analyzingBody: "No hagas clic, no llames y no compartas datos mientras revisamos.",
-    resultEyebrow: "Orientación, no garantía",
     signals: "Señales que encontramos",
     next: "Qué hacer ahora",
     learning: "Para la próxima",
@@ -113,6 +112,13 @@ const copy = {
     timeout: "La revisión tardó demasiado. No respondas al mensaje; inténtalo nuevamente.",
     textRequired: "Comparte una imagen, escribe el mensaje o cuéntamelo con voz.",
     demoBadge: "Modo de demostración",
+    demoTitle: "Así funciona Pausa",
+    demoIntro: "Este mensaje es sintético. Mira cómo pasa de una duda a un siguiente paso seguro.",
+    demoInputLabel: "Ejemplo recibido",
+    demoStepOne: "Recibes algo que te presiona.",
+    demoStepTwo: "Lo cuentas o lo compartes con Pausa.",
+    demoStepThree: "Pausa señala riesgos y propone qué verificar.",
+    demoSeeResult: "Ver cómo lo revisa Pausa",
   },
   en: {
     language: "Language",
@@ -124,7 +130,7 @@ const copy = {
       "If a message scared or pressured you, do not respond yet. We will review it with you, calmly.",
     start: "Share a photo or text",
     voiceStart: "Tell me by voice",
-    voiceHint: "Speak at your own pace. When you finish, we will check it right away.",
+    voiceHint: "Just speak. When you finish, we will check it.",
     voiceStop: "Finish and check",
     voicePreparing: "Preparing your audio…",
     voiceTranscribing: "Understanding what you said…",
@@ -135,7 +141,7 @@ const copy = {
     installDismiss: "Dismiss suggestion",
     installAction: "Install Pausa",
     installClose: "Done, return home",
-    privacy: "Nothing is analyzed until you choose to share it.",
+    privacy: "Nothing is analyzed until you share it.",
     notEmergency: "Pausa does not replace emergency services.",
     emergencyTitle: "Immediate danger?",
     emergencyBody: "Mexico and the United States",
@@ -169,7 +175,6 @@ const copy = {
     chosenImage: "Image ready to review",
     analyzingTitle: "We are checking it",
     analyzingBody: "Do not click, call, or share information while we review it.",
-    resultEyebrow: "Guidance, not a guarantee",
     signals: "Signals we found",
     next: "What to do now",
     learning: "For next time",
@@ -194,6 +199,13 @@ const copy = {
     timeout: "The check took too long. Do not respond to the message; please try again.",
     textRequired: "Share an image, type the message, or tell me with your voice.",
     demoBadge: "Demonstration mode",
+    demoTitle: "How Pausa works",
+    demoIntro: "This message is synthetic. See how a moment of doubt becomes one safer next step.",
+    demoInputLabel: "Example received",
+    demoStepOne: "You receive something that pressures you.",
+    demoStepTwo: "You tell Pausa or share what you see.",
+    demoStepThree: "Pausa flags risks and suggests what to verify.",
+    demoSeeResult: "See how Pausa checks it",
   },
 } as const;
 
@@ -225,12 +237,20 @@ function shouldShowInstallCard() {
   if (typeof window === "undefined") return false;
   const standalone = window.matchMedia("(display-mode: standalone)").matches || window.standalone === true;
   const installed = window.localStorage.getItem("pausa-installed") === "true";
-  const dismissed = window.localStorage.getItem("pausa-install-dismissed") === "true";
+  const dismissed = window.sessionStorage.getItem("pausa-install-dismissed") === "true";
   return !standalone && !installed && !dismissed;
 }
 
 function PauseMark({ className = "" }: { className?: string }) {
   return <span className={`pause-mark ${className}`} aria-hidden="true"><span /></span>;
+}
+
+function AttachmentIcon() {
+  return (
+    <svg className="attachment-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M8.5 12.8 14.7 6.6a3.1 3.1 0 0 1 4.4 4.4l-8.3 8.3a5 5 0 0 1-7.1-7.1l8.1-8.1" />
+    </svg>
+  );
 }
 
 function HomeMarkButton({ label, onClick }: { label: string; onClick: () => void }) {
@@ -307,8 +327,16 @@ export default function Home() {
     const localeTimer = window.setTimeout(() => setLocale(getInitialLocale()), 0);
     const installVisibilityTimer = window.setTimeout(() => setShowInstallCard(shouldShowInstallCard()), 0);
     const returningUserTimer = window.setTimeout(() => setHasUsedBefore(window.localStorage.getItem("pausa-used") === "true"), 0);
+    let refreshingForUpdate = false;
+    const refreshAfterWorkerUpdate = () => {
+      if (refreshingForUpdate || window.sessionStorage.getItem("pausa-worker-refreshed") === "true") return;
+      refreshingForUpdate = true;
+      window.sessionStorage.setItem("pausa-worker-refreshed", "true");
+      window.location.reload();
+    };
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").catch(() => {
+      navigator.serviceWorker.addEventListener("controllerchange", refreshAfterWorkerUpdate);
+      navigator.serviceWorker.register("/sw.js").then((registration) => registration.update()).catch(() => {
         // Installation support is progressive; the core safety flow still works.
       });
     }
@@ -316,7 +344,7 @@ export default function Home() {
     const captureInstallPrompt = (event: Event) => {
       event.preventDefault();
       setInstallPrompt(event as InstallPromptEvent);
-      setShowInstallCard(true);
+      setShowInstallCard(shouldShowInstallCard());
     };
     const markInstalled = () => {
       window.localStorage.setItem("pausa-installed", "true");
@@ -331,6 +359,7 @@ export default function Home() {
       window.clearTimeout(returningUserTimer);
       window.removeEventListener("beforeinstallprompt", captureInstallPrompt);
       window.removeEventListener("appinstalled", markInstalled);
+      navigator.serviceWorker?.removeEventListener("controllerchange", refreshAfterWorkerUpdate);
     };
   }, []);
 
@@ -621,8 +650,15 @@ export default function Home() {
   }
 
   function dismissInstall() {
-    window.localStorage.setItem("pausa-install-dismissed", "true");
+    window.sessionStorage.setItem("pausa-install-dismissed", "true");
     setShowInstallCard(false);
+  }
+
+  function finishInstallGuide() {
+    window.localStorage.setItem("pausa-installed", "true");
+    window.sessionStorage.removeItem("pausa-install-dismissed");
+    setShowInstallCard(false);
+    goHome();
   }
 
   function goHome() {
@@ -673,7 +709,7 @@ export default function Home() {
           <PauseMark className="brand-mark" />
           <span>Pausa</span>
         </button>
-        {(screen === "home" || screen === "intake" || screen === "install") && (
+        {(screen === "home" || screen === "intake" || screen === "demo" || screen === "install") && (
           <label className="language-picker">
             <span className="visually-hidden">{t.language}</span>
             <select value={locale} onChange={(event) => changeLocale(event.target.value as Locale)} aria-label={t.language}>
@@ -696,8 +732,11 @@ export default function Home() {
             <span className="voice-symbol" aria-hidden="true"><i /><i /><i /></span>
             <span><strong>{t.voiceStart}</strong><small>{t.voiceHint}</small></span>
           </button>
-          <button className="secondary-button quick-start-button" onClick={() => setScreen("intake")}>{t.start}</button>
-          <button className="text-button" onClick={() => runAnalysis(true)}>{t.demo}</button>
+          <button className="secondary-button quick-start-button" onClick={() => setScreen("intake")}>
+            <AttachmentIcon />
+            <span>{t.start}</span>
+          </button>
+          <button className="text-button guided-example-button" onClick={() => setScreen("demo")}>{t.demo}</button>
           <p className="privacy-note"><span aria-hidden="true">●</span> {t.privacy}</p>
           {showInstallCard && (
             <aside className="install-prompt-card">
@@ -712,6 +751,32 @@ export default function Home() {
               <button className="install-dismiss" onClick={dismissInstall} aria-label={t.installDismiss}>×</button>
             </aside>
           )}
+        </section>
+      )}
+
+      {screen === "demo" && (
+        <section className="demo-screen screen-enter">
+          <button className="back-button" onClick={() => setScreen("home")}>← {t.back}</button>
+          <p className="eyebrow">{t.demoBadge}</p>
+          <h1>{t.demoTitle}</h1>
+          <p className="lead compact">{t.demoIntro}</p>
+          <article className="demo-message-card">
+            <span>{t.demoInputLabel}</span>
+            <p>{demoMessages[locale]}</p>
+          </article>
+          <ol className="demo-story">
+            {[t.demoStepOne, t.demoStepTwo, t.demoStepThree].map((step, index) => (
+              <li key={step}>
+                <span className={`demo-step-visual demo-step-${index + 1}`} aria-hidden="true">
+                  {index === 0 && "!"}
+                  {index === 1 && <><span className="mini-wave">|||</span><AttachmentIcon /></>}
+                  {index === 2 && <PauseMark />}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+          <button className="primary-button demo-result-button" onClick={() => runAnalysis(true)}>{t.demoSeeResult}</button>
         </section>
       )}
 
@@ -773,7 +838,19 @@ export default function Home() {
                   <button className={deviceGuide === "iphoneHome" ? "selected" : ""} onClick={() => setDeviceGuide("iphoneHome")}>{locale === "es" ? "Con botón frontal" : "Front button"}</button>
                 </div>
               )}
-              <ol>{screenshotSteps.map((step) => <li key={step}>{step}</li>)}</ol>
+              <ol className="screenshot-story">
+                {screenshotSteps.map((step, index) => (
+                  <li key={step}>
+                    <span className={`screenshot-step-visual screenshot-step-${index + 1}`} aria-hidden="true">
+                      {index === 0 && <span className="message-preview">•••</span>}
+                      {index === 1 && <span className="button-combo">{deviceFamily === "iphone" ? "+  ↕" : "−  ⏻"}</span>}
+                      {index === 2 && <span className="saved-photo">▧</span>}
+                      {index === 3 && <span className="new-app"><PauseMark /></span>}
+                    </span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
               <button className="guide-close" onClick={() => setShowScreenshotGuide(false)}>{t.closeGuide}</button>
             </aside>
           )}
@@ -851,13 +928,12 @@ export default function Home() {
               <button className={deviceGuide === "iphoneHome" ? "selected" : ""} onClick={() => setDeviceGuide("iphoneHome")}>{locale === "es" ? "Con botón frontal" : "Front button"}</button>
             </div>
           )}
-          <button className="secondary-button install-home-button" onClick={goHome}>{t.installClose}</button>
+          <button className="secondary-button install-home-button" onClick={finishInstallGuide}>{t.installClose}</button>
         </section>
       )}
 
       {screen === "result" && analysis && (
         <section className="result-screen screen-enter">
-          <p className="eyebrow">{t.resultEyebrow}</p>
           <div className={`risk-card risk-${analysis.risk}`}>
             <span className="risk-pill"><span className="risk-dot" aria-hidden="true" />{riskLabel}</span>
             <h1>{analysis.title}</h1>

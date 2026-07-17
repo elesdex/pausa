@@ -4,6 +4,14 @@
 
 Pausa is a free, open-source, mobile-first web app for moments of digital uncertainty. A person can share a suspicious message as text, voice, photo, or screenshot. Pausa uses GPT-5.6 vision and structured outputs to identify risk signals, explain them without jargon or shame, and recommend a safer way to verify.
 
+## Open Pausa
+
+[Open the public app](https://pausa-digital.elesdex.chatgpt.site/) or scan this QR code on a phone:
+
+![QR code for the public Pausa app](public/pausa-qr.png)
+
+The QR contains only the public Pausa URL. It does not contain tracking parameters or personal information.
+
 The first module focuses on scam and phishing messages. The broader vision is a trusted, accessible help button for moments when someone does not know what is happening or what to do next.
 
 ## Why this is different
