@@ -138,8 +138,9 @@ h1 { font-size: clamp(2.55rem, 12vw, 4.2rem); letter-spacing: -.055em; line-heig
 .iphone-choice button.selected { border-color: rgba(189,145,68,.55); background: rgba(241,227,196,.66); color: var(--green-dark); }
 .guide-close { width: 100%; border: 0; border-top: 1px solid var(--border); background: transparent; color: var(--green-dark); margin-top: 18px; padding: 15px 0 0; font-weight: 800; cursor: pointer; }
 
+.demo-screen { flex: none; }
 .demo-screen h1 { font-size: clamp(2.45rem, 10vw, 3.7rem); }
-.demo-message-card { margin: 0 0 24px; padding: 18px; border: 1px solid rgba(189,145,68,.3); border-radius: 20px; background: rgba(255,250,240,.76); box-shadow: 0 10px 26px rgba(57,54,43,.07); }
+.demo-message-card { margin: 0 0 24px; padding: 18px; border: 1px solid #ce2727; border-radius: 20px; background: rgba(255,250,240,.76); box-shadow: 0 10px 26px rgba(57,54,43,.07); }
 .demo-message-card > span { display: block; margin-bottom: 8px; color: var(--green-dark); font-size: .7rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
 .demo-message-card p { margin: 0; color: var(--ink-soft); line-height: 1.5; }
 .demo-story, .screenshot-story { margin: 0; padding: 0; display: grid; gap: 15px; list-style: none; }
@@ -152,6 +153,7 @@ h1 { font-size: clamp(2.55rem, 12vw, 4.2rem); letter-spacing: -.055em; line-heig
 .demo-step-3 { background: var(--green-dark); color: white; }
 .demo-step-3 .pause-mark > span, .screenshot-step-4 .pause-mark > span { width: 6px; height: 17px; border-radius: 3px; box-shadow: 10px 0 0 currentColor; transform: translateX(-5px); }
 .demo-result-button { margin-top: 28px; }
+.demo-home-control .home-mark-button { margin: 34px auto 0; }
 .message-preview { width: 43px; min-height: 30px; border-radius: 10px 10px 10px 3px; display: grid; place-items: center; background: white; border: 1px solid rgba(18,63,57,.18); letter-spacing: 2px; }
 .button-combo { min-width: 48px; padding: 7px; border-radius: 12px; background: var(--green-dark); color: white; text-align: center; font-size: .82rem; }
 .saved-photo { width: 41px; height: 41px; display: grid; place-items: center; border-radius: 11px; background: white; border: 2px solid var(--gold); font-size: 1.2rem; }
@@ -250,6 +252,7 @@ footer a { color: var(--green-dark); font-weight: 800; text-underline-offset: 3p
 .emergency-card a { flex: 0 0 auto; min-width: 47px; border-radius: 999px; padding: 9px 10px; background: #b4473d; color: white; text-decoration: none; font-size: .78rem; box-shadow: 0 5px 12px rgba(180,71,61,.2); }
 .emergency-disclaimer { margin-bottom: 18px; font-size: .62rem; }
 footer .home-mark-button { width: 44px; height: 44px; margin: 0 auto 34px; }
+.demo-footer { padding-top: 38px; }
 
 .legal-shell { width: min(100% - 40px, 720px); margin: 0 auto; padding: 28px 0 64px; }
 .legal-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; }

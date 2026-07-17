@@ -112,11 +112,11 @@ const copy = {
     timeout: "La revisión tardó demasiado. No respondas al mensaje; inténtalo nuevamente.",
     textRequired: "Comparte una imagen, escribe el mensaje o cuéntamelo con voz.",
     demoBadge: "Modo de demostración",
-    demoTitle: "Así funciona Pausa",
+    demoTitle: "Así funciona",
     demoIntro: "Este mensaje es sintético. Mira cómo pasa de una duda a un siguiente paso seguro.",
     demoInputLabel: "Ejemplo recibido",
     demoStepOne: "Recibes algo que te presiona.",
-    demoStepTwo: "Lo cuentas o lo compartes con Pausa.",
+    demoStepTwo: "Nos cuentas, hablas o compartes lo que ves.",
     demoStepThree: "Pausa señala riesgos y propone qué verificar.",
     demoSeeResult: "Ver cómo lo revisa Pausa",
   },
@@ -199,11 +199,11 @@ const copy = {
     timeout: "The check took too long. Do not respond to the message; please try again.",
     textRequired: "Share an image, type the message, or tell me with your voice.",
     demoBadge: "Demonstration mode",
-    demoTitle: "How Pausa works",
+    demoTitle: "How it works",
     demoIntro: "This message is synthetic. See how a moment of doubt becomes one safer next step.",
     demoInputLabel: "Example received",
     demoStepOne: "You receive something that pressures you.",
-    demoStepTwo: "You tell Pausa or share what you see.",
+    demoStepTwo: "You tell, speak or share what you see.",
     demoStepThree: "Pausa flags risks and suggests what to verify.",
     demoSeeResult: "See how Pausa checks it",
   },
@@ -777,6 +777,9 @@ export default function Home() {
             ))}
           </ol>
           <button className="primary-button demo-result-button" onClick={() => runAnalysis(true)}>{t.demoSeeResult}</button>
+          <div className="demo-home-control">
+            <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />
+          </div>
         </section>
       )}
 
@@ -969,8 +972,8 @@ export default function Home() {
         </section>
       )}
 
-      <footer>
-        <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />
+      <footer className={screen === "demo" ? "demo-footer" : undefined}>
+        {screen !== "demo" && <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />}
         <aside className="emergency-card">
           <div><strong>{t.emergencyTitle}</strong><p>{t.emergencyBody}</p></div>
           <a href="tel:911">911</a>

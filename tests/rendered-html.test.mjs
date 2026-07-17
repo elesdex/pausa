@@ -286,7 +286,9 @@ test("keeps the installed experience current and ships the public QR", async () 
   assert.match(source, /sessionStorage\.getItem\("pausa-install-dismissed"\)/);
   assert.match(source, /localStorage\.setItem\("pausa-installed", "true"\)/);
   assert.match(source, /registration\.update\(\)/);
-  assert.match(source, /How Pausa works/);
+  assert.match(source, /How it works/);
+  assert.match(source, /You tell, speak or share what you see\./);
+  assert.match(source, /screen !== "demo"/);
   assert.match(source, /AttachmentIcon/);
   assert.match(worker, /pausa-shell-v9/);
   assert.match(worker, /networkFirst/);
