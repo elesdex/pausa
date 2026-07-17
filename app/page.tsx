@@ -43,7 +43,7 @@ const copy = {
       "Si un mensaje te asustó o te está presionando, no respondas todavía. Lo revisamos contigo, con calma.",
     start: "Compartir foto o texto",
     voiceStart: "Cuéntamelo con voz",
-    voiceHint: "Solo habla. Al terminar, lo revisamos enseguida.",
+    voiceHint: "Solo habla. Al terminar, lo revisamos.",
     voiceStop: "Terminar y revisar",
     voicePreparing: "Preparando tu audio…",
     voiceTranscribing: "Entendiendo lo que dijiste…",
@@ -55,7 +55,7 @@ const copy = {
     installAction: "Instalar Pausa",
     installClose: "Listo, volver al inicio",
     privacy: "Nada se analiza hasta que lo compartes.",
-    notEmergency: "Pausa no sustituye a los servicios de emergencia.",
+    notEmergency: "En una emergencia, contacta a los servicios locales.",
     emergencyTitle: "¿Peligro inmediato?",
     emergencyBody: "México y Estados Unidos",
     emergencyCall: "Llamar al 911",
@@ -130,7 +130,7 @@ const copy = {
       "If a message scared or pressured you, do not respond yet. We will review it with you, calmly.",
     start: "Share a photo or text",
     voiceStart: "Tell me by voice",
-    voiceHint: "Just speak. When you finish, we will check it.",
+    voiceHint: "Just speak. When you finish, we'll check it.",
     voiceStop: "Finish and check",
     voicePreparing: "Preparing your audio…",
     voiceTranscribing: "Understanding what you said…",
@@ -142,7 +142,7 @@ const copy = {
     installAction: "Install Pausa",
     installClose: "Done, return home",
     privacy: "Nothing is analyzed until you share it.",
-    notEmergency: "Pausa does not replace emergency services.",
+    notEmergency: "For emergencies, contact local emergency services.",
     emergencyTitle: "Immediate danger?",
     emergencyBody: "Mexico and the United States",
     emergencyCall: "Call 911",
@@ -731,13 +731,13 @@ export default function Home() {
           <button className="voice-primary-button" onClick={startVoiceCapture}>
             <span className="voice-symbol" aria-hidden="true"><i /><i /><i /></span>
             <span><strong>{t.voiceStart}</strong><small>{t.voiceHint}</small></span>
+            <span className="voice-action-arrow" aria-hidden="true">→</span>
           </button>
           <button className="secondary-button quick-start-button" onClick={() => setScreen("intake")}>
             <AttachmentIcon />
             <span>{t.start}</span>
           </button>
           <button className="text-button guided-example-button" onClick={() => setScreen("demo")}>{t.demo}</button>
-          <p className="privacy-note"><span aria-hidden="true">●</span> {t.privacy}</p>
           {showInstallCard && (
             <aside className="install-prompt-card">
               <div className="install-suggestion-mark" aria-hidden="true"><PauseMark /></div>
@@ -972,7 +972,7 @@ export default function Home() {
         </section>
       )}
 
-      <footer className={screen === "demo" ? "demo-footer" : undefined}>
+      <footer className={`${screen === "demo" ? "demo-footer" : ""} ${screen === "home" ? "home-footer" : ""}`.trim()}>
         {screen !== "demo" && <HomeMarkButton label={locale === "es" ? "Volver al inicio" : "Return home"} onClick={goHome} />}
         <aside className="emergency-card">
           <div><strong>{t.emergencyTitle}</strong><p>{t.emergencyBody}</p></div>

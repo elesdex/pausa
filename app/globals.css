@@ -83,13 +83,17 @@ h1 { font-size: clamp(2.55rem, 12vw, 4.2rem); letter-spacing: -.055em; line-heig
 .install-link { border: 1px solid rgba(47,122,103,.25); background: rgba(255,255,255,.38); color: var(--green-dark); border-radius: 999px; font-weight: 800; padding: 11px 16px; cursor: pointer; }
 .back-button { border: 0; background: transparent; padding: 8px 0; margin-bottom: 28px; cursor: pointer; font-weight: 800; color: var(--ink-soft); }
 
-.voice-primary-button { width: 100%; min-height: 78px; border: 0; border-radius: 22px; padding: 15px 18px; display: flex; align-items: center; gap: 15px; text-align: left; background: var(--green-dark); color: white; box-shadow: 0 14px 30px rgba(18,63,57,.22); cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
+.voice-primary-button { position: relative; width: 100%; min-height: 78px; border: 0; border-radius: 22px; padding: 15px 18px; display: flex; align-items: center; gap: 15px; text-align: left; background: var(--green-dark); color: white; box-shadow: 0 14px 30px rgba(18,63,57,.22); cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
 .voice-primary-button:hover { transform: translateY(-2px); box-shadow: 0 18px 34px rgba(18,63,57,.25); }
 .voice-primary-button:disabled { opacity: .7; cursor: wait; transform: none; }
 .voice-primary-button.recording { background: #873d34; box-shadow: 0 0 0 7px rgba(168,64,53,.11), 0 14px 30px rgba(78,36,31,.2); }
 .voice-primary-button strong, .voice-primary-button small { display: block; }
 .voice-primary-button strong { font-size: 1.05rem; margin-bottom: 4px; }
 .voice-primary-button small { max-width: 34ch; color: rgba(255,255,255,.82); line-height: 1.35; }
+.home-screen .voice-primary-button { padding-right: 58px; border: 1px solid rgba(242,215,154,.56); background: linear-gradient(135deg, #123f39, #1e6759); box-shadow: 0 16px 34px rgba(18,63,57,.27), 0 0 0 4px rgba(242,215,154,.08); }
+.home-screen .voice-primary-button > span:nth-child(2) { min-width: 0; }
+.home-screen .voice-primary-button small { max-width: none; }
+.voice-action-arrow { position: absolute; right: 17px; top: 50%; width: 29px; height: 29px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.14); color: #f2d79a; font-size: 1rem; font-weight: 900; transform: translateY(-50%); }
 .voice-symbol { flex: 0 0 48px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; gap: 4px; border-radius: 50%; background: rgba(255,255,255,.14); color: #f2d79a; font-size: 1.1rem; box-shadow: 0 0 0 0 rgba(242,215,154,.25); animation: voiceHalo 2.2s ease-out infinite; }
 .voice-symbol i { width: 4px; height: 15px; border-radius: 99px; background: currentColor; animation: voiceWave 1.05s ease-in-out infinite; }
 .voice-symbol i:nth-child(2) { height: 24px; animation-delay: -.22s; }
@@ -253,6 +257,11 @@ footer a { color: var(--green-dark); font-weight: 800; text-underline-offset: 3p
 .emergency-disclaimer { margin-bottom: 18px; font-size: .62rem; }
 footer .home-mark-button { width: 44px; height: 44px; margin: 0 auto 34px; }
 .demo-footer { padding-top: 38px; }
+.home-footer .home-mark-button { transform: translateY(-42px); }
+
+@media (min-width: 520px) {
+  .home-screen .voice-primary-button small { white-space: nowrap; }
+}
 
 .legal-shell { width: min(100% - 40px, 720px); margin: 0 auto; padding: 28px 0 64px; }
 .legal-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; }

@@ -28,7 +28,7 @@ test("server-renders the Pausa product shell", async () => {
   assert.match(html, /Cuéntamelo con voz/);
   assert.match(html, /Compartir foto o texto/);
   assert.match(html, /¿Peligro inmediato\?/);
-  assert.match(html, /Nothing is analyzed until you share it|Nada se analiza hasta que lo compartes/);
+  assert.match(html, /En una emergencia, contacta a los servicios locales/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/);
 });
 
@@ -289,6 +289,9 @@ test("keeps the installed experience current and ships the public QR", async () 
   assert.match(source, /How it works/);
   assert.match(source, /You tell, speak or share what you see\./);
   assert.match(source, /screen !== "demo"/);
+  assert.match(source, /Just speak\. When you finish, we'll check it\./);
+  assert.match(source, /For emergencies, contact local emergency services\./);
+  assert.doesNotMatch(source, /<p className="privacy-note"/);
   assert.match(source, /AttachmentIcon/);
   assert.match(worker, /pausa-shell-v9/);
   assert.match(worker, /networkFirst/);
