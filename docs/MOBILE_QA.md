@@ -43,6 +43,16 @@ Changes prepared from this review:
 
 The user confirmed on July 17 that Pausa was installed and launched successfully on an iPhone, with the current interface rendering well in standalone mode. The remaining interaction, accessibility, and sharing checks below still require observation on the named device.
 
+## July 20 public regression check
+
+- The public English home, guided-example explanation, and complete deterministic result flow were exercised at a 390×844 browser viewport.
+- The current home copy is “What should we check?” and the animated Pausa mark remains an accessible voice button.
+- The public API returned a real `gpt-5.6` result for a synthetic urgent bank message.
+- All 12 synthetic safety cases passed against the public production endpoint.
+- Four clean mobile captures were exported from the public app for the submission video.
+
+This browser and API evidence does not replace microphone, camera, native sharing, text-size, and installed-icon checks on a physical device.
+
 ## Start physical QA from the public QR
 
 ![Scan to open the public Pausa app](../public/pausa-qr.png)

@@ -1,0 +1,35 @@
+1
+00:00:00,000 --> 00:00:08,412
+A message looks official. It mentions money. It tells you to act now. In that moment, urgency is the attack.
+
+2
+00:00:08,412 --> 00:00:22,209
+Pausa is a free, open source help button for moments of digital uncertainty. It does not monitor your messages. You open it when you want help, and the first step is simple: do not respond yet.
+
+3
+00:00:22,209 --> 00:00:34,659
+You can describe what happened by voice, photograph another screen, choose a saved image, or paste the text. You do not need to know how to take a screenshot to get started.
+
+4
+00:00:34,659 --> 00:00:47,783
+For a repeatable demonstration, Pausa shows a synthetic bank alert before any result. It explains what the person shared and how the app will turn a moment of doubt into one safer next step.
+
+5
+00:00:47,783 --> 00:01:07,972
+GPT-5.6 reads the text and image and returns a constrained result. It does not claim certainty. Here it notices artificial urgency, financial fear, and a phone number supplied by the message. Pausa does not tell us to call that number. It guides us to leave the message and verify through a channel we already know.
+
+6
+00:01:07,972 --> 00:01:22,442
+The guidance can be read aloud with a disclosed synthetic voice and shared with someone you trust without attaching the original private message. Pausa is bilingual, installable on a phone, and keeps emergency help separate from model guidance.
+
+7
+00:01:22,442 --> 00:01:41,622
+I am not a traditional software developer. I started by describing the problem and the people I wanted to help. Codex turned that conversation into a plan, built the product, connected the OpenAI APIs, caught unsafe fallback behavior, optimized image latency, created evaluations, tested each iteration, and kept the submission evidence current.
+
+8
+00:01:41,622 --> 00:01:54,409
+Pausa passed twelve live safety scenarios, including legitimate, ambiguous, threatening, QR payment, and prompt injection messages. The app is Spanish and English, public, and open source under the Apache two point zero license.
+
+9
+00:01:54,409 --> 00:02:00,466
+Scams use urgency. Pausa gives people time, clarity, and one safer next step.

@@ -30,13 +30,13 @@
 ## Video
 
 - [ ] Public YouTube link.
-- [ ] Three minutes or less.
-- [ ] Clear working-product demo.
-- [ ] Voiceover included.
-- [ ] Explains what was built.
-- [ ] Explains specifically how Codex was used.
-- [ ] Explains specifically what GPT-5.6 does.
-- [ ] English narration or complete English translation.
+- [x] Two-minute fallback cut exported locally, below the three-minute limit.
+- [ ] Replace the static walkthrough with the final live interaction clip, or explicitly approve the fallback cut.
+- [x] English voiceover included in the fallback cut.
+- [x] Explains what was built.
+- [x] Explains specifically how Codex was used.
+- [x] Explains specifically what GPT-5.6 does.
+- [x] English narration and `.srt` captions prepared.
 
 ## Devpost
 

@@ -1,6 +1,6 @@
 # OpenAI Build Week readiness audit
 
-Audit date: July 17, 2026
+Audit date: July 20, 2026
 
 Deadline: Tuesday, July 21, 2026 at 5:00 PM Pacific / 6:00 PM Mexico City
 
@@ -18,8 +18,8 @@ Status meanings:
 |---|---|---|---|
 | Mobile web app | Proven | `app/page.tsx`, manifest, service worker, icons, successful production build, and public Sites URL | Complete the physical-device matrix |
 | Free and open source | Proven | Apache 2.0 `LICENSE`, no payment or account flow, `CONTRIBUTING.md`, public GitHub repository | Keep final commit synchronized |
-| Screenshot and photo input | Proven in code | Camera and file inputs plus client-side preparation | Physical iPhone and Android test |
-| Text input | Proven live | Textarea flow, API contract test, and live GPT-5.6 evaluations | Physical-browser usability check |
+| Screenshot and photo input | Proven in code | Camera and file inputs plus client-side preparation | Physical iPhone test; Android remains desirable |
+| Text input | Proven live | Textarea flow, API contract test, and 12/12 public GPT-5.6 evaluations on July 20 | Physical-browser usability check |
 | Voice input | Proven live, partial device | MediaRecorder, `gpt-4o-transcribe`, exact synthetic round-trip | Physical microphone-permission check |
 | Risk signals without certainty | Proven live | Strict schema, uncertainty enum, prompt rules, 12/12 live evaluation cases | Physical-device presentation check |
 | Plain-language explanation | Proven live | Bilingual demo, schema, live text and vision results | Physical-device presentation check |
@@ -60,15 +60,15 @@ Status meanings:
 | Codex build evidence | Partial | Build log and commit history | Add primary `/feedback` Session ID |
 | Working judge URL | Proven | `https://pausa-digital.elesdex.chatgpt.site/` | Keep the final validated commit deployed |
 | English Devpost copy | Proven as draft | `docs/DEVPOST_DRAFT.md` | Enter and proofread in Devpost |
-| Under-three-minute video | Partial | Timed 2:45 commercial-style script and synthetic visual | Record, edit, upload publicly, verify duration |
+| Under-three-minute video | Partial with fallback | A 2:00 English-narrated 1080p draft, captions, source captures, and reproducible assembly script exist locally | Prefer one final live interaction clip, then upload publicly to YouTube |
 | Devpost registration | Confirmed by user | User confirmation on July 16 | No action |
 | Codex credits request | Confirmed by user | User confirmation on July 16 | Await approval or credit delivery |
 | Final Devpost submission | Missing | Not yet possible | Add all URLs and Session ID, submit, reopen, verify |
 
 ## Critical path
 
-1. **Codex + user device:** complete the physical QA matrix.
-2. **User + Codex:** record the prepared script and assemble the under-three-minute cut.
-3. **User + Codex:** upload to YouTube, add the `/feedback` Session ID, submit Devpost, and reopen the entry to verify it.
+1. **User device:** complete the short iPhone critical-path QA and record one uninterrupted live result clip. Android is useful evidence but not a stated submission artifact.
+2. **User + Codex:** approve the two-minute fallback cut or replace its static product section with the live clip.
+3. **User:** run `/feedback`, upload the approved video publicly to YouTube, paste both values into Devpost, submit, and reopen the entry to verify it.
 
 The project is not submission-ready until every **Missing** item is resolved and every **Partial** judge-facing artifact is verified in its public form.

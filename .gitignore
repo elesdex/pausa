@@ -42,3 +42,8 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+
+# Regenerable video intermediates
+media/video/cards/
+media/video/output/*.aiff
+media/video/output/*-silent.mp4

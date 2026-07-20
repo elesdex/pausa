@@ -25,12 +25,12 @@ Most scam checkers begin after a person has already captured and submitted a mes
 ## What it does
 
 - Opens as a simple mobile help button with no account or background monitoring.
-- Accepts pasted text, browser dictation, a camera photo, or a saved screenshot.
+- Accepts pasted text, an explicit push-to-talk voice recording, a camera photo, or a saved screenshot.
 - Uses GPT-5.6 vision and structured outputs to assess possible scam signals.
 - Separates guidance from certainty and uses an “uncertain” result when evidence is limited.
 - Explains manipulation patterns in short, accessible language.
 - Never routes the person to a phone number or link supplied by suspicious content.
-- Reads the result aloud using the device voice.
+- Reads the result aloud with a disclosed AI-generated voice.
 - Works in Spanish and English.
 - Includes a clearly labeled guided example that judges can run without an API key.
 - Can be installed on a phone home screen as a PWA.
@@ -39,7 +39,7 @@ Most scam checkers begin after a person has already captured and submitted a mes
 
 Pausa is a mobile-first Next.js application built and iterated with Codex. The server uses the OpenAI Responses API with GPT-5.6, image input, adaptive reasoning effort, and a strict JSON schema. Text analysis uses medium reasoning; image analysis uses low reasoning to stay within the mobile response-time budget. The schema limits responses to a risk level, short explanation, observed signals, safe next steps, one reusable lesson, and an emergency flag.
 
-The client uses standard browser capabilities for camera/file input, speech recognition when available, and speech synthesis for read-aloud results. It stores no submissions, requires no account, includes no analytics, and does not monitor messages in the background.
+The client uses standard browser capabilities for camera and file input plus an explicit `MediaRecorder` push-to-talk flow. The server transcribes voluntary recordings with `gpt-4o-transcribe`. Read-aloud guidance is generated with `gpt-4o-mini-tts` using the `marin` voice and is labeled as synthetic. Pausa stores no submissions in its own database, requires no account, includes no analytics, and does not monitor messages in the background.
 
 We created a synthetic evaluation set covering bank impersonation, parcel fees, family impersonation, verification-code theft, prize and job scams, benign notices, ambiguous messages, threatening authority scams, QR payments, and prompt injection.
 

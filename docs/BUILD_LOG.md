@@ -82,3 +82,15 @@ Complete the local build, connect a real API key, and verify one text example an
 - Production build, lint, and all 12 automated tests passed; responsive local QA covered the home, intake, screenshot-help, guided-example, and emergency sections in Spanish.
 - Unified the first-time and returning-user home screen as “What should we check?” / “¿Qué revisamos?”, made the animated Pausa mark start voice capture, shortened the primary voice action, and removed the obsolete local-state headline split.
 - Replaced the dotted-ring PWA artwork with a versioned ring-free app icon, added editable SVG and 1024px promotional exports, updated the install walkthrough, and bumped the network-first service-worker cache to `pausa-shell-v10`.
+
+## July 20, 2026
+
+### Submission package and final public regression
+
+- Rechecked the official Devpost rules: the project needs a working app, public YouTube video under three minutes with audio covering the product, Codex, and GPT-5.6, a repository, English submission material, and the primary `/feedback` Session ID.
+- Verified the public analysis endpoint with a synthetic urgent bank message and confirmed a real `gpt-5.6` response with calibrated high-risk guidance.
+- Re-ran all 12 synthetic safety scenarios against the public production endpoint; 12/12 passed.
+- Exercised the public English home, guided-example explanation, and deterministic result flow at a 390×844 browser viewport.
+- Corrected the Devpost draft so it describes the current `MediaRecorder` + `gpt-4o-transcribe` voice input and `gpt-4o-mini-tts` read-aloud implementation.
+- Captured four clean mobile screens from the public app and created a reproducible 1080p, English-narrated, two-minute fallback video with matching `.srt` captions.
+- Kept the fallback deliberately free of copyrighted music and unrelated trademarks. A live physical-phone interaction clip remains the preferred replacement before YouTube upload.
