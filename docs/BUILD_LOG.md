@@ -94,3 +94,11 @@ Complete the local build, connect a real API key, and verify one text example an
 - Corrected the Devpost draft so it describes the current `MediaRecorder` + `gpt-4o-transcribe` voice input and `gpt-4o-mini-tts` read-aloud implementation.
 - Captured four clean mobile screens from the public app and created a reproducible 1080p, English-narrated, two-minute fallback video with matching `.srt` captions.
 - Kept the fallback deliberately free of copyrighted music and unrelated trademarks. A live physical-phone interaction clip remains the preferred replacement before YouTube upload.
+
+## July 21, 2026
+
+### Video orientation correction
+
+- Corrected an inverted frame transform in the AVFoundation pixel-buffer export.
+- Regenerated the complete narrated MP4 and extracted a proof frame directly from the final video.
+- Confirmed the proof frame is upright and legible while preserving the existing narration, captions, dimensions, and approximately two-minute duration.

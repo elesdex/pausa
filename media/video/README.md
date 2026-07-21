@@ -4,6 +4,7 @@
 
 - `output/pausa-demo-draft-en.mp4` — 1920×1080, English synthetic narration, approximately 2:00.
 - `output/pausa-demo-draft-en.srt` — matching English captions.
+- `output/pausa-demo-draft-en-proof.png` — frame extracted from the final MP4 to verify orientation and legibility.
 
 The fallback covers what Pausa does, how Codex was used, and how GPT-5.6 is integrated. Before uploading, watch the full file with sound. Prefer replacing the static product walkthrough with one uninterrupted physical-phone clip that shows a real synthetic input moving from loading to result.
 

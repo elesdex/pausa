@@ -99,8 +99,9 @@ struct BuildVideoDraft {
         let silentVideoURL = outputDirectory.appendingPathComponent("pausa-demo-silent.mp4")
         let finalVideoURL = outputDirectory.appendingPathComponent("pausa-demo-draft-en.mp4")
         let srtURL = outputDirectory.appendingPathComponent("pausa-demo-draft-en.srt")
+        let proofURL = outputDirectory.appendingPathComponent("pausa-demo-draft-en-proof.png")
 
-        for url in [narrationURL, silentVideoURL, finalVideoURL, srtURL] {
+        for url in [narrationURL, silentVideoURL, finalVideoURL, srtURL, proofURL] {
             try? FileManager.default.removeItem(at: url)
         }
 
@@ -117,11 +118,13 @@ struct BuildVideoDraft {
         )
         try await combine(video: silentVideoURL, audio: narrationURL, output: finalVideoURL)
         try makeSRT(scenes: scenes, durations: sceneDurations, output: srtURL)
+        try createProofFrame(video: finalVideoURL, output: proofURL)
 
         let finalAsset = AVURLAsset(url: finalVideoURL)
         let finalDuration = try await finalAsset.load(.duration).seconds
         print(String(format: "Created %@ (%.1f seconds)", finalVideoURL.path, finalDuration))
         print("Created \(srtURL.path)")
+        print("Created \(proofURL.path)")
     }
 
     static func createNarration(scenes: [Scene], at output: URL) throws {
@@ -371,10 +374,24 @@ struct BuildVideoDraft {
 
         var proposed = NSRect(x: 0, y: 0, width: width, height: height)
         guard let cgImage = image.cgImage(forProposedRect: &proposed, context: nil, hints: nil) else { return nil }
-        context.translateBy(x: 0, y: CGFloat(height))
-        context.scaleBy(x: 1, y: -1)
         context.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
         return pixelBuffer
+    }
+
+    @MainActor
+    static func createProofFrame(video: URL, output: URL) throws {
+        let asset = AVURLAsset(url: video)
+        let generator = AVAssetImageGenerator(asset: asset)
+        generator.appliesPreferredTrackTransform = true
+        generator.requestedTimeToleranceBefore = .zero
+        generator.requestedTimeToleranceAfter = .zero
+        var actualTime = CMTime.zero
+        let frame = try generator.copyCGImage(
+            at: CMTime(seconds: 2, preferredTimescale: 600),
+            actualTime: &actualTime
+        )
+        let image = NSImage(cgImage: frame, size: NSSize(width: width, height: height))
+        try savePNG(image, to: output)
     }
 
     static func combine(video: URL, audio: URL, output: URL) async throws {
