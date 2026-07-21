@@ -1,0 +1,136 @@
+1
+00:00:00,000 --> 00:00:03,140
+Recently, someone in my family was scammed.
+
+2
+00:00:03,660 --> 00:00:06,820
+The message looked real.
+The threat felt urgent.
+
+3
+00:00:07,720 --> 00:00:10,140
+And in that moment,
+they didn't know who to ask.
+
+4
+00:00:11,600 --> 00:00:14,180
+That uncertainty is where
+many scams win.
+
+5
+00:00:14,480 --> 00:00:18,200
+Not because people are careless,
+but because the message creates fear
+
+6
+00:00:18,660 --> 00:00:21,760
+and demands a decision
+before there is time to think.
+
+7
+00:00:22,940 --> 00:00:26,100
+I built a web app called Pausa
+for that moment:
+
+8
+00:00:26,680 --> 00:00:30,100
+a calm place to stop and ask,
+"Is this real?"
+
+9
+00:00:31,000 --> 00:00:32,220
+"And what should I do next?"
+
+10
+00:00:33,400 --> 00:00:37,600
+It should feel like having a security-savvy
+person in your family right there with you.
+
+11
+00:00:39,040 --> 00:00:43,720
+Because not everyone is digitally native,
+Pausa lets you speak, take a photo,
+
+12
+00:00:43,940 --> 00:00:46,340
+choose a screenshot,
+or paste the message.
+
+13
+00:00:47,020 --> 00:00:51,940
+It works on phone, tablet, and web,
+and can be installed in a few taps.
+
+14
+00:00:53,600 --> 00:00:55,260
+Here's the actual product.
+
+15
+00:00:56,160 --> 00:00:58,680
+I talk to it about a bank alert.
+
+16
+00:00:59,240 --> 00:01:04,580
+Pausa checks it and explains
+why it may be dangerous,
+
+17
+00:01:05,380 --> 00:01:08,520
+then gives you the next steps.
+
+18
+00:01:09,860 --> 00:01:13,080
+Using the intelligence of GPT-5.6,
+
+19
+00:01:13,400 --> 00:01:17,380
+it identifies and explains
+the signs it can observe,
+
+20
+00:01:17,380 --> 00:01:20,020
+such as pressure, fear, and urgency,
+
+21
+00:01:20,220 --> 00:01:25,980
+then guides the person away from that
+suspicious message toward a trusted channel.
+
+22
+00:01:26,600 --> 00:01:31,500
+I built this app using my voice,
+describing the problem to Codex,
+
+23
+00:01:32,120 --> 00:01:36,720
+iterating through the experience,
+and testing the safety behavior.
+
+24
+00:01:37,480 --> 00:01:41,980
+Codex turned that conversation
+into a working bilingual application,
+
+25
+00:01:42,560 --> 00:01:47,060
+while GPT-5.6 provides
+the reasoning and vision.
+
+26
+00:01:48,240 --> 00:01:51,100
+Pausa passed all safety evaluations.
+
+27
+00:01:51,920 --> 00:01:55,820
+Pausa is designed to help families
+slow down and feel less alone,
+
+28
+00:01:56,040 --> 00:02:00,100
+and take one calmer,
+safer next step.
+
+29
+00:02:01,320 --> 00:02:04,600
+Try it out now for free
+and keep your people safe.

@@ -10,7 +10,7 @@ Apps for Your Life
 
 ## One-line pitch
 
-Scams use urgency. Pausa gives people calm, clarity, and one safer next step.
+Scams use urgency. Pausa turns a suspicious message into calm guidance and one safer next step—by voice, text, photo, or screenshot.
 
 ## Short description
 
@@ -74,6 +74,7 @@ The largest accessibility challenge was supporting people who may not know how t
 - A complete bilingual mobile flow rather than a chat mockup.
 - Four accessible input methods and read-aloud output.
 - Real GPT-5.6 image and text analysis with strict structured output.
+- All 12 live synthetic safety evaluations passed against the public production endpoint.
 - Explicit uncertainty and independent-verification safety rules.
 - Installable PWA behavior with no app-store dependency.
 - A deterministic, clearly labeled judge demo.
@@ -89,7 +90,9 @@ We also learned that “no API key” is a product state, not an excuse to retur
 
 The next version will deepen trusted-contact escalation that is always user-approved, expand community-reviewed multilingual evaluation data, and explore partnerships that can keep the basic protection free. The long-term vision is a calm, personal help button for moments of digital uncertainty; scam protection is where it begins.
 
-## Links to add before submission
+## Submission status and links
+
+The project name, elevator pitch, full project story, Built With stack, public links, and thumbnail were saved to the Devpost draft on July 21, 2026.
 
 - Working public app: `https://pausa-digital.elesdex.chatgpt.site/`
 - Public repository: `https://github.com/elesdex/pausa`
