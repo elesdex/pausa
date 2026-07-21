@@ -46,6 +46,6 @@
 - [x] Working demo URL: `https://pausa-digital.elesdex.chatgpt.site/`.
 - [x] Code repository URL: `https://github.com/elesdex/pausa`.
 - [ ] YouTube URL.
-- [ ] Primary Codex `/feedback` Session ID.
+- [x] Primary Codex `/feedback` Session ID: `019f6ed7-9c59-7f10-b5a7-9a211274af79`.
 - [x] `/feedback` procedure documented in `docs/CODEX_FEEDBACK.md`.
 - [ ] Submission completed and reopened for verification before the deadline.

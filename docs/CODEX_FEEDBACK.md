@@ -4,6 +4,8 @@
 
 For the OpenAI Build Week submission, the useful artifact is the Session ID returned after feedback is submitted. It connects the submission to the Codex work session that contains the build history.
 
+Final submission Session ID: `019f6ed7-9c59-7f10-b5a7-9a211274af79`.
+
 ## Recommended moment
 
 Run `/feedback` from the canonical Pausa task after the final physical QA, public deployment, and documentation update. That gives the shared session the most complete evidence.

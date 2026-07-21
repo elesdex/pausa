@@ -112,7 +112,7 @@ This project is being designed and built in one primary Codex task. Codex has he
 - implement GPT-5.6 image input and structured output;
 - maintain the roadmap, decision log, tests, and submission checklist.
 
-Key product decisions and daily progress are recorded in `docs/BUILD_LOG.md`. The primary Codex `/feedback` Session ID will be added before submission.
+Key product decisions and daily progress are recorded in `docs/BUILD_LOG.md`. Primary Codex `/feedback` Session ID: `019f6ed7-9c59-7f10-b5a7-9a211274af79`.
 
 ## Build origin and third-party software
 

@@ -97,4 +97,4 @@ The project name, elevator pitch, full project story, Built With stack, public l
 - Working public app: `https://pausa-digital.elesdex.chatgpt.site/`
 - Public repository: `https://github.com/elesdex/pausa`
 - Public YouTube video: `TBD`
-- Primary Codex `/feedback` Session ID: `TBD`
+- Primary Codex `/feedback` Session ID: `019f6ed7-9c59-7f10-b5a7-9a211274af79`
